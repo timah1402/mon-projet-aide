@@ -2,11 +2,17 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, TextInput, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
-
+import { useNavigation } from '@react-navigation/native';
 export default function ViewDetailsScreen() {
+
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <ScrollView style={tw`px-4 pt-4 `}>
+        {/* Bouton retour */}
+        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mb-4`}>
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
         {/* Header */}
         <Text style={tw`text-xl font-bold mb-2`}>Chambre froide proche du Port</Text>
         <Text style={tw`text-sm text-gray-500 mb-4`}>⭐ 4.9 (23 avis)  ·  Port de Dakar, Dakar, Sénégal</Text>
@@ -32,7 +38,7 @@ export default function ViewDetailsScreen() {
             <Text style={tw`font-semibold`}>Moussa Diagne</Text>
             <Text style={tw`text-xs text-gray-500`}>⭐ 4.8 (47 avis) · Membre depuis Juin 2023</Text>
           </View>
-          <TouchableOpacity style={tw`bg-blue-500 px-4 py-2 rounded-md`}>
+          <TouchableOpacity style={tw`bg-blue-500 px-4 py-2 rounded-md`} onPress={()=>navigation.navigate('ChatScreen')}>
             <Text style={tw`text-white font-medium`}>Contacter</Text>
           </TouchableOpacity>
         </View>
@@ -75,6 +81,13 @@ export default function ViewDetailsScreen() {
         </Text>
 
         {/* Avis */}
+        <TouchableOpacity
+  onPress={() => navigation.navigate('LeaveReviewScreen')}
+  style={tw`bg-gray-200 py-2 px-4 rounded-md mb-6 items-center`}
+>
+  <Text style={tw`text-sm font-medium`}>Donner mon avis</Text>
+</TouchableOpacity>
+
         <Text style={tw`text-base font-semibold mb-2`}>Avis (23)</Text>
         <View style={tw`bg-white border border-gray-200 p-4 rounded-md mb-2`}>
           <Text style={tw`font-semibold`}>Aïssatou Diallo <Text style={tw`text-yellow-500`}>★★★★★</Text></Text>
@@ -89,20 +102,7 @@ export default function ViewDetailsScreen() {
       </ScrollView>
 
       {/* NAVBAR */}
-      <View style={tw`flex-row justify-around items-center h-16 bg-white border-t border-gray-200`}>
-        <TouchableOpacity style={tw`items-center`}>
-          <Ionicons name="grid" size={24} color="gray" />
-          <Text style={tw`text-xs`}>Tableau</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={tw`items-center`}>
-          <Ionicons name="search" size={24} color="blue" />
-          <Text style={tw`text-xs text-blue-600`}>Recherche</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={tw`items-center`}>
-          <Ionicons name="analytics" size={24} color="gray" />
-          <Text style={tw`text-xs`}>IoT</Text>
-        </TouchableOpacity>
-      </View>
+      
     </SafeAreaView>
   );
 }

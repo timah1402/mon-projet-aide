@@ -2,11 +2,17 @@ import React from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Image } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
+import { useNavigation } from '@react-navigation/native'; // en haut du fichier
 
 export default function MonitoringScreen() {
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <ScrollView style={tw`px-4 pt-4 mb-20`}>
+        {/* Bouton retour */}
+        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mb-4`}>
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
         <Text style={tw`text-2xl font-bold mb-2`}>📡 Monitoring IoT</Text>
         <Text style={tw`text-gray-600 mb-6`}>Surveillez vos chambres froides actives en temps réel</Text>
 
@@ -116,20 +122,7 @@ export default function MonitoringScreen() {
       </ScrollView>
 
       {/* NAVBAR en bas */}
-      <View style={tw`flex-row justify-around items-center h-16 bg-white border-t border-gray-200`}>
-        <TouchableOpacity style={tw`items-center`}>
-          <Ionicons name="grid" size={24} color="black" />
-          <Text style={tw`text-xs`}>Tableau</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={tw`items-center`}>
-          <Ionicons name="add-circle" size={24} color="black" />
-          <Text style={tw`text-xs`}>Annonce</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={tw`items-center`}>
-          <Ionicons name="analytics" size={24} color="black" />
-          <Text style={tw`text-xs`}>IoT</Text>
-        </TouchableOpacity>
-      </View>
+     
     </SafeAreaView>
   );
 }

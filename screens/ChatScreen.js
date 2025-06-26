@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
-
+import { useNavigation } from '@react-navigation/native';
 const messages = [
   {
     id: 1,
@@ -34,12 +34,16 @@ const messages = [
 
 export default function ChatScreen() {
   const [input, setInput] = useState('');
+  const navigation = useNavigation();
 
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <View style={tw`px-4 py-3 border-b border-gray-200 flex-row items-center justify-between`}>
         <View style={tw`flex-row items-center`}>
-          <Ionicons name="arrow-back" size={24} color="black" style={tw`mr-2`} />
+           {/* Bouton retour */}
+        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mb-4`}>
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
           <View>
             <Text style={tw`font-semibold`}>Moussa Diagne</Text>
             <Text style={tw`text-xs text-green-600`}>● En ligne</Text>

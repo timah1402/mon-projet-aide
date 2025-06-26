@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Image, SafeAreaView } from 'react-native';
 import tw from 'tailwind-react-native-classnames';
 import { Ionicons } from '@expo/vector-icons';
-
+import { useNavigation } from '@react-navigation/native'; 
 const listings = [
   {
     id: 1,
@@ -52,6 +52,7 @@ const listings = [
 ];
 
 export default function SearchScreen() {
+  const navigation = useNavigation();
   const [location, setLocation] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -67,7 +68,11 @@ export default function SearchScreen() {
 
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>      
-      <ScrollView style={tw`px-4 pt-4 mb-16`}>
+      <ScrollView style={tw`px-4 pt-4 `}>
+        {/* Bouton retour */}
+        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mb-4`}>
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
         <Text style={tw`text-xl font-bold mb-1`}>Trouvez votre espace frigorifique</Text>
         <Text style={tw`text-gray-600 mb-4`}>Découvrez des chambres froides près de chez vous</Text>
 
@@ -175,7 +180,7 @@ export default function SearchScreen() {
                   <Text style={tw`text-sm font-medium`}>{listing.host}</Text>
                   <Text style={tw`text-xs text-gray-500`}>⭐ {listing.hostRating}</Text>
                 </View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('ViewDetailsScreen')}>
                   <Text style={tw`text-blue-600 text-sm`}>Voir détails →</Text>
                 </TouchableOpacity>
               </View>
@@ -189,20 +194,7 @@ export default function SearchScreen() {
       </ScrollView>
 
       {/* NAVBAR uniquement en bas */}
-      <View style={tw`flex-row justify-around items-center h-16 bg-white border-t border-gray-200`}>
-        <TouchableOpacity style={tw`items-center`}>
-          <Ionicons name="grid" size={24} color="black" />
-          <Text style={tw`text-xs`}>Tableau</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={tw`items-center`}>
-          <Ionicons name="add-circle" size={24} color="black" />
-          <Text style={tw`text-xs`}>Annonce</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={tw`items-center`}>
-          <Ionicons name="analytics" size={24} color="black" />
-          <Text style={tw`text-xs`}>IoT</Text>
-        </TouchableOpacity>
-      </View>
+      
     </SafeAreaView>
   );
 }
