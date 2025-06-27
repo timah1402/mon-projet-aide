@@ -7,7 +7,7 @@ module.exports = {
       extend: {
         colors: {
           'graysolde': '#F1F0FF',
-          'bluebusbi':'#1D4ED8B0'
+          
         },
       },
     },

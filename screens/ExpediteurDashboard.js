@@ -195,10 +195,11 @@ export default function ExpediteurDashboardScreen({ navigation }) {
           <Ionicons name="add-circle" size={24} color="#EA580C" />
           <Text style={{ fontSize: 12, color: '#EA580C' }}>Livraison</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={tw`items-center`} onPress={() => navigation.navigate('ProfilScreen')}>
-          <Ionicons name="person" size={24} color="gray" />
-          <Text style={tw`text-xs`}>Profil</Text>
+        <TouchableOpacity style={tw`items-center`} onPress={() => navigation.navigate('ExpediteurFeaturesScreen')}>
+          <Ionicons name="menu" size={24} color="gray" />
+          <Text style={tw`text-xs`}>Menu</Text>
         </TouchableOpacity>
+
       </View>
     </SafeAreaView>
   );

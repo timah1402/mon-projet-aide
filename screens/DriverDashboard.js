@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Modal } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Modal, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
 
-export default function ChauffeurDashboardScreen({ navigation }) {
+export default function DriverDashboard({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [enLigne, setEnLigne] = useState(true);
 
-  // Étapes de la mission
   const [steps, setSteps] = useState([
     { label: 'Mission acceptée', checked: true },
     { label: 'En route vers le point de collecte', checked: false },
@@ -19,9 +18,15 @@ export default function ChauffeurDashboardScreen({ navigation }) {
   const toggleStep = (index) => {
     setSteps((prev) => {
       const newSteps = [...prev];
-      if (index === 0 || newSteps[index - 1].checked) {
-        newSteps[index].checked = !newSteps[index].checked;
+      const firstUncheckedIndex = newSteps.findIndex(step => !step.checked);
+
+      if (index === firstUncheckedIndex) {
+        newSteps[index].checked = true;
+      } else {
+        // Optionnel : notifier l'utilisateur qu'il doit suivre l'ordre
+        Alert.alert("Ordre des étapes", "Vous devez suivre les étapes dans l'ordre.");
       }
+
       return newSteps;
     });
   };
@@ -121,7 +126,7 @@ export default function ChauffeurDashboardScreen({ navigation }) {
               <TouchableOpacity
                 key={index}
                 onPress={() => toggleStep(index)}
-                disabled={index !== 0 && !steps[index - 1].checked}
+                disabled={step.checked}
                 style={tw`flex-row items-center mb-2`}
               >
                 <Ionicons
@@ -188,9 +193,12 @@ export default function ChauffeurDashboardScreen({ navigation }) {
           <Ionicons name="navigate" size={24} color="#facc15" />
           <Text style={tw`text-xs text-yellow-500`}>Suivi</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={tw`items-center`}>
-          <Ionicons name="wallet" size={24} color="gray" />
-          <Text style={tw`text-xs`}>Gains</Text>
+        <TouchableOpacity
+          style={tw`items-center`}
+          onPress={() => navigation.navigate('DriverFeatureScreen')}
+        >
+          <Ionicons name="menu-outline" size={24} color="black" />
+          <Text style={tw`text-xs`}>Menu</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

@@ -30,7 +30,16 @@ import TenantTransactionsScreen from './screens/TenantTransactionsScreen';
 import InvoiceDetailScreen from './screens/InvoiceDetailScreen';
 import TenantDisputeScreen from './screens/TenantDisputeScreen';
 import TenantReviewScreen from './screens/TenantReviewScreen';
-
+import ExpediteurFeaturesScreen from './screens/ExpediteurFeaturesScreen';
+import DeliveryHistoryScreen from './screens/DeliveryHistoryScreen';
+import DeliveryTransactionsScreen from './screens/DeliveryTransactionsScreen';
+import ExpediteurDisputeScreen from './screens/ExpediteurDisputeScreen';
+import ExpediteurPaymentMethodsScreen from './screens/ExpediteurPaymentMethodsScreen';
+import SearchingDriverScreen from './screens/SearchingDriverScreen';
+import DriverFoundScreen from './screens/DriverFoundScreen';
+import DriverFeatureScreen from './screens/DriverFeatureScreen';
+import DriverAvailableMissionsScreen from './screens/DriverAvailableMissionsScreen';
+import DriverEarningsScreen from './screens/DriverEarningsScreen';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -65,6 +74,17 @@ export default function App() {
         <Stack.Screen name="InvoiceDetailScreen" component={InvoiceDetailScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="TenantDisputeScreen" component={TenantDisputeScreen} ptions={{ headerShown: false }}/>
         <Stack.Screen name="TenantReviewScreen" component={TenantReviewScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="ExpediteurFeaturesScreen"component={ExpediteurFeaturesScreen}options={{ headerShown: false }}/>
+        <Stack.Screen name="DeliveryHistoryScreen" component={DeliveryHistoryScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="DeliveryTransactionsScreen" component={DeliveryTransactionsScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="ExpediteurDisputeScreen" component={ExpediteurDisputeScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="ExpediteurPaymentMethodsScreen" component={ExpediteurPaymentMethodsScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="SearchingDriverScreen" component={SearchingDriverScreen}options={{ headerShown: false }}/>
+        <Stack.Screen name="DriverFoundScreen"component={DriverFoundScreen}options={{ headerShown: false }}/>
+        <Stack.Screen name="DriverFeatureScreen" component={DriverFeatureScreen} />
+        <Stack.Screen name="DriverAvailableMissionsScreen" component={DriverAvailableMissionsScreen} />
+        <Stack.Screen name="DriverEarningsScreen" component={DriverEarningsScreen} />
+
       </Stack.Navigator>
 
       

@@ -1,41 +1,38 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
-import { Ionicons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import tw from 'tailwind-react-native-classnames';
 
-export default function TenantFeaturesScreen() {
+export default function ExpediteurFeaturesScreen() {
   const navigation = useNavigation();
 
   const features = [
     {
-      label: 'Mes réservations',
-      icon: <Ionicons name="calendar-outline" size={20} color="black" />,
-      screen: 'TenantReservationsScreen',
+      label: 'Mes livraisons',
+      icon: <Ionicons name="cube-outline" size={20} color="black" />,
+      screen: 'DeliveryHistoryScreen',
     },
-
-    
     {
       label: 'Moyens de paiement',
-      icon: <FontAwesome5 name="credit-card" size={18} color="black" />,
-      screen: 'TenantPaymentMethodsScreen',
+      icon: <Ionicons name="card-outline" size={20} color="black" />,
+      screen: 'ExpediteurPaymentMethodsScreen',
     },
     {
-      label: 'Factures & transactions',
-      icon: <Ionicons name="document-text-outline" size={20} color="black" />,
-      screen: 'TenantTransactionsScreen',
-    },
-    {
-      label: 'Signaler un litige',
+      label: 'Signaler un problème',
       icon: <Ionicons name="alert-circle-outline" size={20} color="black" />,
-      screen: 'TenantDisputeScreen',
+      screen: 'ExpediteurDisputeScreen',
     },
     {
-      label: 'Laisser un avis',
-      icon: <Ionicons name="star-outline" size={20} color="black" />,
-      screen: 'TenantReviewScreen',
+      label: 'Factures & historique',
+      icon: <Ionicons name="document-text-outline" size={20} color="black" />,
+      screen: 'DeliveryTransactionsScreen',
     },
-
+    {
+      label: 'Paramètres du compte',
+      icon: <Ionicons name="settings-outline" size={20} color="black" />,
+      screen: 'ExpediteurSettingsScreen',
+    },
   ];
 
   return (
@@ -45,7 +42,7 @@ export default function TenantFeaturesScreen() {
         <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mr-3`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={tw`text-lg font-bold`}>Menu locataire</Text>
+        <Text style={tw`text-lg font-bold`}>Menu Expéditeur</Text>
       </View>
 
       <ScrollView style={tw`p-4`}>

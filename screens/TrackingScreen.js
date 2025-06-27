@@ -1,31 +1,74 @@
-import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, SafeAreaView } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, SafeAreaView, Dimensions } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
-import tw from 'tailwind-react-native-classnames';
 import { useNavigation } from '@react-navigation/native';
+import tw from 'tailwind-react-native-classnames';
+
 export default function TrackingScreen() {
-
-
   const navigation = useNavigation();
+
+  const pickupLocation = { latitude: 14.6928, longitude: -17.4467 }; // Collecte
+  const dropoffLocation = { latitude: 14.7150, longitude: -17.4790 }; // Livraison
+  const [driverLocation, setDriverLocation] = useState({ latitude: 14.6928, longitude: -17.4467 }); // démarre au pickup
+
+  const mapRef = useRef(null);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDriverLocation((prev) => {
+        const latDiff = dropoffLocation.latitude - prev.latitude;
+        const lonDiff = dropoffLocation.longitude - prev.longitude;
+
+        if (Math.abs(latDiff) < 0.0001 && Math.abs(lonDiff) < 0.0001) {
+          clearInterval(interval);
+          return dropoffLocation; // arrivé
+        }
+
+        const nextLat = prev.latitude + latDiff * 0.02;
+        const nextLon = prev.longitude + lonDiff * 0.02;
+
+        // animer la caméra sur la position du chauffeur
+        mapRef.current?.animateCamera({
+          center: { latitude: nextLat, longitude: nextLon },
+        });
+
+        return { latitude: nextLat, longitude: nextLon };
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
-      <ScrollView style={tw`px-4 pt-4 `}>
+      {/* Carte en haut avec style arrondi */}
+      <View style={{ width: '100%', height: Dimensions.get('window').height * 0.35, overflow: 'hidden', borderBottomLeftRadius: 24, borderBottomRightRadius: 24 }}>
+        <MapView
+          ref={mapRef}
+          style={{ flex: 1 }}
+          initialRegion={{
+            latitude: pickupLocation.latitude,
+            longitude: pickupLocation.longitude,
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05,
+          }}
+        >
+          <Marker coordinate={pickupLocation} title="Collecte" pinColor="blue" />
+          <Marker coordinate={dropoffLocation} title="Livraison" pinColor="purple" />
+          <Marker coordinate={driverLocation} title="Votre chauffeur" pinColor="green" />
+        </MapView>
+      </View>
+
+      <ScrollView style={tw`px-4 pt-4`}>
         {/* Bouton retour */}
         <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mb-4`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
-        {/* Header */}
-        
 
+        {/* Header */}
         <Text style={tw`text-2xl font-bold mb-1`}>Suivi de livraison #1</Text>
         <Text style={tw`text-sm text-gray-600 mb-4`}>Suivez votre livraison en temps réel</Text>
-
-        {/* Carte */}
-        <View style={tw`bg-gray-100 rounded-lg p-6 items-center mb-6`}>
-          <Ionicons name="location-outline" size={32} color="gray" />
-          <Text style={tw`text-gray-600 mt-2`}>Carte en temps réel</Text>
-          <Text style={tw`text-xs text-gray-400`}>Position du chauffeur mise à jour</Text>
-        </View>
 
         {/* Monitoring & Chauffeur */}
         <View style={tw`flex-row justify-between mb-6`}>
@@ -81,8 +124,6 @@ export default function TrackingScreen() {
           <Text style={tw`text-sm text-gray-800`}>🌡️ Température : 4°C</Text>
         </View>
       </ScrollView>
-
-      
     </SafeAreaView>
   );
 }

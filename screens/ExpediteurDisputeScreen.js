@@ -5,15 +5,16 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import tw from 'tailwind-react-native-classnames';
 
-export default function TenantDisputeScreen() {
+export default function ExpediteurDisputeScreen() {
   const [description, setDescription] = useState('');
   const [image, setImage] = useState(null);
-  const [selectedReservation, setSelectedReservation] = useState(null);
+  const [selectedDelivery, setSelectedDelivery] = useState(null);
   const navigation = useNavigation();
 
-  const reservations = [
-    { id: '1', title: 'Chambre Pikine', date: '10/06/2024 - 13/06/2024', host: 'Moussa Diagne' },
-    { id: '2', title: 'Espace Almadies', date: '01/06/2024 - 03/06/2024', host: 'Fatou Sall' },
+  const deliveries = [
+    { id: '1', label: 'Livraison Pikine → Almadies', driver: 'Ousmane Sarr', date: '25/06/2024' },
+    { id: '2', label: 'Livraison Rufisque → VDN', driver: 'Aminata Fall', date: '20/06/2024' },
+    { id: '3', label: 'Livraison Thiaroye → HLM', driver: '—', date: '18/06/2024' },
   ];
 
   const pickImage = async () => {
@@ -25,32 +26,32 @@ export default function TenantDisputeScreen() {
   };
 
   const submitDispute = () => {
-    if (!selectedReservation) {
-      Alert.alert('Erreur', 'Veuillez sélectionner une réservation.');
+    if (!selectedDelivery) {
+      Alert.alert('Erreur', 'Veuillez sélectionner une livraison.');
       return;
     }
     if (!description.trim()) {
       Alert.alert('Erreur', 'Veuillez décrire le problème.');
       return;
     }
-    Alert.alert('Litige envoyé', `Votre signalement pour "${selectedReservation.title}" a été enregistré.`);
-    setSelectedReservation(null);
+    Alert.alert('Signalement envoyé', `Votre problème pour "${selectedDelivery.label}" a été enregistré.`);
+    setSelectedDelivery(null);
     setDescription('');
     setImage(null);
     navigation.goBack();
   };
 
-  const renderReservation = ({ item }) => (
+  const renderDelivery = ({ item }) => (
     <TouchableOpacity
       style={[
         tw`bg-gray-100 rounded-xl p-4 mb-3`,
-        selectedReservation?.id === item.id && tw`border-2 border-blue-600`,
+        selectedDelivery?.id === item.id && tw`border-2 border-blue-600`,
       ]}
-      onPress={() => setSelectedReservation(item)}
+      onPress={() => setSelectedDelivery(item)}
     >
-      <Text style={tw`text-base font-semibold mb-1`}>{item.title}</Text>
-      <Text style={tw`text-xs text-gray-600`}>Dates: {item.date}</Text>
-      <Text style={tw`text-xs text-gray-600`}>Hôte: {item.host}</Text>
+      <Text style={tw`text-base font-semibold mb-1`}>{item.label}</Text>
+      <Text style={tw`text-xs text-gray-600`}>Chauffeur: {item.driver}</Text>
+      <Text style={tw`text-xs text-gray-600`}>Date: {item.date}</Text>
     </TouchableOpacity>
   );
 
@@ -61,29 +62,29 @@ export default function TenantDisputeScreen() {
         <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mr-3`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={tw`text-lg font-bold`}>Signaler un litige</Text>
+        <Text style={tw`text-lg font-bold`}>Signaler un problème</Text>
       </View>
 
       <View style={tw`p-5`}>
         <Text style={tw`text-base font-semibold text-gray-700 mb-4`}>
-          Sélectionnez la réservation concernée
+          Sélectionnez la livraison concernée
         </Text>
 
         <FlatList
-          data={reservations}
+          data={deliveries}
           keyExtractor={(item) => item.id}
-          renderItem={renderReservation}
+          renderItem={renderDelivery}
           contentContainerStyle={tw`pb-4`}
         />
 
-        {selectedReservation ? (
+        {selectedDelivery ? (
           <>
             <View style={tw`bg-gray-100 p-4 rounded-xl mb-6`}>
               <Text style={tw`text-base font-semibold text-gray-700 mb-2`}>
                 Description du problème *
               </Text>
               <TextInput
-                placeholder="Ex: température non respectée, chambre sale..."
+                placeholder="Ex: température non respectée, retard..."
                 multiline
                 value={description}
                 onChangeText={setDescription}
@@ -120,7 +121,7 @@ export default function TenantDisputeScreen() {
           </>
         ) : (
           <Text style={tw`text-gray-500 text-sm text-center mt-8`}>
-            Sélectionnez une réservation pour remplir le formulaire.
+            Sélectionnez une livraison pour remplir le formulaire.
           </Text>
         )}
       </View>

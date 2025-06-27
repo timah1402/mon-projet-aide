@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import tw from 'tailwind-react-native-classnames';
 import { useNavigation } from '@react-navigation/native';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 const vehicleOptions = [
   { label: 'Moto (petits colis)', value: 'moto', price: 2500 },
   { label: 'Tricycle (colis moyens)', value: 'tricycle', price: 4000 },
@@ -96,9 +97,13 @@ export default function DeliveryRequestScreen() {
           <TouchableOpacity style={tw`px-4 py-3 bg-gray-200 rounded-md`}>
             <Text>Annuler</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={tw`px-4 py-3 bg-blue-600 rounded-md`}>
-            <Text style={tw`text-white font-semibold`}>Confirmer la demande</Text>
-          </TouchableOpacity>
+          <TouchableOpacity
+  style={tw`px-4 py-3 bg-blue-600 rounded-md`}
+  onPress={() => navigation.navigate('SearchingDriverScreen')}
+>
+  <Text style={tw`text-white font-semibold`}>Confirmer la demande</Text>
+</TouchableOpacity>
+
         </View>
       </ScrollView>
 
