@@ -6,10 +6,11 @@ import tw from 'tailwind-react-native-classnames';
 import { useNavigation } from '@react-navigation/native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 const vehicleOptions = [
-  { label: 'Moto (petits colis)', value: 'moto', price: 2500 },
-  { label: 'Tricycle (colis moyens)', value: 'tricycle', price: 4000 },
-  { label: 'fix(colis fix)', value: 'camion', price: 7000 }
+  { label: 'Moto (petits colis)', value: 'moto', price: 2500, dimensions: '40 x 30 x 30 cm' },
+  { label: 'Tricycle (colis moyens)', value: 'tricycle', price: 4000, dimensions: '80 x 60 x 60 cm' },
+  // { label: 'Camion (colis volumineux)', value: 'camion', price: 7000, dimensions: '200 x 150 x 150 cm' }
 ];
+
 
 export default function DeliveryRequestScreen() {
   const [pickup, setPickup] = useState('');
@@ -138,14 +139,20 @@ export default function DeliveryRequestScreen() {
       <Modal visible={showVehicleModal} transparent animationType="slide">
         <View style={tw`flex-1 justify-end bg-black bg-opacity-40`}>
           <View style={tw`bg-white p-4 rounded-t-2xl`}>
-            {vehicleOptions.map((opt, idx) => (
-              <Pressable key={idx} onPress={() => {
-                setVehicleType(opt);
-                setShowVehicleModal(false);
-              }} style={tw`py-3 border-b border-gray-200`}>
-                <Text style={tw`text-center`}>{opt.label}</Text>
-              </Pressable>
-            ))}
+           {vehicleOptions.map((opt, idx) => (
+  <Pressable
+    key={idx}
+    onPress={() => {
+      setVehicleType(opt);
+      setShowVehicleModal(false);
+    }}
+    style={tw`py-3 border-b border-gray-200`}
+  >
+    <Text style={tw`text-center font-semibold`}>{opt.label}</Text>
+    <Text style={tw`text-center text-gray-500 text-xs`}>Dimensions: {opt.dimensions}</Text>
+  </Pressable>
+))}
+
             <Pressable onPress={() => setShowVehicleModal(false)} style={tw`py-3`}>
               <Text style={tw`text-center text-red-500`}>Annuler</Text>
             </Pressable>
