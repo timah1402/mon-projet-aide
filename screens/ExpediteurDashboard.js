@@ -54,17 +54,18 @@ export default function ExpediteurDashboardScreen({ navigation }) {
           </View>
         </View>
 
-        {/* Vue orange de bienvenue */}
-        <View style={[tw`rounded-xl p-5 mb-6`, { backgroundColor: '#EA580C' }]}>
-          <Text style={tw`text-white text-xl font-bold mb-1`}>Bienvenue, Aïssatou !</Text>
-          <Text style={tw`text-white`}>Gérez vos livraisons réfrigérées en toute simplicité</Text>
-          <TouchableOpacity
-            style={tw`bg-white mt-4 px-4 py-2 rounded-md self-start`}
-            onPress={() => navigation.navigate('DeliveryRequestScreen')}
-          >
-            <Text style={{ color: '#EA580C', fontWeight: '600' }}>+ Nouvelle livraison</Text>
-          </TouchableOpacity>
-        </View>
+        {/* Vue bleu/vert de bienvenue */}
+<View style={[tw`rounded-xl p-5 mb-6`, { backgroundColor: '#2563EB' /* ou '#16A34A' */ }]}>
+  <Text style={tw`text-white text-xl font-bold mb-1`}>Bienvenue, Aïssatou !</Text>
+  <Text style={tw`text-white`}>Gérez vos livraisons réfrigérées en toute simplicité</Text>
+  <TouchableOpacity
+    style={tw`bg-white mt-4 px-4 py-2 rounded-md self-start`}
+    onPress={() => navigation.navigate('DeliveryRequestScreen')}
+  >
+    <Text style={{ color: '#2563EB', fontWeight: '600' /* ou '#16A34A' */ }}>+ Nouvelle livraison</Text>
+  </TouchableOpacity>
+</View>
+
 
         {/* Statistiques */}
         <View style={tw`flex-row flex-wrap justify-between mb-6`}>
@@ -192,8 +193,8 @@ export default function ExpediteurDashboardScreen({ navigation }) {
           <Text style={tw`text-xs`}>Tableau</Text>
         </TouchableOpacity>
         <TouchableOpacity style={tw`items-center`} onPress={() => navigation.navigate('DeliveryRequestScreen')}>
-          <Ionicons name="add-circle" size={24} color="#EA580C" />
-          <Text style={{ fontSize: 12, color: '#EA580C' }}>Livraison</Text>
+          <Ionicons name="add-circle" size={24} color="black" />
+          <Text style={{ fontSize: 12, color: 'black' }}>Livraison</Text>
         </TouchableOpacity>
         <TouchableOpacity style={tw`items-center`} onPress={() => navigation.navigate('ExpediteurFeaturesScreen')}>
           <Ionicons name="menu" size={24} color="gray" />

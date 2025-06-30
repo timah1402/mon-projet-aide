@@ -19,13 +19,32 @@ export default function DeliveryRequestScreen() {
   const [vehicleType, setVehicleType] = useState(vehicleOptions[0]);
   const [showVehicleModal, setShowVehicleModal] = useState(false);
   const [isScheduled, setIsScheduled] = useState(false);
-  const [datetime, setDatetime] = useState(new Date());
+  const [datetime, setDatetime] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const distanceFee = 500;
   const total = vehicleType.price + distanceFee;
   const navigation = useNavigation();
-  
+  const generateTimeSlots = () => {
+  const now = new Date();
+  const firstSlot = new Date(now.getTime() + 60 * 60 * 1000); // +1h
+
+  // arrondir le premier créneau au prochain multiple de 15 min
+  firstSlot.setMinutes(Math.ceil(firstSlot.getMinutes() / 15) * 15);
+  firstSlot.setSeconds(0);
+  firstSlot.setMilliseconds(0);
+
+  const slots = [];
+  const slotCount = 12; // ex: 12 créneaux = 3h de choix
+
+  for (let i = 0; i < slotCount; i++) {
+    const slot = new Date(firstSlot.getTime() + i * 15 * 60 * 1000);
+    slots.push(slot);
+  }
+
+  return slots;
+};
+
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <ScrollView style={tw`px-4 pt-4`}>
@@ -78,10 +97,18 @@ export default function DeliveryRequestScreen() {
           </TouchableOpacity>
 
           {isScheduled && (
-            <TouchableOpacity onPress={() => setShowDatePicker(true)} style={tw`border border-gray-300 rounded-md px-4 py-2 mt-3`}>
-              <Text>{datetime.toLocaleString()}</Text>
-            </TouchableOpacity>
-          )}
+  <TouchableOpacity
+    onPress={() => setShowDatePicker(true)}
+    style={tw`border border-gray-300 rounded-md px-4 py-2 mt-3`}
+  >
+    <Text>
+      {datetime
+        ? datetime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        : 'Choisir une heure'}
+    </Text>
+  </TouchableOpacity>
+)}
+
         </View>
 
         {/* Estimation du prix */}
@@ -126,18 +153,31 @@ export default function DeliveryRequestScreen() {
         </View>
       </Modal>
 
-      {/* DateTime Picker */}
-      {showDatePicker && (
-        <DateTimePicker
-          value={datetime}
-          mode="datetime"
-          display="default"
-          onChange={(event, selectedDate) => {
+      {/* Modal pour le choix de créneau horaire */}
+<Modal visible={showDatePicker} transparent animationType="slide">
+  <View style={tw`flex-1 justify-end bg-black bg-opacity-40`}>
+    <View style={tw`bg-white p-4 rounded-t-2xl`}>
+      {generateTimeSlots().map((slot, idx) => (
+        <Pressable
+          key={idx}
+          onPress={() => {
+            setDatetime(slot);
             setShowDatePicker(false);
-            if (selectedDate) setDatetime(selectedDate);
           }}
-        />
-      )}
+          style={tw`py-3 border-b border-gray-200`}
+        >
+          <Text style={tw`text-center`}>
+            {slot.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          </Text>
+        </Pressable>
+      ))}
+      <Pressable onPress={() => setShowDatePicker(false)} style={tw`py-3`}>
+        <Text style={tw`text-center text-red-500`}>Annuler</Text>
+      </Pressable>
+    </View>
+  </View>
+</Modal>
+
     </SafeAreaView>
   );
 }
