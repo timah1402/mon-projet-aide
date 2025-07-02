@@ -40,13 +40,22 @@ import DriverFoundScreen from './screens/DriverFoundScreen';
 import DriverFeatureScreen from './screens/DriverFeatureScreen';
 import DriverAvailableMissionsScreen from './screens/DriverAvailableMissionsScreen';
 import DriverEarningsScreen from './screens/DriverEarningsScreen';
+import { UserProvider } from './context/UserContext';
+import AdminDashboardScreen from './screens/AdminDashboardScreen';
+import AdminFeaturesScreen from './screens/AdminFeaturesScreen';
+import AdminHostValidationScreen from './screens/AdminHostValidationScreen';
+import AdminDriverValidationScreen from './screens/AdminDriverValidationScreen';
+import AdminDisputesScreen from './screens/AdminDisputesScreen';
+import AdminIoTAlertsScreen from './screens/AdminIoTAlertsScreen';
+import AdminUserManagementScreen from './screens/AdminUserManagementScreen';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="TenantDashboard" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+    <UserProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="LoginScreen" screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
         <Stack.Screen name="HostDashboardScreen" component={HostDashboardScreen} />
         <Stack.Screen name="CreateListingScreen" component={CreateListingScreen} />
@@ -84,10 +93,21 @@ export default function App() {
         <Stack.Screen name="DriverFeatureScreen" component={DriverFeatureScreen} />
         <Stack.Screen name="DriverAvailableMissionsScreen" component={DriverAvailableMissionsScreen} />
         <Stack.Screen name="DriverEarningsScreen" component={DriverEarningsScreen} />
+        <Stack.Screen name="AdminDashboardScreen" component={AdminDashboardScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="AdminFeaturesScreen" component={AdminFeaturesScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="AdminHostValidationScreen" component={AdminHostValidationScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="AdminDriverValidationScreen" component={AdminDriverValidationScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="AdminDisputesScreen" component={AdminDisputesScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="AdminIoTAlertsScreen" component={AdminIoTAlertsScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="AdminUserManagementScreen" component={AdminUserManagementScreen} options={{ headerShown: false }} />
 
-      </Stack.Navigator>
 
-      
-    </NavigationContainer>
+
+
+
+
+        </Stack.Navigator>
+      </NavigationContainer>
+    </UserProvider>
   );
 }

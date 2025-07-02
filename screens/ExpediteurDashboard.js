@@ -43,12 +43,10 @@ export default function ExpediteurDashboardScreen({ navigation }) {
               <Text style={tw`text-sm mr-1`}>Expediteur</Text>
               <Ionicons name="chevron-down" size={16} color="gray" />
             </TouchableOpacity>
-          </View>
-          <View style={tw`flex-row items-center`}>
             <TouchableOpacity style={tw`mr-3`}>
               <Ionicons name="notifications-outline" size={24} color="gray" />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('ProfilScreen')}>
+            <TouchableOpacity>
               <Ionicons name="person-circle" size={32} color="gray" />
             </TouchableOpacity>
           </View>
