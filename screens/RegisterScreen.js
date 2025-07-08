@@ -11,13 +11,11 @@ export default function RegisterScreen() {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState(null);
 
-  const roles = ['Hôte', 'Locataire', 'Expéditeur', 'Chauffeur'];
   const { login } = useContext(UserContext);
 
   const handleRegister = () => {
-    if (!name || !phone || !password || !confirmPassword || !role) {
+    if (!name || !phone || !password || !confirmPassword) {
       Alert.alert('Erreur', 'Veuillez remplir tous les champs.');
       return;
     }
@@ -27,25 +25,11 @@ export default function RegisterScreen() {
       return;
     }
 
-    const userData = { name, phone, role };
+    const userData = { name, phone };
     login(userData);
 
-    switch (role) {
-      case 'Hôte':
-        navigation.navigate('HostDashboardScreen');
-        break;
-      case 'Locataire':
-        navigation.navigate('TenantDashboard');
-        break;
-      case 'Expéditeur':
-        navigation.navigate('ExpediteurDashboardScreen');
-        break;
-      case 'Chauffeur':
-        navigation.navigate('ChauffeurDashboardScreen');
-        break;
-      default:
-        navigation.navigate('LoginScreen');
-    }
+    // Naviguer vers la page d'accueil après l'inscription
+    navigation.navigate('HomeScreen');
   };
 
   return (
@@ -63,7 +47,7 @@ export default function RegisterScreen() {
             Créer un compte
           </Text>
           <Text style={tw`text-center text-green-100 text-base`}>
-            Rejoignez notre communauté
+            Rejoignez LINCO
           </Text>
         </View>
 
@@ -123,31 +107,6 @@ export default function RegisterScreen() {
               style={tw`bg-gray-50 rounded-xl py-4 px-4 border border-gray-200 text-gray-800`}
               placeholderTextColor="#9CA3AF"
             />
-          </View>
-
-          {/* Sélection du rôle */}
-          <View style={tw`mb-6`}>
-            <Text style={tw`text-gray-700 text-sm font-semibold mb-3 ml-1`}>
-              Sélectionnez votre rôle
-            </Text>
-            <View style={tw`flex-row flex-wrap`}>
-              {roles.map((r) => (
-                <TouchableOpacity
-                  key={r}
-                  onPress={() => setRole(r)}
-                  style={[
-                    tw`py-3 px-6 m-1 rounded-full border-2 shadow-sm`,
-                    role === r 
-                      ? tw`bg-green-600 border-green-600` 
-                      : tw`bg-white border-gray-300`,
-                  ]}
-                >
-                  <Text style={tw`${role === r ? 'text-white' : 'text-gray-700'} text-sm font-semibold`}>
-                    {r}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
           </View>
 
           {/* Bouton d'inscription */}

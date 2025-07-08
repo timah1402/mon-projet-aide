@@ -45,7 +45,18 @@ export default function InvoiceDetailScreen() {
           <Text style={tw`text-base text-black mb-1`}>{invoice.period}</Text>
 
           <Text style={tw`text-sm text-gray-500 mb-1`}>Lieu</Text>
-          <Text style={tw`text-base text-black`}>{invoice.location}</Text>
+          <Text style={tw`text-base text-black mb-1`}>{invoice.location}</Text>
+
+          <Text style={tw`text-sm text-gray-500 mb-1`}>Quantité</Text>
+<Text style={tw`text-base text-black mb-1`}>
+  {invoice.quantity ? invoice.quantity : '20 kg'}
+</Text>
+
+<Text style={tw`text-sm text-gray-500 mb-1`}>Type de marchandise</Text>
+<Text style={tw`text-base text-black`}>
+  {invoice.goodsType ? invoice.goodsType : 'Poulets'}
+</Text>
+
         </View>
 
         {/* Infos de paiement */}

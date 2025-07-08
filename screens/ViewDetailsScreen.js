@@ -26,6 +26,8 @@ export default function ViewDetailsScreen() {
           <Text style={tw`text-xs text-gray-500 mb-3`}>-10% pour 7+ jours  ·  -15% pour 30+ jours</Text>
           <TextInput placeholder="Date de début" style={tw`border border-gray-300 rounded-md px-3 py-2 mb-2`} />
           <TextInput placeholder="Date de fin" style={tw`border border-gray-300 rounded-md px-3 py-2 mb-4`} />
+          <TextInput placeholder="Quantité en kg " style={tw`border border-gray-300 rounded-md px-3 py-2 mb-4`} />
+           <TextInput placeholder="Type de marchandise" style={tw`border border-gray-300 rounded-md px-3 py-2 mb-4`} />
           <TouchableOpacity style={tw`bg-blue-600 py-3 rounded-md items-center`}>
             <Text style={tw`text-white font-semibold`}>Réserver maintenant</Text>
           </TouchableOpacity>

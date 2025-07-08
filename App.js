@@ -48,6 +48,7 @@ import AdminDriverValidationScreen from './screens/AdminDriverValidationScreen';
 import AdminDisputesScreen from './screens/AdminDisputesScreen';
 import AdminIoTAlertsScreen from './screens/AdminIoTAlertsScreen';
 import AdminUserManagementScreen from './screens/AdminUserManagementScreen';
+import HomeScreen from './screens/HomeScreen';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -100,6 +101,8 @@ export default function App() {
         <Stack.Screen name="AdminDisputesScreen" component={AdminDisputesScreen} options={{ headerShown: false }} />
         <Stack.Screen name="AdminIoTAlertsScreen" component={AdminIoTAlertsScreen} options={{ headerShown: false }} />
         <Stack.Screen name="AdminUserManagementScreen" component={AdminUserManagementScreen} options={{ headerShown: false }} />
+         <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
+
 
 
 
