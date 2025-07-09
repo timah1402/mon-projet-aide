@@ -18,7 +18,7 @@ export default function ViewDetailsScreen() {
         <Text style={tw`text-sm text-gray-500 mb-4`}>⭐ 4.9 (23 avis)  ·  Port de Dakar, Dakar, Sénégal</Text>
 
         {/* Image */}
-        <Image source={require('../assets/chambrefroide.jpg')} style={tw`w-full h-48 rounded-lg mb-4`} resizeMode="cover" />
+        <Image source={require('../../assets/chambrefroide.jpg')} style={tw`w-full h-48 rounded-lg mb-4`} resizeMode="cover" />
 
         {/* Booking card */}
         <View style={tw`bg-gray-100 p-4 rounded-lg mb-4`}>

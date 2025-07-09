@@ -4,50 +4,50 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
-import HostDashboardScreen from './screens/HostDashboard';
-import CreateListingScreen from './screens/CreateListing';
-import SearchScreen from './screens/SearchScreen';
+import HostDashboardScreen from './screens/Hostscreens/HostDashboard';
+import CreateListingScreen from './screens/Tenantscreens/CreateListing';
+import SearchScreen from './screens/Tenantscreens/SearchScreen';
 import MonitoringScreen from './screens/Monitoring';
-import TenantDashboard from './screens/TenantDashboard';
+import TenantDashboard from './screens/Tenantscreens/TenantDashboard';
 import ChatScreen from './screens/ChatScreen';
-import ViewDetailsScreen from './screens/ViewDetailsScreen';
-import ExpediteurDashboardScreen from './screens/ExpediteurDashboard';
+import ViewDetailsScreen from './screens/Tenantscreens/ViewDetailsScreen';
+import ExpediteurDashboardScreen from './screens/Expediteurscreens/ExpediteurDashboard';
 import TrackingScreen from './screens/TrackingScreen';
-import DeliveryRequestScreen from './screens/DeliveryRequestScreen';
-import ChauffeurDashboardScreen from './screens/DriverDashboard';
+import DeliveryRequestScreen from './screens/Expediteurscreens/DeliveryRequestScreen';
+import ChauffeurDashboardScreen from './screens/Driverscreens/DriverDashboard';
 import LeaveReviewScreen from './screens/LeaveReviewScreen';
-import HostFeaturesScreen from './screens/HostFeaturesScreen';
+import HostFeaturesScreen from './screens/Hostscreens/HostFeaturesScreen';
 import ListChatScreen from './screens/ListChatScreen';
-import HostPaymentScreen from './screens/HostPaymentScreen';
-import ReservationRequestsScreen from './screens/ReservationRequestsScreen';
-import HostReviewScreen from './screens/HostReviewScreen';
-import HostMyListingsScreen from './screens/HostMyListingsScreen';
-import TenantFeaturesScreen from './screens/TenantFeaturesScreen';
-import TenantReservationsScreen from './screens/TenantReservationsScreen';
-import ReservationEditScreen from './screens/ReservationEditScreen';
-import TenantPaymentMethodsScreen from './screens/TenantPaymentMethodsScreen';
-import TenantTransactionsScreen from './screens/TenantTransactionsScreen';
+import HostPaymentScreen from './screens/Hostscreens/HostPaymentScreen';
+import ReservationRequestsScreen from './screens/Tenantscreens/ReservationRequestsScreen';
+import HostReviewScreen from './screens/Hostscreens/HostReviewScreen';
+import HostMyListingsScreen from './screens/Hostscreens/HostMyListingsScreen';
+import TenantFeaturesScreen from './screens/Tenantscreens/TenantFeaturesScreen';
+import TenantReservationsScreen from './screens/Tenantscreens/TenantReservationsScreen';
+import ReservationEditScreen from './screens/Tenantscreens/ReservationEditScreen';
+import TenantPaymentMethodsScreen from './screens/Tenantscreens/TenantPaymentMethodsScreen';
+import TenantTransactionsScreen from './screens/Tenantscreens/TenantTransactionsScreen';
 import InvoiceDetailScreen from './screens/InvoiceDetailScreen';
-import TenantDisputeScreen from './screens/TenantDisputeScreen';
-import TenantReviewScreen from './screens/TenantReviewScreen';
-import ExpediteurFeaturesScreen from './screens/ExpediteurFeaturesScreen';
-import DeliveryHistoryScreen from './screens/DeliveryHistoryScreen';
-import DeliveryTransactionsScreen from './screens/DeliveryTransactionsScreen';
-import ExpediteurDisputeScreen from './screens/ExpediteurDisputeScreen';
-import ExpediteurPaymentMethodsScreen from './screens/ExpediteurPaymentMethodsScreen';
-import SearchingDriverScreen from './screens/SearchingDriverScreen';
-import DriverFoundScreen from './screens/DriverFoundScreen';
-import DriverFeatureScreen from './screens/DriverFeatureScreen';
-import DriverAvailableMissionsScreen from './screens/DriverAvailableMissionsScreen';
-import DriverEarningsScreen from './screens/DriverEarningsScreen';
+import TenantDisputeScreen from './screens/Tenantscreens/TenantDisputeScreen';
+import TenantReviewScreen from './screens/Tenantscreens/TenantReviewScreen';
+import ExpediteurFeaturesScreen from './screens/Expediteurscreens/ExpediteurFeaturesScreen';
+import DeliveryHistoryScreen from './screens/Expediteurscreens/DeliveryHistoryScreen';
+import DeliveryTransactionsScreen from './screens/Expediteurscreens/DeliveryTransactionsScreen';
+import ExpediteurDisputeScreen from './screens/Expediteurscreens/ExpediteurDisputeScreen';
+import ExpediteurPaymentMethodsScreen from './screens/Expediteurscreens/ExpediteurPaymentMethodsScreen';
+import SearchingDriverScreen from './screens/Expediteurscreens/SearchingDriverScreen';
+import DriverFoundScreen from './screens/Expediteurscreens/DriverFoundScreen';
+import DriverFeatureScreen from './screens/Driverscreens/DriverFeatureScreen';
+import DriverAvailableMissionsScreen from './screens/Driverscreens/DriverAvailableMissionsScreen';
+import DriverEarningsScreen from './screens/Driverscreens/DriverEarningsScreen'
 import { UserProvider } from './context/UserContext';
-import AdminDashboardScreen from './screens/AdminDashboardScreen';
-import AdminFeaturesScreen from './screens/AdminFeaturesScreen';
-import AdminHostValidationScreen from './screens/AdminHostValidationScreen';
-import AdminDriverValidationScreen from './screens/AdminDriverValidationScreen';
-import AdminDisputesScreen from './screens/AdminDisputesScreen';
-import AdminIoTAlertsScreen from './screens/AdminIoTAlertsScreen';
-import AdminUserManagementScreen from './screens/AdminUserManagementScreen';
+import AdminDashboardScreen from './screens/Adminscreens/AdminDashboardScreen';
+import AdminFeaturesScreen from './screens/Adminscreens/AdminFeaturesScreen';
+import AdminHostValidationScreen from './screens/Adminscreens/AdminHostValidationScreen';
+import AdminDriverValidationScreen from './screens/Adminscreens/AdminDriverValidationScreen';
+import AdminDisputesScreen from './screens/Adminscreens/AdminDisputesScreen';
+import AdminIoTAlertsScreen from './screens/Adminscreens/AdminIoTAlertsScreen';
+import AdminUserManagementScreen from './screens/Adminscreens/AdminUserManagementScreen';
 import HomeScreen from './screens/HomeScreen';
 const Stack = createNativeStackNavigator();
 
@@ -101,12 +101,7 @@ export default function App() {
         <Stack.Screen name="AdminDisputesScreen" component={AdminDisputesScreen} options={{ headerShown: false }} />
         <Stack.Screen name="AdminIoTAlertsScreen" component={AdminIoTAlertsScreen} options={{ headerShown: false }} />
         <Stack.Screen name="AdminUserManagementScreen" component={AdminUserManagementScreen} options={{ headerShown: false }} />
-         <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
-
-
-
-
-
+        <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
 
 
         </Stack.Navigator>

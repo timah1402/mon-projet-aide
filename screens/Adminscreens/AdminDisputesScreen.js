@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Image, Alert } 
 import tw from 'tailwind-react-native-classnames';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import chambreFroideImage from '../assets/chambrefroide.jpg'; 
+// import chambreFroideImage from '../assets/chambrefroide.jpg'; 
 
 export default function AdminDisputesScreen() {
   const navigation = useNavigation();

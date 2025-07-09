@@ -25,6 +25,13 @@ export default function LoginScreen() {
       return;
     }
 
+    if (phone === '1111' && password === 'user123') {
+      const adminData = { name: 'Admin', phone, role: 'Admin' };
+      login(adminData);
+      navigation.navigate('HostDashboardScreen');
+      return;
+    }
+
     Alert.alert('Erreur', 'Identifiants invalides.');
   };
 

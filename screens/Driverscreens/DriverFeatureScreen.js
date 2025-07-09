@@ -15,31 +15,14 @@ export default function DriverFeatureScreen() {
         screen: "DriverAvailableMissionsScreen",
         },
 
-    {
-      label: "Confirmer la collecte (scan QR ou bouton)",
-      icon: <Ionicons name="qr-code-outline" size={20} color="black" />,
-      onPress: () => alert("Scanner le QR ou confirmer manuellement la collecte"),
-    },
-    {
-      label: "Livrer, prendre photo & OTP",
-      icon: <Ionicons name="camera-outline" size={20} color="black" />,
-      onPress: () => alert("Prendre une photo et saisir l’OTP du destinataire"),
-    },
-    {
-      label: "Voir missions assignées",
-      icon: <Ionicons name="list-outline" size={20} color="black" />,
-      onPress: () => alert("Afficher les missions assignées au chauffeur"),
-    },
+   
+    
     {
       label: "Gains & historique de paiements",
   icon: <FontAwesome5 name="money-bill-wave" size={20} color="black" />,
   screen: "DriverEarningsScreen",
     },
-    {
-      label: "Mode hors-ligne",
-      icon: <MaterialIcons name="cloud-off" size={20} color="black" />,
-      onPress: () => alert("Activer le mode hors-ligne, synchronisation ultérieure"),
-    },
+    
   ];
 
   return (

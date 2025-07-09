@@ -17,7 +17,7 @@ const listings = [
     host: 'Moussa Diagne',
     hostRating: 4.8,
     features: ['Accès 24/7', 'Surveillance', 'Étagères'],
-    image: require('../assets/chambrefroide.jpg')
+    image: require('../../assets/chambrefroide.jpg')
   },
   {
     id: 2,
@@ -32,7 +32,7 @@ const listings = [
     host: 'Fatou Sall',
     hostRating: 4.6,
     features: ['Parking', 'Quai de déchargement'],
-    image: require('../assets/chambrefroide.jpg')
+    image: require('../../assets/chambrefroide.jpg')
   },
   {
     id: 3,
@@ -47,7 +47,7 @@ const listings = [
     host: 'Omar Ndiaye',
     hostRating: 4.9,
     features: ['Accès 24/7', 'Surveillance', 'Étagères', '+1 autres'],
-    image: require('../assets/chambrefroide.jpg')
+    image: require('../../assets/chambrefroide.jpg')
   },
 ];
 
