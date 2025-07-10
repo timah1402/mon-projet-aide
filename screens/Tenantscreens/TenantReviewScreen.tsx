@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
   View,
@@ -10,10 +11,10 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 
 export default function TenantReviewScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
 
   // Réservations passées (non notées)
   const [reservations, setReservations] = useState([
@@ -55,7 +56,7 @@ export default function TenantReviewScreen() {
     <SafeAreaView style={tw`flex-1 bg-white`}>
       {/* Header */}
       <View style={tw`flex-row items-center px-4 py-4 border-b border-gray-200 bg-white`}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mr-3`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mr-3`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={tw`text-lg font-bold`}>Laisser un avis</Text>

@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
   View,
@@ -9,11 +10,11 @@ import {
   Alert
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 import tw from 'tailwind-react-native-classnames';
 
 export default function HostReviewScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
 
   const [reviews, setReviews] = useState([
     {
@@ -116,7 +117,7 @@ export default function HostReviewScreen() {
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <View style={tw`flex-row items-center px-4 py-4 bg-white border-b border-gray-200`}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mr-3`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mr-3`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={tw`text-lg font-bold`}>Avis des clients</Text>

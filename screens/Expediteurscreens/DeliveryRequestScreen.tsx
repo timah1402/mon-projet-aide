@@ -1,9 +1,10 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView, Modal, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import tw from 'tailwind-react-native-classnames';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 const vehicleOptions = [
   { label: 'Moto (petits colis)', value: 'moto', price: 2500, dimensions: '40 x 30 x 30 cm' },
@@ -25,7 +26,7 @@ export default function DeliveryRequestScreen() {
 
   const distanceFee = 500;
   const total = vehicleType.price + distanceFee;
-  const navigation = useNavigation();
+  // Navigation removed
   const generateTimeSlots = () => {
   const now = new Date();
   const firstSlot = new Date(now.getTime() + 60 * 60 * 1000); // +1h
@@ -50,7 +51,7 @@ export default function DeliveryRequestScreen() {
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <ScrollView style={tw`px-4 pt-4`}>
         {/* Bouton retour */}
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mb-4`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mb-4`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={tw`text-2xl font-bold mb-4`}>Nouvelle demande de livraison</Text>
@@ -127,7 +128,7 @@ export default function DeliveryRequestScreen() {
           </TouchableOpacity>
           <TouchableOpacity
   style={tw`px-4 py-3 bg-blue-600 rounded-md`}
-  onPress={() => navigation.navigate('SearchingDriverScreen')}
+  onPress={() => router.push("/searching-driver")}
 >
   <Text style={tw`text-white font-semibold`}>Confirmer la demande</Text>
 </TouchableOpacity>

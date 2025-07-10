@@ -1,18 +1,19 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 
 export default function LeaveReviewScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
 
   const handleSubmit = () => {
     // Remplace ici par envoi Firebase ou autre logique
     console.log('Avis soumis :', { rating, comment });
-    navigation.goBack();
+    router.back();
   };
 
   return (
@@ -20,7 +21,7 @@ export default function LeaveReviewScreen() {
       <ScrollView style={tw`px-4 pt-4`}>
 
         {/* Bouton retour */}
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mb-4`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mb-4`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
 

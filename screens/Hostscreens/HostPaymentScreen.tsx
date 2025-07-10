@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
   View,
@@ -9,11 +10,11 @@ import {
   FlatList
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 import tw from 'tailwind-react-native-classnames';
 
 export default function HostPaymentScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
 
   const [iban, setIban] = useState('');
   const [mobileMoney, setMobileMoney] = useState('');
@@ -41,7 +42,7 @@ export default function HostPaymentScreen() {
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <View style={tw`flex-row items-center px-4 py-4 border-b border-gray-200`}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mr-3`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mr-3`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={tw`text-lg font-bold`}>Paiements</Text>

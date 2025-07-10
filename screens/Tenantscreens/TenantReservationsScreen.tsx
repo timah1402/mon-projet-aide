@@ -1,11 +1,12 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 import tw from 'tailwind-react-native-classnames';
 
 export default function TenantReservationsScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
 
   const [reservations] = useState([
     {
@@ -61,11 +62,11 @@ export default function TenantReservationsScreen() {
       <View style={tw`flex-row justify-between items-center`}>
         <Text style={tw`text-sm font-bold`}>{item.price}</Text>
         <View style={tw`flex-row`}>
-          <TouchableOpacity onPress={() => navigation.navigate('ChatScreen')} style={tw`mr-3`}>
+          <TouchableOpacity onPress={() => router.push("/chat")} style={tw`mr-3`}>
             <Text style={tw`text-blue-600 text-sm`}>Contacter</Text>
           </TouchableOpacity>
           {item.status === 'active' || item.status === 'confirmed' ? (
-            <TouchableOpacity onPress={() => navigation.navigate('ReservationEditScreen', { id: item.id })}>
+            <TouchableOpacity onPress={() => router.replace('reservation-edit', { id: item.id })}>
               <Text style={tw`text-yellow-600 text-sm`}>Modifier</Text>
             </TouchableOpacity>
           ) : null}
@@ -78,7 +79,7 @@ export default function TenantReservationsScreen() {
     <SafeAreaView style={tw`flex-1 bg-gray-100`}>
       {/* Header */}
       <View style={tw`flex-row items-center px-4 py-4 bg-white border-b border-gray-200`}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mr-3`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mr-3`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={tw`text-lg font-bold`}>Mes réservations</Text>

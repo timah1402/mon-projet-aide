@@ -1,11 +1,12 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, TextInput, Alert } from 'react-native';
 import tw from 'tailwind-react-native-classnames';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 
 export default function AdminUserManagementScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
   const [search, setSearch] = useState('');
   const [showForm, setShowForm] = useState(false);
 
@@ -64,7 +65,7 @@ export default function AdminUserManagementScreen() {
         contentContainerStyle={{ paddingBottom: 20 }} // permet au scroll de s'adapter même quand formulaire affiché
       >
         {/* Header */}
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mb-4`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mb-4`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
 

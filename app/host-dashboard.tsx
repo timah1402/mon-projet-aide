@@ -1,8 +1,6 @@
 import React from 'react';
-import HostDashboardScreen from '../screens/Hostscreens/HostDashboard';
+import HostDashboard from '../screens/Hostscreens/HostDashboard';
 
-export default function HostDashboard() {
-  return <HostDashboardScreen />;
+export default function HostDashboardPage() {
+  return <HostDashboard />;
 }
-
-

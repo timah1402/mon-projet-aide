@@ -1,9 +1,10 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Modal, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
 
-export default function DriverDashboard({ navigation }) {
+export default function DriverDashboard() {
   const [modalVisible, setModalVisible] = useState(false);
   const [enLigne, setEnLigne] = useState(true);
 
@@ -42,16 +43,16 @@ export default function DriverDashboard({ navigation }) {
     setModalVisible(false);
     switch (role) {
       case 'Hôte':
-        navigation.navigate('HostDashboardScreen');
+        router.replace("/host-dashboard");
         break;
       case 'Locataire':
-        navigation.navigate('TenantDashboard');
+        router.replace("/tenant-dashboard");
         break;
       case 'Expéditeur':
-        navigation.navigate('ExpediteurDashboardScreen');
+        router.replace("/expediteur-dashboard");
         break;
       case 'Chauffeur':
-        navigation.navigate('ChauffeurDashboardScreen');
+        router.replace("/chauffeur-dashboard");
         break;
     }
   };
@@ -97,7 +98,7 @@ export default function DriverDashboard({ navigation }) {
         <View style={tw`mb-6`}>
           <View style={tw`flex-row justify-between items-center mb-3`}>
             <Text style={tw`text-lg font-semibold`}>Statistiques & Gains</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('DriverEarningsScreen')}>
+            <TouchableOpacity onPress={() => router.push("/driver-earnings")}>
               <Text style={tw`text-yellow-500 text-sm`}>Voir historique</Text>
             </TouchableOpacity>
           </View>
@@ -150,7 +151,7 @@ export default function DriverDashboard({ navigation }) {
 
           <TouchableOpacity
             style={tw`mt-4 bg-yellow-500 py-2 px-3 rounded-md self-start`}
-            onPress={() => navigation.navigate('TrackingScreen')}
+            onPress={() => router.push("/tracking")}
           >
             <Text style={tw`text-white text-sm font-medium`}>Continuer la mission</Text>
           </TouchableOpacity>
@@ -197,13 +198,13 @@ export default function DriverDashboard({ navigation }) {
           <Ionicons name="grid" size={24} color="black" />
           <Text style={tw`text-xs`}>Tableau</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={tw`items-center`} onPress={() => navigation.navigate('TrackingScreen')}>
+        <TouchableOpacity style={tw`items-center`} onPress={() => router.push("/tracking")}>
           <Ionicons name="navigate" size={24} color="#facc15" />
           <Text style={tw`text-xs text-yellow-500`}>Suivi</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={tw`items-center`}
-          onPress={() => navigation.navigate('DriverFeatureScreen')}
+          onPress={() => router.push("/driver-features")}
         >
           <Ionicons name="menu-outline" size={24} color="black" />
           <Text style={tw`text-xs`}>Menu</Text>

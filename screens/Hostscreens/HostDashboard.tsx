@@ -1,11 +1,12 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, SafeAreaView, Modal } from 'react-native';
 import tw from 'tailwind-react-native-classnames';
 import { Ionicons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 
 export default function HostDashboardScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -19,16 +20,16 @@ export default function HostDashboardScreen() {
     setModalVisible(false);
     switch (role) {
       case 'Hôte':
-        navigation.navigate('HostDashboardScreen');
+        router.replace("/host-dashboard");
         break;
       case 'Locataire':
-        navigation.navigate('TenantDashboard');
+        router.replace("/tenant-dashboard");
         break;
       case 'Expéditeur':
-        navigation.navigate('ExpediteurDashboardScreen');
+        router.replace("/expediteur-dashboard");
         break;
       case 'Chauffeur':
-        navigation.navigate('ChauffeurDashboardScreen');
+        router.replace("/chauffeur-dashboard");
         break;
     }
   };
@@ -60,7 +61,7 @@ export default function HostDashboardScreen() {
         </View>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('CreateListingScreen')}
+          onPress={() => router.push("/create-listing")}
           style={tw`bg-blue-600 rounded-md py-3 px-4 mb-6`}
         >
           <Text style={tw`text-white text-center font-semibold`}>+ Créer une nouvelle annonce</Text>
@@ -179,11 +180,11 @@ export default function HostDashboardScreen() {
           <Text style={tw`text-xs`}>Tableau</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={tw`items-center`}  onPress={() => navigation.navigate('MonitoringScreen')}>
+        <TouchableOpacity style={tw`items-center`}  onPress={() => router.push("/monitoring")}>
           <Ionicons name="analytics" size={24} color="black" />
           <Text style={tw`text-xs`}>IoT</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={tw`items-center`} onPress={() => navigation.navigate('HostFeaturesScreen')}>
+        <TouchableOpacity style={tw`items-center`} onPress={() => router.push("/host-features")}>
         <Ionicons name="ellipsis-horizontal-circle" size={24} color="black" />
         <Text style={tw`text-xs`}>Menu</Text>
       </TouchableOpacity>

@@ -1,12 +1,13 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 
 export default function TenantDashboard() {
   const [modalVisible, setModalVisible] = useState(false);
-  const navigation = useNavigation();
+  // Navigation removed
 
   const roles = [
     { label: 'Hôte', icon: 'home-outline' },
@@ -19,16 +20,16 @@ export default function TenantDashboard() {
     setModalVisible(false);
     switch (role) {
       case 'Hôte':
-        navigation.navigate('HostDashboardScreen');
+        router.replace("/host-dashboard");
         break;
       case 'Locataire':
-        navigation.navigate('TenantDashboard');
+        router.replace("/tenant-dashboard");
         break;
       case 'Expéditeur':
-        navigation.navigate('ExpediteurDashboardScreen');
+        router.replace("/expediteur-dashboard");
         break;
       case 'Chauffeur':
-        navigation.navigate('ChauffeurDashboardScreen');
+        router.replace("/chauffeur-dashboard");
         break;
     }
   };
@@ -86,7 +87,7 @@ export default function TenantDashboard() {
           <Text style={tw`text-white text-lg font-semibold mb-1`}>Bienvenue, Aïssatou !</Text>
           <Text style={tw`text-white mb-4`}>Trouvez l'espace frigorifique parfait pour vos besoins</Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate('SearchScreen')}
+            onPress={() => router.push("/search")}
             style={tw`bg-white px-4 py-2 rounded-md items-center`}
           >
             <Text style={tw`text-green-700 font-semibold`}>🔍 Rechercher un espace</Text>
@@ -134,7 +135,7 @@ export default function TenantDashboard() {
               </View>
             </View>
             <TouchableOpacity style={tw`bg-gray-100 py-2 rounded-md items-center`}>
-              <Text style={tw`text-sm text-gray-700`} onPress={() => navigation.navigate('ChatScreen')}>Contacter l'hôte</Text>
+              <Text style={tw`text-sm text-gray-700`} onPress={() => router.push("/chat")}>Contacter l'hôte</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -151,7 +152,7 @@ export default function TenantDashboard() {
               {status === 'Terminé' && <Text style={tw`text-yellow-500 text-xs`}>⭐ 5/5</Text>}
               <Text style={tw`text-right text-sm font-bold`}>48 000 CFA</Text>
               <TouchableOpacity style={tw`mt-1` }>
-                <Text style={tw`text-blue-600 text-xs text-right`} onPress={() => navigation.navigate('ChatScreen')}>Contacter l'hôte</Text>
+                <Text style={tw`text-blue-600 text-xs text-right`} onPress={() => router.push("/chat")}>Contacter l'hôte</Text>
               </TouchableOpacity>
               
             </View>
@@ -167,7 +168,7 @@ export default function TenantDashboard() {
                 <Text style={tw`text-sm font-semibold`}>📍 Dakar,  Sénégal</Text>
                 <Text style={tw`text-xs text-gray-500`}>20 - 23  juin  2024  ·  10-15 m³</Text>
               </View>
-              <TouchableOpacity onPress={()=>navigation.navigate('SearchScreen')}>
+              <TouchableOpacity onPress={()=>router.push("/search")}>
                 <Text style={tw`text-blue-600 text-sm`}>Rechercher à nouveau</Text>
               </TouchableOpacity>
             </View>
@@ -185,14 +186,14 @@ export default function TenantDashboard() {
 
         <TouchableOpacity
           style={tw`items-center`}
-          onPress={() => navigation.navigate('MonitoringScreen')}
+          onPress={() => router.push("/monitoring")}
         >
           <Ionicons name="analytics" size={24} color="gray" />
           <Text style={tw`text-xs`}>IoT</Text>
         </TouchableOpacity>
         <TouchableOpacity
   style={tw`items-center`}
-  onPress={() => navigation.navigate('TenantFeaturesScreen')}
+  onPress={() => router.push("/tenant-features")}
 >
   <Ionicons name="menu" size={24} color="gray" />
   <Text style={tw`text-xs`}>Menu</Text>

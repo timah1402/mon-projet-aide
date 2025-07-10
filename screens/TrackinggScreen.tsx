@@ -1,10 +1,11 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
 
-export default function TrackingScreen({ navigation }) {
+export default function TrackingScreen() {
   const [collected, setCollected] = useState(false);
   const [delivered, setDelivered] = useState(false);
 

@@ -1,12 +1,13 @@
+import { router } from 'expo-router';
 import React, { useEffect } from 'react';
 import { View, Text, SafeAreaView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 import tw from 'tailwind-react-native-classnames';
 
 export default function SearchingDriverScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
 
   const pickupLocation = { latitude: 14.6928, longitude: -17.4467 }; // Dakar
 
@@ -19,7 +20,7 @@ export default function SearchingDriverScreen() {
   // Simuler une confirmation de chauffeur après 6 secondes
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace('DriverFoundScreen');
+      router.replace('DriverFoundScreen');
     }, 6000);
 
     return () => clearTimeout(timer);
@@ -29,7 +30,7 @@ export default function SearchingDriverScreen() {
     <SafeAreaView style={tw`flex-1`}>
       {/* Header */}
       <View style={tw`flex-row items-center px-4 py-4 bg-white border-b border-gray-200`}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mr-3`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mr-3`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={tw`text-lg font-bold`}>Recherche d'un chauffeur</Text>

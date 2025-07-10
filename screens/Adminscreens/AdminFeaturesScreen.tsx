@@ -1,11 +1,12 @@
+import { router } from 'expo-router';
 import React from 'react';
 import { View, Text, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 
 export default function AdminFeaturesScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
 
   const features = [
     {
@@ -56,7 +57,7 @@ export default function AdminFeaturesScreen() {
     <SafeAreaView style={tw`flex-1 bg-white`}>
         
       <ScrollView contentContainerStyle={tw`p-6`}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mb-4`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mb-4`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={tw`text-3xl font-bold text-green-700 mb-6 text-center`}>Fonctionnalités Admin</Text>

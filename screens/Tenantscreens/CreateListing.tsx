@@ -1,10 +1,11 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import tw from 'tailwind-react-native-classnames';
 import { Ionicons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native'; // en haut du fichier
+// Removed navigation import
 export default function CreateListingScreen() {
-  const navigation = useNavigation(); // ajoute ceci
+  // Navigation removed // ajoute ceci
 
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
@@ -149,7 +150,7 @@ export default function CreateListingScreen() {
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <ScrollView style={tw`px-4 pt-6`}>
         {/* Bouton retour */}
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mb-4`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mb-4`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={tw`text-lg font-bold mb-2`}>Créer une annonce</Text>

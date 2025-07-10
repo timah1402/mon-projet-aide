@@ -1,11 +1,12 @@
+import { router } from 'expo-router';
 import React from 'react';
 import { View, Text, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 
 export default function AdminDashboardScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
 
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
@@ -27,7 +28,7 @@ export default function AdminDashboardScreen() {
           <Text style={tw`text-white text-lg font-semibold mb-1`}>Bienvenue, Administrateur !</Text>
           <Text style={tw`text-white mb-4`}>Supervisez les activités et garantissez l’intégrité de la plateforme</Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate('AdminFeaturesScreen')}
+            onPress={() => router.push("/admin-features")}
             style={tw`bg-white px-4 py-2 rounded-md items-center`}
           >
             <Text style={tw`text-green-700 font-semibold`}>📋 Accéder aux fonctionnalités</Text>
@@ -62,7 +63,7 @@ export default function AdminDashboardScreen() {
               <Text style={tw`text-xs text-gray-500 mb-1`}>Signalé par : Aïssatou Sow</Text>
               <Text style={tw`text-xs text-gray-500 mb-2`}>📅 30/06/2024</Text>
               <TouchableOpacity style={tw`bg-gray-100 py-2 rounded-md items-center`}>
-                <Text style={tw`text-sm text-gray-700`} onPress={() => navigation.navigate('ListChatScreen')}>
+                <Text style={tw`text-sm text-gray-700`} onPress={() => router.push("/list-chat")}>
                   Consulter le chat
                 </Text>
               </TouchableOpacity>
@@ -80,7 +81,7 @@ export default function AdminDashboardScreen() {
               <Text style={tw`text-xs text-red-500 mb-1`}>🚨 Température : 12.5°C</Text>
               <TouchableOpacity
                 style={tw`bg-gray-100 py-2 rounded-md items-center`}
-                onPress={() => navigation.navigate('MonitoringScreen')}
+                onPress={() => router.push("/monitoring")}
               >
                 <Text style={tw`text-sm text-gray-700`}>Voir les détails IoT</Text>
               </TouchableOpacity>
@@ -98,7 +99,7 @@ export default function AdminDashboardScreen() {
 
         <TouchableOpacity
           style={tw`items-center`}
-          onPress={() => navigation.navigate('MonitoringScreen')}
+          onPress={() => router.push("/monitoring")}
         >
           <Ionicons name="analytics" size={24} color="gray" />
           <Text style={tw`text-xs`}>IoT</Text>
@@ -106,7 +107,7 @@ export default function AdminDashboardScreen() {
 
         <TouchableOpacity
           style={tw`items-center`}
-          onPress={() => navigation.navigate('AdminFeaturesScreen')}
+          onPress={() => router.push("/admin-features")}
         >
           <Ionicons name="menu" size={24} color="gray" />
           <Text style={tw`text-xs`}>Menu</Text>

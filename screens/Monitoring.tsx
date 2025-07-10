@@ -1,16 +1,17 @@
+import { router } from 'expo-router';
 import React from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Image } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
-import { useNavigation } from '@react-navigation/native'; // en haut du fichier
+// Removed navigation import
 
 export default function MonitoringScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <ScrollView style={tw`px-4 pt-4 mb-20`}>
         {/* Bouton retour */}
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mb-4`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mb-4`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={tw`text-2xl font-bold mb-2`}>📡 Monitoring IoT</Text>

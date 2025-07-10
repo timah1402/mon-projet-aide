@@ -1,11 +1,12 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Alert } from 'react-native';
 import tw from 'tailwind-react-native-classnames';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 
 export default function AdminDriverValidationScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
 
   const [pendingDrivers, setPendingDrivers] = useState([
     {
@@ -43,7 +44,7 @@ export default function AdminDriverValidationScreen() {
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <ScrollView style={tw`px-4 pt-6`}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mb-4`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mb-4`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
 

@@ -2,11 +2,11 @@ import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import tw from 'tailwind-react-native-classnames';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 import { UserContext } from '../context/UserContext';
 import { router } from 'expo-router';
 export default function LoginScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
   const { login } = useContext(UserContext);
 
   const [phone, setPhone] = useState('');

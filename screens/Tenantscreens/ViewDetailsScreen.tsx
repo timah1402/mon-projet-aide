@@ -1,16 +1,17 @@
+import { router } from 'expo-router';
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, TextInput, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 export default function ViewDetailsScreen() {
 
-  const navigation = useNavigation();
+  // Navigation removed
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <ScrollView style={tw`px-4 pt-4 `}>
         {/* Bouton retour */}
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mb-4`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mb-4`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         {/* Header */}
@@ -40,7 +41,7 @@ export default function ViewDetailsScreen() {
             <Text style={tw`font-semibold`}>Moussa Diagne</Text>
             <Text style={tw`text-xs text-gray-500`}>⭐ 4.8 (47 avis) · Membre depuis Juin 2023</Text>
           </View>
-          <TouchableOpacity style={tw`bg-blue-500 px-4 py-2 rounded-md`} onPress={()=>navigation.navigate('ChatScreen')}>
+          <TouchableOpacity style={tw`bg-blue-500 px-4 py-2 rounded-md`} onPress={()=>router.push("/chat")}>
             <Text style={tw`text-white font-medium`}>Contacter</Text>
           </TouchableOpacity>
         </View>
@@ -84,7 +85,7 @@ export default function ViewDetailsScreen() {
 
         {/* Avis */}
         <TouchableOpacity
-  onPress={() => navigation.navigate('LeaveReviewScreen')}
+  onPress={() => router.push("/leave-review")}
   style={tw`bg-gray-200 py-2 px-4 rounded-md mb-6 items-center`}
 >
   <Text style={tw`text-sm font-medium`}>Donner mon avis</Text>

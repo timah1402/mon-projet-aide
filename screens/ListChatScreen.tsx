@@ -1,11 +1,12 @@
+import { router } from 'expo-router';
 import React from 'react';
 import { View, Text, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 import tw from 'tailwind-react-native-classnames';
 
 export default function ListChatScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
 
   const conversations = [
     { id: '1', name: 'Aliou Diallo', lastMessage: 'Votre entrepôt est-il dispo ?', time: '10:24' },
@@ -16,7 +17,7 @@ export default function ListChatScreen() {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={tw`flex-row items-center px-4 py-3 border-b border-gray-200 bg-gray-100`}
-      onPress={() => navigation.navigate('ChatScreen', { userId: item.id })}
+      onPress={() => router.replace('/chat', { userId: item.id })}
     >
       <View style={tw`w-12 h-12 rounded-full bg-gray-300 justify-center items-center mr-4`}>
         <Ionicons name="person" size={20} color="white" />
@@ -38,7 +39,7 @@ export default function ListChatScreen() {
     <SafeAreaView style={tw`flex-1 bg-white`}>
       {/* Header */}
       <View style={tw`flex-row items-center px-4 py-4 bg-gray-10 border-b border-gray-200`}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mr-3`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mr-3`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={tw`text-lg font-bold`}>Mes messages</Text>

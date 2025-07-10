@@ -1,12 +1,13 @@
+import { router } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, SafeAreaView, Dimensions } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 import tw from 'tailwind-react-native-classnames';
 
 export default function TrackingScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
 
   const pickupLocation = { latitude: 14.6928, longitude: -17.4467 }; // Collecte
   const dropoffLocation = { latitude: 14.7150, longitude: -17.4790 }; // Livraison
@@ -62,7 +63,7 @@ export default function TrackingScreen() {
 
       <ScrollView style={tw`px-4 pt-4`}>
         {/* Bouton retour */}
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mb-4`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mb-4`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
 

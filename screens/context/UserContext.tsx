@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import React, { createContext, useState, ReactNode } from 'react';
 
 interface User {

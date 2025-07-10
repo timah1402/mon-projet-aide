@@ -1,8 +1,9 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Image, SafeAreaView } from 'react-native';
 import tw from 'tailwind-react-native-classnames';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native'; 
+// Removed navigation import
 const listings = [
   {
     id: 1,
@@ -52,7 +53,7 @@ const listings = [
 ];
 
 export default function SearchScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
   const [location, setLocation] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -70,7 +71,7 @@ export default function SearchScreen() {
     <SafeAreaView style={tw`flex-1 bg-white`}>      
       <ScrollView style={tw`px-4 pt-4 `}>
         {/* Bouton retour */}
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mb-4`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mb-4`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={tw`text-xl font-bold mb-1`}>Trouvez votre espace frigorifique</Text>
@@ -180,7 +181,7 @@ export default function SearchScreen() {
                   <Text style={tw`text-sm font-medium`}>{listing.host}</Text>
                   <Text style={tw`text-xs text-gray-500`}>⭐ {listing.hostRating}</Text>
                 </View>
-                <TouchableOpacity onPress={() => navigation.navigate('ViewDetailsScreen')}>
+                <TouchableOpacity onPress={() => router.push("/view-details")}>
                   <Text style={tw`text-blue-600 text-sm`}>Voir détails →</Text>
                 </TouchableOpacity>
               </View>

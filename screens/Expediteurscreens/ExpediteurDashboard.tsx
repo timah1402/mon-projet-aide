@@ -1,9 +1,10 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
 
-export default function ExpediteurDashboardScreen({ navigation }) {
+export default function ExpediteurDashboardScreen() {
   const [modalVisible, setModalVisible] = useState(false);
 
   const roles = [
@@ -17,16 +18,16 @@ export default function ExpediteurDashboardScreen({ navigation }) {
     setModalVisible(false);
     switch (role) {
       case 'Hôte':
-        navigation.navigate('HostDashboardScreen');
+        router.replace("/host-dashboard");
         break;
       case 'Locataire':
-        navigation.navigate('TenantDashboard');
+        router.replace("/tenant-dashboard");
         break;
       case 'Expéditeur':
-        navigation.navigate('ExpediteurDashboardScreen');
+        router.replace("/expediteur-dashboard");
         break;
       case 'Chauffeur':
-        navigation.navigate('ChauffeurDashboardScreen');
+        router.replace("/chauffeur-dashboard");
         break;
     }
   };
@@ -58,7 +59,7 @@ export default function ExpediteurDashboardScreen({ navigation }) {
   <Text style={tw`text-white`}>Gérez vos livraisons réfrigérées en toute simplicité</Text>
   <TouchableOpacity
     style={tw`bg-white mt-4 px-4 py-2 rounded-md self-start`}
-    onPress={() => navigation.navigate('DeliveryRequestScreen')}
+    onPress={() => router.push("/delivery-request")}
   >
     <Text style={{ color: '#2563EB', fontWeight: '600' /* ou '#16A34A' */ }}>+ Nouvelle livraison</Text>
   </TouchableOpacity>
@@ -103,7 +104,7 @@ export default function ExpediteurDashboardScreen({ navigation }) {
           <Text style={tw`text-xs text-gray-600 mt-2`}>Chauffeur: Ousmane Sarr</Text>
           <TouchableOpacity
             style={tw`bg-blue-600 py-2 rounded-md items-center`}
-            onPress={() => navigation.navigate('TrackingScreen')}
+            onPress={() => router.push("/tracking")}
           >
             <Text style={tw`text-white font-medium`}>Suivi en temps réel</Text>
           </TouchableOpacity>
@@ -190,11 +191,11 @@ export default function ExpediteurDashboardScreen({ navigation }) {
           <Ionicons name="grid" size={24} color="black" />
           <Text style={tw`text-xs`}>Tableau</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={tw`items-center`} onPress={() => navigation.navigate('DeliveryRequestScreen')}>
+        <TouchableOpacity style={tw`items-center`} onPress={() => router.push("/delivery-request")}>
           <Ionicons name="add-circle" size={24} color="black" />
           <Text style={{ fontSize: 12, color: 'black' }}>Livraison</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={tw`items-center`} onPress={() => navigation.navigate('ExpediteurFeaturesScreen')}>
+        <TouchableOpacity style={tw`items-center`} onPress={() => router.push("/expediteur-features")}>
           <Ionicons name="menu" size={24} color="gray" />
           <Text style={tw`text-xs`}>Menu</Text>
         </TouchableOpacity>

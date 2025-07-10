@@ -1,11 +1,12 @@
+import { router } from 'expo-router';
 import React from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 import tw from 'tailwind-react-native-classnames';
 
 export default function TenantTransactionsScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
 
   const transactions = [
     {
@@ -36,7 +37,7 @@ export default function TenantTransactionsScreen() {
       <Text style={tw`text-sm text-gray-600`}>📅 {item.date}</Text>
       <View style={tw`flex-row justify-between items-center mt-2`}>
         <Text style={tw`text-sm font-bold`}>{item.amount}</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('InvoiceDetailScreen', { invoice: item })}>
+        <TouchableOpacity onPress={() => router.replace('/invoice-detail', { invoice: item })}>
           <Text style={tw`text-blue-600 text-sm`}>📜 Voir facture</Text>
         </TouchableOpacity>
       </View>
@@ -46,7 +47,7 @@ export default function TenantTransactionsScreen() {
   return (
     <SafeAreaView style={tw`flex-1 bg-gray-100`}>
       <View style={tw`flex-row items-center px-4 py-4 bg-white border-b border-gray-200`}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mr-3`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mr-3`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={tw`text-lg font-bold`}>Transactions & Factures</Text>

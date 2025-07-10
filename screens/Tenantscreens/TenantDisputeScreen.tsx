@@ -1,15 +1,16 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, Image, SafeAreaView, Alert, FlatList } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 import tw from 'tailwind-react-native-classnames';
 
 export default function TenantDisputeScreen() {
   const [description, setDescription] = useState('');
   const [image, setImage] = useState(null);
   const [selectedReservation, setSelectedReservation] = useState(null);
-  const navigation = useNavigation();
+  // Navigation removed
 
   const reservations = [
     { id: '1', title: 'Chambre Pikine', date: '10/06/2024 - 13/06/2024', host: 'Moussa Diagne' },
@@ -37,7 +38,7 @@ export default function TenantDisputeScreen() {
     setSelectedReservation(null);
     setDescription('');
     setImage(null);
-    navigation.goBack();
+    router.back();
   };
 
   const renderReservation = ({ item }) => (
@@ -58,7 +59,7 @@ export default function TenantDisputeScreen() {
     <SafeAreaView style={tw`flex-1 bg-white`}>
       {/* Header */}
       <View style={tw`flex-row items-center px-4 py-4 border-b border-gray-200 bg-white`}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mr-3`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mr-3`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={tw`text-lg font-bold`}>Signaler un litige</Text>

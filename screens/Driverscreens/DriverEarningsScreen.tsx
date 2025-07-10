@@ -1,11 +1,12 @@
+import { router } from 'expo-router';
 import React from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
 
 export default function DriverEarningsScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
 
   const paymentHistory = [
     { id: '1', date: '26 juin 2025', amount: '15 000 FCFA', status: 'Payé', description: 'Livraison Supermarché Auchan' },
@@ -20,7 +21,7 @@ export default function DriverEarningsScreen() {
     <SafeAreaView style={tw`flex-1 bg-white`}>
       {/* Header */}
       <View style={tw`flex-row items-center px-4 py-3 border-b border-gray-200`}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mr-4`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mr-4`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={tw`text-lg font-bold`}>Historique des gains</Text>

@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
   View,
@@ -8,11 +9,11 @@ import {
   Alert
 } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 import tw from 'tailwind-react-native-classnames';
 
 export default function HostMyListingsScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
 
   const [listings, setListings] = useState([
     {
@@ -68,7 +69,7 @@ export default function HostMyListingsScreen() {
 
       <View style={tw`flex-row justify-end`}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('CreateListingScreen', { listingId: item.id })}
+          onPress={() => router.replace('/create-listing', { listingId: item.id })}
           style={tw`flex-row items-center bg-blue-600 px-4 py-2 rounded-full mr-2`}
         >
           <Ionicons name="create-outline" size={16} color="white" style={tw`mr-1`} />
@@ -90,7 +91,7 @@ export default function HostMyListingsScreen() {
     <SafeAreaView style={tw`flex-1 bg-white`}>
       {/* Header */}
       <View style={tw`flex-row items-center px-4 py-4 bg-white border-b border-gray-200`}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mr-3`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mr-3`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={tw`text-lg font-bold`}>Mes annonces</Text>

@@ -1,12 +1,13 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Image, Alert } from 'react-native';
 import tw from 'tailwind-react-native-classnames';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 // import chambreFroideImage from '../assets/chambrefroide.jpg'; 
 
 export default function AdminDisputesScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
 
   // Exemples de litiges
   const [disputes, setDisputes] = useState([
@@ -48,7 +49,7 @@ export default function AdminDisputesScreen() {
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <ScrollView style={tw`px-4 pt-6`}>
         {/* Header */}
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mb-4`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mb-4`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
 
@@ -81,7 +82,7 @@ export default function AdminDisputesScreen() {
 
               <View style={tw`flex-row justify-between`}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('ChatScreen')}
+                  onPress={() => router.push("/chat")}
                   style={tw`bg-blue-600 px-4 py-2 rounded-md w-[48%] items-center`}
                 >
                   <Ionicons name="chatbubble-ellipses-outline" size={20} color="white" style={tw`mr-1`} />

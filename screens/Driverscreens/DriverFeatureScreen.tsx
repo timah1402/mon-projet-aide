@@ -1,11 +1,12 @@
+import { router } from 'expo-router';
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 import { Ionicons, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
 
 export default function DriverFeatureScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
 
   const features = [
     
@@ -29,7 +30,7 @@ export default function DriverFeatureScreen() {
     <SafeAreaView style={tw`flex-1 bg-white`}>
       {/* Header */}
       <View style={tw`flex-row items-center px-4 py-3`}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mr-4`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mr-4`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
       </View>

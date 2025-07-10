@@ -1,11 +1,12 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Alert } from 'react-native';
 import tw from 'tailwind-react-native-classnames';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 
 export default function AdminIoTAlertsScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
 
   const [alerts, setAlerts] = useState([
     {
@@ -46,7 +47,7 @@ export default function AdminIoTAlertsScreen() {
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <ScrollView style={tw`px-4 pt-6`}>
         {/* Header */}
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mb-4`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mb-4`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
 
@@ -76,7 +77,7 @@ export default function AdminIoTAlertsScreen() {
 
               <View style={tw`flex-row justify-between`}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('MonitoringScreen')}
+                  onPress={() => router.push("/monitoring")}
                   style={tw`bg-blue-600 px-4 py-2 rounded-md w-[48%] items-center`}
                 >
                   <Ionicons name="analytics-outline" size={20} color="white" style={tw`mr-1`} />

@@ -1,11 +1,12 @@
+import { router } from 'expo-router';
 import React from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
 
 export default function DriverAvailableMissionsScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
 
   const availableMissions = [
     {
@@ -28,14 +29,14 @@ export default function DriverAvailableMissionsScreen() {
 
   const handleAcceptMission = (mission) => {
     alert(`Mission "${mission.title}" acceptée`);
-    navigation.navigate('TrackingScreen');
+    router.push("/tracking");
   };
 
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       {/* Header */}
       <View style={tw`flex-row items-center px-4 py-3`}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mr-4`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mr-4`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={tw`text-lg font-bold`}>Missions disponibles</Text>

@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
   View,
@@ -7,11 +8,11 @@ import {
   ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 import tw from 'tailwind-react-native-classnames';
 
 export default function DeliveryHistoryScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
   const [selectedTab, setSelectedTab] = useState('enCours');
 
   const deliveries = [
@@ -68,7 +69,7 @@ export default function DeliveryHistoryScreen() {
     <SafeAreaView style={tw`flex-1 bg-white`}>
       {/* Header */}
       <View style={tw`flex-row items-center px-4 py-4 border-b border-gray-200`}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mr-3`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mr-3`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={tw`text-lg font-semibold`}>Mes livraisons</Text>
@@ -128,7 +129,7 @@ export default function DeliveryHistoryScreen() {
 
               {item.status === 'En cours' && (
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('TrackingScreen')}
+                  onPress={() => router.push("/tracking")}
                   style={tw`bg-blue-600 py-2 rounded-md items-center mt-2`}
                 >
                   <Text style={tw`text-white font-medium text-sm`}>Suivi en temps réel</Text>

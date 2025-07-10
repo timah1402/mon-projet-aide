@@ -1,13 +1,14 @@
+import { router } from 'expo-router';
 import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, SafeAreaView, StatusBar } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import tw from 'tailwind-react-native-classnames';
-import { useNavigation } from '@react-navigation/native';
+// Removed navigation import
 import { UserContext } from '../context/UserContext';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function HomeScreen() {
-  const navigation = useNavigation();
+  // Navigation removed
   const { user } = useContext(UserContext);
 
   const services = [
