@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import tw from 'tailwind-react-native-classnames';
 import { useNavigation } from '@react-navigation/native';
 import { UserContext } from '../context/UserContext';
-
+import { router } from 'expo-router';
 export default function LoginScreen() {
   const navigation = useNavigation();
   const { login } = useContext(UserContext);
@@ -13,28 +13,27 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    if (!phone || !password) {
-      Alert.alert('Erreur', 'Veuillez remplir tous les champs.');
-      return;
-    }
+  if (!phone || !password) {
+    Alert.alert('Erreur', 'Veuillez remplir tous les champs.');
+    return;
+  }
 
-    if (phone === '0000' && password === 'admin123') {
-      const adminData = { name: 'Admin', phone, role: 'Admin' };
-      login(adminData);
-      navigation.navigate('AdminDashboardScreen');
-      return;
-    }
+  if (phone === '0000' && password === 'admin123') {
+    const adminData = { name: 'Admin', phone, role: 'Admin' };
+    login(adminData);
+    router.replace('/admin-dashboard'); // Correction ici
+    return;
+  }
 
-    if (phone === '1111' && password === 'user123') {
-      const adminData = { name: 'Admin', phone, role: 'Admin' };
-      login(adminData);
-      navigation.navigate('HostDashboardScreen');
-      return;
-    }
+  if (phone === '1111' && password === 'user123') {
+    const userData = { name: 'User', phone, role: 'User' }; // Correction du nom
+    login(userData);
+    router.replace('/host-dashboard'); // Correction ici
+    return;
+  }
 
-    Alert.alert('Erreur', 'Identifiants invalides.');
-  };
-
+  Alert.alert('Erreur', 'Identifiants invalides.');
+};
   return (
     <LinearGradient
       colors={['#10B981', '#059669', '#047857']}
@@ -121,7 +120,7 @@ export default function LoginScreen() {
             </TouchableOpacity>
             
             <TouchableOpacity 
-              onPress={() => navigation.navigate('RegisterScreen')}
+              onPress={() => router.push('/register')}
               style={tw`py-2`}
             >
               <Text style={tw`text-green-600 font-semibold text-base`}>

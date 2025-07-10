@@ -1,12 +1,29 @@
-// context/UserContext.js
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, ReactNode } from 'react';
 
-export const UserContext = createContext();
+interface User {
+  // Définis ici les propriétés de ton utilisateur
+  id?: string;
+  name?: string;
+  email?: string;
+  // Ajoute d'autres propriétés selon tes besoins
+}
 
-export function UserProvider({ children }) {
-  const [user, setUser] = useState(null);
+interface UserContextType {
+  user: User | null;
+  login: (userData: User) => void;
+  logout: () => void;
+}
 
-  const login = (userData) => {
+export const UserContext = createContext<UserContextType | undefined>(undefined);
+
+interface UserProviderProps {
+  children: ReactNode;
+}
+
+export function UserProvider({ children }: UserProviderProps) {
+  const [user, setUser] = useState<User | null>(null);
+
+  const login = (userData: User) => {
     setUser(userData);
   };
 

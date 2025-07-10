@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import tw from 'tailwind-react-native-classnames';
 import { useNavigation } from '@react-navigation/native';
 import { UserContext } from '../context/UserContext';
-
+import { router } from 'expo-router';
 export default function RegisterScreen() {
   const navigation = useNavigation();
   const [name, setName] = useState('');
@@ -32,19 +32,19 @@ export default function RegisterScreen() {
 
     switch (role) {
       case 'Hôte':
-        navigation.navigate('HostDashboardScreen');
+        router.replace('/host-dashboard');
         break;
       case 'Locataire':
-        navigation.navigate('TenantDashboard');
+        router.replace('/tenant-dashboard');
         break;
       case 'Expéditeur':
-        navigation.navigate('ExpediteurDashboardScreen');
+        router.replace('/expediteur-dashboard');
         break;
       case 'Chauffeur':
-        navigation.navigate('ChauffeurDashboardScreen');
+        router.replace('/chauffeur-dashboard');
         break;
       default:
-        navigation.navigate('LoginScreen');
+        router.replace('/login');
     }
   };
 
@@ -167,7 +167,7 @@ export default function RegisterScreen() {
 
           {/* Lien vers connexion */}
           <TouchableOpacity
-            onPress={() => navigation.navigate('LoginScreen')}
+            onPress={() => router.replace('/login')}
             style={tw`py-2`}
           >
             <Text style={tw`text-sm text-center text-gray-600`}>

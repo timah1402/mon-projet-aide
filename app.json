@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme": "senfraismobileapp",
     "name": "senfraismobileapp",
     "slug": "senfraismobileapp",
     "version": "1.0.0",
@@ -26,7 +27,8 @@
       "package": "com.timah1402.senfraismobileapp"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
     },
     "extra": {
       "eas": {
@@ -38,6 +40,9 @@
     },
     "updates": {
       "url": "https://u.expo.dev/26f2d093-2500-4321-a997-89ecaad3dc1a"
-    }
+    },
+    "plugins": [
+      "expo-router"
+    ]
   }
 }
