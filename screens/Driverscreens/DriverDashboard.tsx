@@ -94,21 +94,29 @@ export default function DriverDashboard({ navigation }) {
         </View>
 
         {/* Statistiques */}
-        <View style={tw`flex-row flex-wrap justify-between mb-6`}>
-          {[
-            { label: 'Livraisons du jour', value: 3, icon: 'calendar-outline', color: '#0284C7' },
-            { label: 'En transit', value: 1, icon: 'car-sport-outline', color: '#9333EA' },
-            { label: 'Terminé', value: 2, icon: 'checkmark-done-outline', color: '#16A34A' },
-            { label: 'Alertes température', value: 1, icon: 'warning-outline', color: '#DC2626' },
-          ].map((item, idx) => (
-            <View key={idx} style={tw`w-1/2 p-2`}>
-              <View style={tw`bg-gray-100 p-4 rounded-md items-center`}>
-                <Ionicons name={item.icon} size={20} color={item.color} />
-                <Text style={tw`text-lg font-bold mt-1`}>{item.value}</Text>
-                <Text style={tw`text-gray-600 text-sm text-center`}>{item.label}</Text>
+        <View style={tw`mb-6`}>
+          <View style={tw`flex-row justify-between items-center mb-3`}>
+            <Text style={tw`text-lg font-semibold`}>Statistiques & Gains</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('DriverEarningsScreen')}>
+              <Text style={tw`text-yellow-500 text-sm`}>Voir historique</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={tw`flex-row flex-wrap justify-between`}>
+            {[
+              { label: 'Livraisons du jour', value: 3, icon: 'calendar-outline', color: '#0284C7' },
+              { label: 'Alertes température', value: 1, icon: 'warning-outline', color: '#DC2626' },
+              { label: "Gains aujourd'hui", value: "15 000 FCFA", icon: 'card-outline', color: '#0284C7' },
+              { label: "Total gains", value: "340 000 FCFA", icon: 'wallet-outline', color: '#16A34A' },
+            ].map((item, idx) => (
+              <View key={idx} style={tw`w-1/2 p-2`}>
+                <View style={tw`bg-gray-100 p-4 rounded-md items-center`}>
+                  <Ionicons name={item.icon} size={20} color={item.color} />
+                  <Text style={tw`text-lg font-bold mt-1`}>{item.value}</Text>
+                  <Text style={tw`text-gray-600 text-sm text-center`}>{item.label}</Text>
+                </View>
               </View>
-            </View>
-          ))}
+            ))}
+          </View>
         </View>
 
         {/* Livraison assignée */}
