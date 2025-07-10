@@ -32,7 +32,7 @@ export default function DeliveryTransactionsScreen() {
       <View style={tw`flex-row justify-between items-center mt-2`}>
         <Text style={tw`text-sm font-bold`}>{item.amount}</Text>
         <TouchableOpacity
-          onPress={() => navigation.navigate('InvoiceDetailScreen', { invoice: item })}
+          onPress={() => router.replace('/invoice-detail', { invoice: item })}
         >
           <Text style={tw`text-blue-600 text-sm`}>📜 Voir facture</Text>
         </TouchableOpacity>

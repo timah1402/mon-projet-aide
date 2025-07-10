@@ -1,29 +1,35 @@
 import { router } from 'expo-router';
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
-// Removed navigation import
 import { Ionicons, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
 
 export default function DriverFeatureScreen() {
-  // Navigation removed
+  // Helper pour la navigation
+  const navigateToScreen = (screenName: string) => {
+    switch (screenName) {
+      case 'DriverAvailableMissionsScreen':
+        router.push('/driver-available-missions');
+        break;
+      case 'DriverEarningsScreen':
+        router.push('/driver-earnings');
+        break;
+      default:
+        console.warn(`Route non trouvée pour: ${screenName}`);
+    }
+  };
 
   const features = [
-    
     {
-        label: "Accepter une mission & suivre le GPS",
-        icon: <Ionicons name="navigate-outline" size={20} color="black" />,
-        screen: "DriverAvailableMissionsScreen",
-        },
-
-   
-    
+      label: "Accepter une mission & suivre le GPS",
+      icon: <Ionicons name="navigate-outline" size={20} color="black" />,
+      screen: "DriverAvailableMissionsScreen",
+    },
     {
       label: "Gains & historique de paiements",
-  icon: <FontAwesome5 name="money-bill-wave" size={20} color="black" />,
-  screen: "DriverEarningsScreen",
+      icon: <FontAwesome5 name="money-bill-wave" size={20} color="black" />,
+      screen: "DriverEarningsScreen",
     },
-    
   ];
 
   return (
@@ -42,13 +48,13 @@ export default function DriverFeatureScreen() {
         {features.map((item, i) => (
           <TouchableOpacity
             key={i}
-            onPress={() =>
-              item.screen ? navigation.navigate(item.screen) : item.onPress()
-            }
+            onPress={() => navigateToScreen(item.screen)}
             style={tw`flex-row items-center bg-gray-100 p-4 rounded-lg mb-3`}
           >
             <View style={tw`mr-3`}>{item.icon}</View>
-            <Text style={tw`text-base`}>{item.label}</Text>
+            <Text style={tw`text-base flex-1`}>{item.label}</Text>
+            {/* Petite flèche pour indiquer la navigation */}
+            <Ionicons name="chevron-forward" size={16} color="gray" />
           </TouchableOpacity>
         ))}
       </ScrollView>

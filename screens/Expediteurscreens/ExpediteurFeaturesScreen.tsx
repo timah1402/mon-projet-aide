@@ -2,11 +2,33 @@ import { router } from 'expo-router';
 import React from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-// Removed navigation import
 import tw from 'tailwind-react-native-classnames';
 
 export default function ExpediteurFeaturesScreen() {
-  // Navigation removed
+  // Helper pour la navigation
+  const navigateToScreen = (screenName: string) => {
+    switch (screenName) {
+      case 'DeliveryHistoryScreen':
+        router.push('/delivery-history');
+        break;
+      case 'ExpediteurPaymentMethodsScreen':
+        router.push('/expediteur-payment-methods');
+        break;
+      case 'ExpediteurDisputeScreen':
+        router.push('/expediteur-dispute');
+        break;
+      case 'DeliveryTransactionsScreen':
+        router.push('/delivery-transactions');
+        break;
+      case 'ExpediteurSettingsScreen':
+        // Cette route n'existe pas encore, on peut la créer ou rediriger vers une page par défaut
+        console.warn('ExpediteurSettingsScreen pas encore implémenté');
+        // router.push('/expediteur-settings'); // Quand vous créerez cette page
+        break;
+      default:
+        console.warn(`Route non trouvée pour: ${screenName}`);
+    }
+  };
 
   const features = [
     {
@@ -50,11 +72,15 @@ export default function ExpediteurFeaturesScreen() {
         {features.map((item, i) => (
           <TouchableOpacity
             key={i}
-            onPress={() => navigation.navigate(item.screen)}
+            onPress={() => navigateToScreen(item.screen)}
             style={tw`flex-row items-center bg-gray-100 px-4 py-4 rounded-lg mb-3`}
           >
             <View style={tw`mr-3`}>{item.icon}</View>
             <Text style={tw`text-base`}>{item.label}</Text>
+            {/* Petite flèche pour indiquer la navigation */}
+            <View style={tw`ml-auto`}>
+              <Ionicons name="chevron-forward" size={16} color="gray" />
+            </View>
           </TouchableOpacity>
         ))}
       </ScrollView>

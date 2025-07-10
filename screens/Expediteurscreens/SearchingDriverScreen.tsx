@@ -3,12 +3,9 @@ import React, { useEffect } from 'react';
 import { View, Text, SafeAreaView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
-// Removed navigation import
 import tw from 'tailwind-react-native-classnames';
 
 export default function SearchingDriverScreen() {
-  // Navigation removed
-
   const pickupLocation = { latitude: 14.6928, longitude: -17.4467 }; // Dakar
 
   const nearbyDrivers = [
@@ -20,11 +17,11 @@ export default function SearchingDriverScreen() {
   // Simuler une confirmation de chauffeur après 6 secondes
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.replace('DriverFoundScreen');
+      router.replace('/driver-found'); // Correction: utiliser le chemin expo-router
     }, 6000);
 
     return () => clearTimeout(timer);
-  }, [navigation]);
+  }, []); // Correction: supprimer la dépendance navigation
 
   return (
     <SafeAreaView style={tw`flex-1`}>
@@ -70,6 +67,14 @@ export default function SearchingDriverScreen() {
         <Text style={tw`text-base font-semibold mt-4 text-center`}>
           Recherche d'un chauffeur disponible…
         </Text>
+        
+        {/* Bouton d'annulation optionnel */}
+        <TouchableOpacity 
+          onPress={() => router.back()}
+          style={tw`mt-4 px-6 py-2 border border-gray-300 rounded-lg`}
+        >
+          <Text style={tw`text-gray-600`}>Annuler la recherche</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
