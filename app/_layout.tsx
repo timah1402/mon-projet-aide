@@ -57,6 +57,15 @@ export default function RootLayout() {
         <Stack.Screen name="driver-features" />
         <Stack.Screen name="driver-available-missions" />
         <Stack.Screen name="driver-earnings" />
+        <Stack.Screen name="driver-profile" />
+
+        // Ecran vendeur
+        <Stack.Screen name="vendeur-dashboard"/>
+        <Stack.Screen name="add-product"/>
+        <Stack.Screen name=" orders"/>
+
+
+
         
         {/* Écrans partagés */}
         <Stack.Screen name="monitoring" />
@@ -65,6 +74,9 @@ export default function RootLayout() {
         <Stack.Screen name="leave-review" />
         <Stack.Screen name="tracking" />
         <Stack.Screen name="invoice-detail" />
+
+
+
       </Stack>
     </UserProvider>
   );

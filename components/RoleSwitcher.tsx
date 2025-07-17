@@ -7,7 +7,7 @@ import tw from 'tailwind-react-native-classnames';
 export default function RoleSwitcher() {
   const { activeRole, setActiveRole } = useContext(UserContext);
 
-  const roles = ['Hôte', 'Locataire', 'Expéditeur', 'Chauffeur'];
+  const roles = ['Hôte', 'Locataire', 'Expéditeur', 'Chauffeur','Vendeur'];
 
   return (
     <View style={tw`mb-4`}>

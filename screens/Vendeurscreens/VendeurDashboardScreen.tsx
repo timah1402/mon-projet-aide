@@ -1,9 +1,9 @@
-// screens/HostDashboardScreen.tsx
+// screens/VendeurDashboardScreen.tsx
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, SafeAreaView, Modal, Animated } from 'react-native';
 import tw from 'tailwind-react-native-classnames';
-import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 
 // Import des composants réutilisables avec types
 import { 
@@ -20,51 +20,66 @@ interface Role {
   icon: keyof typeof Ionicons.glyphMap;
 }
 
-interface Annonce {
-  title: string;
-  location: string;
-  price: string;
-  reservations: number;
-  occupancy: string;
-  status: string;
+interface Produit {
+  id: string;
+  nom: string;
+  description: string;
+  categorie: string;
+  prix: number;
+  photo: string;
+  stock: number;
+  vendu: number;
+  statut: 'Disponible' | 'Stock faible' | 'Rupture' | 'En attente';
   revenu: string;
+  vendeurId: string;
+  dateCreation: string;
+  localisation: string;
 }
 
-const HostDashboardScreen: React.FC = () => {
+const VendeurDashboardScreen: React.FC = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [notificationModalVisible, setNotificationModalVisible] = useState<boolean>(false);
   const [profileModalVisible, setProfileModalVisible] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<string>('boutique'); // Nouvel état pour la page active
   
   // Animation pour les modals
   const [slideAnim] = useState(new Animated.Value(-1000)); // Commence hors écran en haut
   
   // Données utilisateur typées
   const userInfo: UserInfo = {
-    name: 'Aïssatou Diop',
-    email: 'aissatou@example.com',
-    avatar: 'A',
+    name: 'Mamadou Seck',
+    email: 'mamadou@example.com',
+    avatar: 'M',
     verified: true
   };
 
   // Notifications non lues
-  const unreadNotifications: number = 2;
+  const unreadNotifications: number = 3;
 
-  // Notifications personnalisées pour ce dashboard
+  // Notifications personnalisées pour le vendeur
   const customNotifications: Notification[] = [
     {
       id: 1,
-      title: 'Nouvelle réservation',
-      message: 'Votre chambre froide proche du Port a été réservée',
-      time: 'Il y a 2 heures',
-      type: 'booking',
+      title: 'Nouvelle commande',
+      message: 'Commande de 50kg de poisson reçue de Fatou Diallo',
+      time: 'Il y a 1 heure',
+      type: 'order',
       read: false
     },
     {
       id: 2,
-      title: 'Alerte température',
-      message: 'Température élevée détectée dans l\'espace Pikine (7°C)',
-      time: 'Il y a 6 heures',
+      title: 'Stock faible',
+      message: 'Il ne reste que 5kg de crevettes en stock',
+      time: 'Il y a 3 heures',
       type: 'alert',
+      read: false
+    },
+    {
+      id: 3,
+      title: 'Paiement reçu',
+      message: 'Paiement de 25 000 CFA confirmé pour votre commande',
+      time: 'Il y a 5 heures',
+      type: 'payment',
       read: false
     }
   ];
@@ -77,33 +92,66 @@ const HostDashboardScreen: React.FC = () => {
     { label: 'Vendeur', icon: 'storefront-outline' },
   ];
 
-  const annonces: Annonce[] = [
+  const produits: Produit[] = [
     {
-      title: 'Chambre froide proche du Port',
-      location: 'Dakar, Sénégal',
-      price: '15 000 CFA/jour',
-      reservations: 8,
-      occupancy: '90%',
-      status: 'Actif',
-      revenu: '120 000 CFA'
+      id: 'prod_001',
+      nom: 'Poisson frais (Thiof)',
+      description: 'Thiof frais pêché du jour, excellent pour la cuisine sénégalaise traditionnelle',
+      categorie: 'Poissons',
+      prix: 2500,
+      photo: 'https://example.com/thiof.jpg',
+      stock: 150,
+      vendu: 45,
+      statut: 'Disponible',
+      revenu: '112 500 CFA',
+      vendeurId: 'vendeur_001',
+      dateCreation: '2025-01-10',
+      localisation: 'Marché de Soumbédioune, Dakar'
     },
     {
-      title: 'Espace réfrigéré Almadies',
-      location: 'Almadies, Dakar',
-      price: '12 000 CFA/jour',
-      reservations: 12,
-      occupancy: '75%',
-      status: 'Actif',
-      revenu: '144 000 CFA'
+      id: 'prod_002',
+      nom: 'Crevettes roses',
+      description: 'Crevettes roses fraîches de Casamance, idéales pour les plats de fête',
+      categorie: 'Fruits de mer',
+      prix: 8000,
+      photo: 'https://example.com/crevettes.jpg',
+      stock: 25,
+      vendu: 18,
+      statut: 'Stock faible',
+      revenu: '144 000 CFA',
+      vendeurId: 'vendeur_001',
+      dateCreation: '2025-01-08',
+      localisation: 'Marché de Soumbédioune, Dakar'
     },
     {
-      title: 'Entrepôt frigorifique Pikine',
-      location: 'Pikine, Dakar',
-      price: '18 000 CFA/jour',
-      reservations: 4,
-      occupancy: '60%',
-      status: 'En attente',
-      revenu: '72 000 CFA'
+      id: 'prod_003',
+      nom: 'Légumes bio mélangés',
+      description: 'Mélange de légumes biologiques cultivés localement sans pesticides',
+      categorie: 'Légumes',
+      prix: 1200,
+      photo: 'https://example.com/legumes.jpg',
+      stock: 80,
+      vendu: 32,
+      statut: 'Disponible',
+      revenu: '38 400 CFA',
+      vendeurId: 'vendeur_001',
+      dateCreation: '2025-01-12',
+      localisation: 'Marché de Soumbédioune, Dakar'
+    },
+    {
+      id: 'prod_004',
+      nom: 'Fruits tropicaux',
+      description: 'Assortiment de fruits tropicaux : mangues, papayes, ananas de saison',
+      categorie: 'Fruits',
+      prix: 1800,
+      photo: 'https://example.com/fruits.jpg',
+      stock: 0,
+      vendu: 25,
+      statut: 'Rupture',
+      revenu: '45 000 CFA',
+      vendeurId: 'vendeur_001',
+      dateCreation: '2025-01-05',
+      localisation: 'Marché de Soumbédioune, Dakar'
     }
   ];
 
@@ -184,6 +232,32 @@ const HostDashboardScreen: React.FC = () => {
     });
   };
 
+  const getStatutColor = (statut: string): string => {
+    switch (statut) {
+      case 'Disponible':
+        return 'text-green-600';
+      case 'Stock faible':
+        return 'text-orange-600';
+      case 'Rupture':
+        return 'text-red-600';
+      default:
+        return 'text-gray-600';
+    }
+  };
+
+  // Nouvelle fonction pour gérer la navigation de la bottom navbar
+  const handleNavigation = (page: string, route?: string): void => {
+    setCurrentPage(page);
+    if (route) {
+      router.push(route);
+    }
+  };
+
+  // Fonction pour obtenir la couleur de l'icône selon la page active
+  const getIconColor = (page: string): string => {
+    return currentPage === page ? '#10B981' : '#374151'; // Vert si actif, gris sinon
+  };
+
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <ScrollView style={tw`px-4 pt-4`}>
@@ -195,7 +269,7 @@ const HostDashboardScreen: React.FC = () => {
               onPress={() => setModalVisible(true)} 
               style={tw`mr-4 bg-gray-200 px-2 py-1 rounded flex-row items-center`}
             >
-              <Text style={tw`text-sm mr-1`}>Hôte</Text>
+              <Text style={tw`text-sm mr-1`}>Vendeur</Text>
               <Ionicons name="chevron-down" size={16} color="gray" />
             </TouchableOpacity>
             
@@ -213,16 +287,16 @@ const HostDashboardScreen: React.FC = () => {
         </View>
 
         {/* Welcome Section with background */}
-        <View style={tw`bg-blue-600 rounded-xl p-5 mb-6`}>
-          <Text style={tw`text-white text-xl font-bold mb-1`}>Bienvenue, Aïssatou !</Text>
-          <Text style={tw`text-white`}>Gérez vos espaces frigorifiques et suivez vos performances</Text>
+        <View style={tw`bg-green-600 rounded-xl p-5 mb-6`}>
+          <Text style={tw`text-white text-xl font-bold mb-1`}>Bienvenue, Mamadou !</Text>
+          <Text style={tw`text-white`}>Gérez votre boutique et suivez vos ventes en temps réel</Text>
         </View>
 
         <TouchableOpacity
-          onPress={() => router.push("/create-listing")}
-          style={tw`bg-blue-600 rounded-md py-3 px-4 mb-6`}
+          onPress={() => router.push("/add-product")}
+          style={tw`bg-green-600 rounded-md py-3 px-4 mb-6`}
         >
-          <Text style={tw`text-white text-center font-semibold`}>+ Créer une nouvelle annonce</Text>
+          <Text style={tw`text-white text-center font-semibold`}>+ Ajouter un produit à la marketplace</Text>
         </TouchableOpacity>
 
         {/* Statistics Grid */}
@@ -230,53 +304,60 @@ const HostDashboardScreen: React.FC = () => {
           <View style={tw`w-1/2 p-2`}>
             <View style={tw`bg-gray-100 p-4 rounded-md items-center`}>
               <FontAwesome5 name="money-bill-wave" size={20} color="black" />
-              <Text style={tw`text-lg font-bold mt-1`}>850 000 CFA</Text>
+              <Text style={tw`text-lg font-bold mt-1`}>339 900 CFA</Text>
               <Text style={tw`text-gray-600 text-sm`}>Revenus totaux</Text>
             </View>
           </View>
           <View style={tw`w-1/2 p-2`}>
             <View style={tw`bg-gray-100 p-4 rounded-md items-center`}>
-              <Ionicons name="albums-outline" size={20} color="black" />
-              <Text style={tw`text-lg font-bold mt-1`}>3</Text>
-              <Text style={tw`text-gray-600 text-sm`}>Annonces actives</Text>
+              <MaterialIcons name="inventory" size={20} color="black" />
+              <Text style={tw`text-lg font-bold mt-1`}>4</Text>
+              <Text style={tw`text-gray-600 text-sm`}>Produits actifs</Text>
             </View>
           </View>
           <View style={tw`w-1/2 p-2`}>
-            <View style={tw`bg-gray-100 p-4 rounded-md items-center`}>
-              <Ionicons name="calendar-outline" size={20} color="black" />
-              <Text style={tw`text-lg font-bold mt-1`}>24</Text>
-              <Text style={tw`text-gray-600 text-sm`}>Réservations</Text>
-            </View>
+            <TouchableOpacity 
+              onPress={() => handleNavigation('commandes', '/orders')}
+              style={tw`bg-gray-100 p-4 rounded-md items-center`}
+            >
+              <Ionicons name="bag-handle-outline" size={20} color="black" />
+              <Text style={tw`text-lg font-bold mt-1`}>32</Text>
+              <Text style={tw`text-gray-600 text-sm`}>Commandes</Text>
+            </TouchableOpacity>
           </View>
           <View style={tw`w-1/2 p-2`}>
             <View style={tw`bg-gray-100 p-4 rounded-md items-center`}>
-              <Text style={tw`text-lg font-bold mt-1`}>85%</Text>
-              <Text style={tw`text-gray-600 text-sm`}>Taux d'occupation</Text>
+              <Ionicons name="people-outline" size={20} color="black" />
+              <Text style={tw`text-lg font-bold mt-1`}>18</Text>
+              <Text style={tw`text-gray-600 text-sm`}>Clients fidèles</Text>
             </View>
           </View>
         </View>
 
-        <Text style={tw`text-lg font-semibold mb-2`}>Mes annonces</Text>
+        <Text style={tw`text-lg font-semibold mb-2`}>Mes produits</Text>
 
-        {annonces.map((annonce, index) => (
+        {produits.map((produit, index) => (
           <View key={index} style={tw`bg-gray-100 rounded-md p-4 mb-3`}>
             <View style={tw`flex-row justify-between items-center mb-1`}>
-              <Text style={tw`text-base font-semibold`}>{annonce.title}</Text>
-              <Text style={tw`text-sm`}>{annonce.revenu}</Text>
+              <Text style={tw`text-base font-semibold`}>{produit.nom}</Text>
+              <Text style={tw`text-sm font-bold`}>{produit.revenu}</Text>
             </View>
-            <Text style={tw`text-sm text-gray-600`}>{annonce.location} - {annonce.price}</Text>
-            <Text style={tw`text-sm text-gray-600`}>{annonce.reservations} réservations - {annonce.occupancy} d'occupation</Text>
-            <Text style={tw`text-xs mt-1 ${annonce.status === 'Actif' ? 'text-green-600' : 'text-yellow-600'}`}>
-              {annonce.status}
-            </Text>
+            <Text style={tw`text-sm text-gray-600`}>{produit.categorie} - {produit.prix.toLocaleString()} CFA/kg</Text>
+            <View style={tw`flex-row justify-between items-center mt-2`}>
+              <Text style={tw`text-sm text-gray-600`}>Stock: {produit.stock}kg | Vendu: {produit.vendu}kg</Text>
+              <Text style={tw`text-xs font-semibold ${getStatutColor(produit.statut)}`}>
+                {produit.statut}
+              </Text>
+            </View>
           </View>
         ))}
 
-        <Text style={tw`text-lg font-semibold mt-6 mb-2`}>Activité récente</Text>
+        <Text style={tw`text-lg font-semibold mt-6 mb-2`}>Commandes récentes</Text>
         <View style={tw`bg-gray-100 rounded-md p-4 mb-8`}>
-          <Text style={tw`text-sm mb-1`}>✅ Nouvelle réservation pour "Chambre froide proche du Port" (il y a 2 heures)</Text>
-          <Text style={tw`text-sm mb-1`}>👁️ Votre annonce "Espace réfrigéré Almadies" a été vue 15 fois (il y a 4 heures)</Text>
-          <Text style={tw`text-sm`}>⚠️ Alerte température pour l'espace Pikine (7°C détecté, il y a 6 heures)</Text>
+          <Text style={tw`text-sm mb-1`}>🛒 Nouvelle commande de Fatou Diallo - 50kg de poisson (il y a 1 heure)</Text>
+          <Text style={tw`text-sm mb-1`}>💰 Paiement reçu de Ousmane Ba - 25 000 CFA (il y a 3 heures)</Text>
+          <Text style={tw`text-sm mb-1`}>📦 Livraison effectuée chez Aïda Sow - 20kg de légumes (il y a 5 heures)</Text>
+          <Text style={tw`text-sm`}>⚠️ Alerte stock: Crevettes en stock faible (5kg restants)</Text>
         </View>
       </ScrollView>
 
@@ -339,7 +420,7 @@ const HostDashboardScreen: React.FC = () => {
                       <Text style={tw`text-gray-400 text-sm mt-2`}>{notification.time}</Text>
                     </View>
                     {!notification.read && (
-                      <View style={tw`w-3 h-3 bg-blue-500 rounded-full ml-3 mt-1`} />
+                      <View style={tw`w-3 h-3 bg-green-500 rounded-full ml-3 mt-1`} />
                     )}
                   </View>
                 </View>
@@ -348,7 +429,7 @@ const HostDashboardScreen: React.FC = () => {
             
             <View style={tw`p-4 border-t border-gray-200`}>
               <TouchableOpacity
-                style={tw`p-4 bg-blue-500 rounded-lg`}
+                style={tw`p-4 bg-green-500 rounded-lg`}
                 onPress={handleMarkAllNotificationsRead}
               >
                 <Text style={tw`text-white text-center font-semibold text-lg`}>Marquer tout comme lu</Text>
@@ -384,7 +465,7 @@ const HostDashboardScreen: React.FC = () => {
             <ScrollView style={tw`flex-1 px-4 pt-6`}>
               {/* Informations utilisateur */}
               <View style={tw`items-center mb-8`}>
-                <View style={tw`w-24 h-24 bg-blue-500 rounded-full items-center justify-center mb-4`}>
+                <View style={tw`w-24 h-24 bg-green-500 rounded-full items-center justify-center mb-4`}>
                   <Text style={tw`text-white text-3xl font-bold`}>{userInfo.avatar}</Text>
                 </View>
                 <Text style={tw`text-2xl font-semibold mb-1`}>{userInfo.name}</Text>
@@ -392,7 +473,7 @@ const HostDashboardScreen: React.FC = () => {
                 {userInfo.verified && (
                   <View style={tw`flex-row items-center mt-2`}>
                     <Ionicons name="checkmark-circle" size={20} color="green" />
-                    <Text style={tw`text-green-600 text-base ml-2`}>Compte vérifié</Text>
+                    <Text style={tw`text-green-600 text-base ml-2`}>Vendeur vérifié</Text>
                   </View>
                 )}
               </View>
@@ -405,6 +486,24 @@ const HostDashboardScreen: React.FC = () => {
                 >
                   <Ionicons name="person-outline" size={24} color="gray" style={tw`mr-4`} />
                   <Text style={tw`text-lg flex-1`}>Modifier le profil</Text>
+                  <Ionicons name="chevron-forward" size={20} color="gray" />
+                </TouchableOpacity>
+                
+                <TouchableOpacity
+                  style={tw`flex-row items-center py-4 px-2 border-b border-gray-100`}
+                  onPress={() => handleNavigateToSetting('shop')}
+                >
+                  <Ionicons name="storefront-outline" size={24} color="gray" style={tw`mr-4`} />
+                  <Text style={tw`text-lg flex-1`}>Gérer ma boutique</Text>
+                  <Ionicons name="chevron-forward" size={20} color="gray" />
+                </TouchableOpacity>
+                
+                <TouchableOpacity
+                  style={tw`flex-row items-center py-4 px-2 border-b border-gray-100`}
+                  onPress={() => handleNavigateToSetting('analytics')}
+                >
+                  <Ionicons name="analytics-outline" size={24} color="gray" style={tw`mr-4`} />
+                  <Text style={tw`text-lg flex-1`}>Analyses de vente</Text>
                   <Ionicons name="chevron-forward" size={20} color="gray" />
                 </TouchableOpacity>
                 
@@ -439,25 +538,58 @@ const HostDashboardScreen: React.FC = () => {
         </Animated.View>
       </Modal>
 
-      {/* Bottom Navbar */}
+      {/* Bottom Navbar avec états actifs */}
       <View style={tw`flex-row justify-around items-center h-16 bg-white border-t border-gray-200`}>
-        <TouchableOpacity style={tw`items-center`}>
-          <Ionicons name="grid" size={24} color="black" />
-          <Text style={tw`text-xs`}>Tableau</Text>
+        <TouchableOpacity 
+          style={tw`items-center`}
+          onPress={() => handleNavigation('boutique')}
+        >
+          <Ionicons 
+            name={currentPage === 'boutique' ? "storefront" : "storefront-outline"} 
+            size={24} 
+            color={getIconColor('boutique')} 
+          />
+          <Text style={[tw`text-xs`, { color: getIconColor('boutique') }]}>Boutique</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={tw`items-center`} onPress={() => router.push("/monitoring")}>
-          <Ionicons name="analytics" size={24} color="black" />
-          <Text style={tw`text-xs`}>IoT</Text>
+        <TouchableOpacity 
+          style={tw`items-center`} 
+          onPress={() => handleNavigation('commandes', '/orders')}
+        >
+          <Ionicons 
+            name={currentPage === 'commandes' ? "bag-handle" : "bag-handle-outline"} 
+            size={24} 
+            color={getIconColor('commandes')} 
+          />
+          <Text style={[tw`text-xs`, { color: getIconColor('commandes') }]}>Commandes</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={tw`items-center`} 
+          onPress={() => handleNavigation('analyses', '/sales-analytics')}
+        >
+          <Ionicons 
+            name={currentPage === 'analyses' ? "analytics" : "analytics-outline"} 
+            size={24} 
+            color={getIconColor('analyses')} 
+          />
+          <Text style={[tw`text-xs`, { color: getIconColor('analyses') }]}>Analyses</Text>
         </TouchableOpacity>
         
-        <TouchableOpacity style={tw`items-center`} onPress={() => router.push("/host-features")}>
-          <Ionicons name="ellipsis-horizontal-circle" size={24} color="black" />
-          <Text style={tw`text-xs`}>Menu</Text>
+        <TouchableOpacity 
+          style={tw`items-center`} 
+          onPress={() => handleNavigation('menu', '/vendeur-features')}
+        >
+          <Ionicons 
+            name="ellipsis-horizontal-circle" 
+            size={24} 
+            color={getIconColor('menu')} 
+          />
+          <Text style={[tw`text-xs`, { color: getIconColor('menu') }]}>Menu</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
 };
 
-export default HostDashboardScreen;
+export default VendeurDashboardScreen;
