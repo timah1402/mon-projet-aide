@@ -182,11 +182,32 @@ const VendeurDashboardScreen: React.FC = () => {
     // router.replace("/login");
   };
 
-  const handleNavigateToSetting = (settingKey: SettingKey): void => {
-    setProfileModalVisible(false);
-    console.log(`Navigation vers: ${settingKey}`);
-    // Exemple: router.push(`/settings/${settingKey}`);
-  };
+ // APRÈS
+const handleNavigateToSetting = (settingKey: SettingKey): void => {
+  setProfileModalVisible(false);
+  console.log(`Navigation vers: ${settingKey}`);
+  
+  // Navigation vers les différentes pages
+  switch (settingKey) {
+    case 'shop':
+      router.push('/shop-management'); // 👈 Navigation vers la gestion de boutique
+      break;
+    case 'profile':
+      router.push('/profile-settings');
+      break;
+    case 'analytics':
+      router.push('/sales-analytics');
+      break;
+    case 'settings':
+      router.push('/settings');
+      break;
+    case 'help':
+      router.push('/help-support');
+      break;
+    default:
+      router.push(`/settings/${settingKey}`);
+  }
+};
 
   const handleMarkAllNotificationsRead = (): void => {
     console.log('Marquer toutes les notifications comme lues');

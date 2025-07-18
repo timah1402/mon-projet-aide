@@ -103,6 +103,32 @@ export default function VendeurInventoryScreen() {
       statut: 'Rupture',
       dateCreation: '2025-01-05',
       localisation: 'Marché de Soumbédioune, Dakar'
+    },
+    {
+      id: 'prod_005',
+      nom: 'Mangues bio',
+      categorie: 'Fruits',
+      prix: 1500,
+      unite: 'kg',
+      stock: 25,
+      stockMin: 8,
+      vendu: 15,
+      statut: 'Disponible',
+      dateCreation: '2025-01-11',
+      localisation: 'Marché de Soumbédioune, Dakar'
+    },
+    {
+      id: 'prod_006',
+      nom: 'Tomates cerises',
+      categorie: 'Légumes',
+      prix: 2000,
+      unite: 'kg',
+      stock: 12,
+      stockMin: 15,
+      vendu: 8,
+      statut: 'Stock faible',
+      dateCreation: '2025-01-09',
+      localisation: 'Marché de Soumbédioune, Dakar'
     }
   ]);
 
@@ -142,6 +168,42 @@ export default function VendeurInventoryScreen() {
       motif: 'Correction inventaire',
       date: '13 Jan 2025',
       heure: '18:00'
+    },
+    {
+      id: 'mvt_005',
+      produitId: 'prod_002',
+      type: 'Entrée',
+      quantite: 20,
+      motif: 'Nouvelle livraison',
+      date: '13 Jan 2025',
+      heure: '10:15'
+    },
+    {
+      id: 'mvt_006',
+      produitId: 'prod_004',
+      type: 'Sortie',
+      quantite: -5,
+      motif: 'Produits abîmés',
+      date: '12 Jan 2025',
+      heure: '16:45'
+    },
+    {
+      id: 'mvt_007',
+      produitId: 'prod_005',
+      type: 'Vente',
+      quantite: -2,
+      motif: 'Commande #CMD002 - Amadou Ba',
+      date: '12 Jan 2025',
+      heure: '11:20'
+    },
+    {
+      id: 'mvt_008',
+      produitId: 'prod_006',
+      type: 'Entrée',
+      quantite: 30,
+      motif: 'Réapprovisionnement hebdomadaire',
+      date: '11 Jan 2025',
+      heure: '07:30'
     }
   ]);
 
@@ -160,7 +222,7 @@ export default function VendeurInventoryScreen() {
       case 'Disponible':
         return 'bg-green-100 text-green-700 border-green-200';
       case 'Stock faible':
-        return 'bg-orange-100 text-orange-700 border-orange-200';
+        return 'bg-yellow-100 text-yellow-700 border-yellow-200';
       case 'Rupture':
         return 'bg-red-100 text-red-700 border-red-200';
       default:
@@ -227,6 +289,11 @@ export default function VendeurInventoryScreen() {
     setNewStock('');
     setMotif('');
     setAdjustModalVisible(true);
+  };
+
+  const openHistory = (produit: Produit) => {
+    setSelectedProduct(produit);
+    setHistoryModalVisible(true);
   };
 
   const adjustStock = () => {
@@ -336,179 +403,183 @@ export default function VendeurInventoryScreen() {
         </View>
       </LinearGradient>
 
-      <Animated.View style={[tw`flex-1`, { opacity: fadeAnim }]}>
-        {/* Statistiques rapides */}
-        <View style={tw`bg-white mx-4 mt-4 rounded-2xl p-4 shadow-lg`}>
-          <Text style={tw`text-lg font-bold text-gray-800 mb-3`}>Vue d'ensemble</Text>
-          <View style={tw`flex-row justify-around`}>
-            <View style={tw`items-center`}>
-              <Text style={tw`text-2xl font-bold text-blue-600`}>{getTotalStock()}</Text>
-              <Text style={tw`text-gray-600 text-sm`}>Unités total</Text>
+      {/* Contenu principal avec scroll global */}
+      <ScrollView 
+        style={tw`flex-1`}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={tw`pb-6`}
+      >
+        <Animated.View style={[{ opacity: fadeAnim }]}>
+          {/* Statistiques rapides */}
+          <View style={tw`bg-white mx-4 mt-4 rounded-2xl p-4 shadow-lg`}>
+            <Text style={tw`text-lg font-bold text-gray-800 mb-3`}>Vue d'ensemble</Text>
+            <View style={tw`flex-row justify-around`}>
+              <View style={tw`items-center`}>
+                <Text style={tw`text-2xl font-bold text-blue-600`}>{getTotalStock()}</Text>
+                <Text style={tw`text-gray-600 text-sm`}>Unités total</Text>
+              </View>
+              <View style={tw`w-px bg-gray-200`} />
+              <View style={tw`items-center`}>
+                <Text style={tw`text-2xl font-bold text-orange-600`}>{getStockFaibleCount()}</Text>
+                <Text style={tw`text-gray-600 text-sm`}>Stock faible</Text>
+              </View>
+              <View style={tw`w-px bg-gray-200`} />
+              <View style={tw`items-center`}>
+                <Text style={tw`text-2xl font-bold text-red-600`}>{getRuptureCount()}</Text>
+                <Text style={tw`text-gray-600 text-sm`}>En rupture</Text>
+              </View>
             </View>
-            <View style={tw`w-px bg-gray-200`} />
-            <View style={tw`items-center`}>
-              <Text style={tw`text-2xl font-bold text-orange-600`}>{getStockFaibleCount()}</Text>
-              <Text style={tw`text-gray-600 text-sm`}>Stock faible</Text>
+            
+            <View style={tw`mt-4 bg-green-50 rounded-xl p-3 flex-row items-center`}>
+              <Ionicons name="cash" size={20} color="#059669" style={tw`mr-3`} />
+              <View style={tw`flex-1`}>
+                <Text style={tw`text-green-700 text-sm font-medium`}>Valeur du stock</Text>
+                <Text style={tw`text-green-800 text-lg font-bold`}>{getValeurStock().toLocaleString()} CFA</Text>
+              </View>
             </View>
-            <View style={tw`w-px bg-gray-200`} />
-            <View style={tw`items-center`}>
-              <Text style={tw`text-2xl font-bold text-red-600`}>{getRuptureCount()}</Text>
-              <Text style={tw`text-gray-600 text-sm`}>En rupture</Text>
-            </View>
+
+            {/* Alertes */}
+            {(getStockFaibleCount() > 0 || getRuptureCount() > 0) && (
+              <View style={tw`mt-4 bg-yellow-100 rounded-xl p-3 flex-row items-center`}>
+                <Ionicons name="warning" size={20} color="#D97706" style={tw`mr-3`} />
+                <Text style={tw`text-yellow-700 text-sm font-medium flex-1`}>
+                  {getRuptureCount() > 0 && `${getRuptureCount()} produit(s) en rupture`}
+                  {getRuptureCount() > 0 && getStockFaibleCount() > 0 && ' • '}
+                  {getStockFaibleCount() > 0 && `${getStockFaibleCount()} stock(s) faible(s)`}
+                </Text>
+              </View>
+            )}
           </View>
-          
-          <View style={tw`mt-4 bg-green-50 rounded-xl p-3 flex-row items-center`}>
-            <Ionicons name="cash" size={20} color="#059669" style={tw`mr-3`} />
-            <View style={tw`flex-1`}>
-              <Text style={tw`text-green-700 text-sm font-medium`}>Valeur du stock</Text>
-              <Text style={tw`text-green-800 text-lg font-bold`}>{getValeurStock().toLocaleString()} CFA</Text>
-            </View>
-          </View>
 
-          {/* Alertes */}
-          {(getStockFaibleCount() > 0 || getRuptureCount() > 0) && (
-            <View style={tw`mt-4 bg-orange-50 rounded-xl p-3 flex-row items-center`}>
-              <Ionicons name="warning" size={20} color="#EA580C" style={tw`mr-3`} />
-              <Text style={tw`text-orange-700 text-sm font-medium flex-1`}>
-                {getRuptureCount() > 0 && `${getRuptureCount()} produit(s) en rupture`}
-                {getRuptureCount() > 0 && getStockFaibleCount() > 0 && ' • '}
-                {getStockFaibleCount() > 0 && `${getStockFaibleCount()} stock(s) faible(s)`}
-              </Text>
-            </View>
-          )}
-        </View>
-
-        {/* Bouton d'ajout rapide */}
-        <View style={tw`px-4 mt-4`}>
-          <TouchableOpacity
-            onPress={() => router.push("/add-product")}
-            style={tw`bg-green-600 rounded-xl py-3 px-4 flex-row items-center justify-center shadow-lg`}
-          >
-            <Ionicons name="add" size={20} color="white" style={tw`mr-2`} />
-            <Text style={tw`text-white font-semibold`}>Ajouter un nouveau produit</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Filtres */}
-        <View style={tw`px-4 mt-4`}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <View style={tw`flex-row`}>
-              {filtres.map((filtre) => (
-                <TouchableOpacity
-                  key={filtre}
-                  onPress={() => setSelectedFilter(filtre)}
-                  style={[
-                    tw`py-2 px-4 mr-3 rounded-full border-2`,
-                    selectedFilter === filtre 
-                      ? tw`bg-green-500 border-green-500` 
-                      : tw`bg-white border-gray-300`
-                  ]}
-                >
-                  <Text style={[
-                    tw`text-sm font-semibold`,
-                    { color: selectedFilter === filtre ? 'white' : '#374151' }
-                  ]}>
-                    {filtre}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </ScrollView>
-        </View>
-
-        {/* Liste des produits */}
-        <ScrollView style={tw`flex-1 px-4 mt-4`} showsVerticalScrollIndicator={false}>
-          {produitsFiltres.map((produit) => (
+          {/* Bouton d'ajout rapide */}
+          <View style={tw`px-4 mt-4`}>
             <TouchableOpacity
-              key={produit.id}
-              onPress={() => openProductDetails(produit)}
-              style={tw`bg-white rounded-2xl p-4 mb-4 shadow-lg`}
+              onPress={() => router.push("/add-product")}
+              style={tw`bg-green-600 rounded-xl py-3 px-4 flex-row items-center justify-center shadow-lg`}
             >
-              {/* En-tête produit */}
-              <View style={tw`flex-row justify-between items-start mb-3`}>
-                <View style={tw`flex-1 mr-3`}>
-                  <View style={tw`flex-row items-center mb-1`}>
-                    <Text style={tw`text-2xl mr-2`}>{getCategorieIcon(produit.categorie)}</Text>
-                    <Text style={tw`text-lg font-bold text-gray-800 flex-1`}>{produit.nom}</Text>
-                  </View>
-                  <Text style={tw`text-gray-600 text-sm`}>{produit.categorie} • {produit.prix.toLocaleString()} CFA/{produit.unite}</Text>
-                </View>
-                <View style={[tw`py-1 px-3 rounded-full border`, tw`${getStatutColor(produit.statut)}`]}>
-                  <View style={tw`flex-row items-center`}>
-                    <Ionicons 
-                      name={getStatutIcon(produit.statut)} 
-                      size={14} 
-                      color={produit.statut === 'Disponible' ? '#059669' : 
-                             produit.statut === 'Stock faible' ? '#EA580C' : '#DC2626'} 
-                      style={tw`mr-1`}
-                    />
-                    <Text style={tw`text-xs font-semibold`}>{produit.statut}</Text>
-                  </View>
-                </View>
-              </View>
-
-              {/* Informations stock */}
-              <View style={tw`bg-gray-50 rounded-xl p-3 mb-3`}>
-                <View style={tw`flex-row justify-between items-center mb-2`}>
-                  <Text style={tw`text-gray-700 font-medium`}>Stock actuel</Text>
-                  <Text style={tw`text-2xl font-bold text-gray-800`}>
-                    {produit.stock} {produit.unite}
-                  </Text>
-                </View>
-                <View style={tw`flex-row justify-between items-center mb-2`}>
-                  <Text style={tw`text-gray-600 text-sm`}>Stock minimum: {produit.stockMin} {produit.unite}</Text>
-                  <Text style={tw`text-gray-600 text-sm`}>Vendu: {produit.vendu} {produit.unite}</Text>
-                </View>
-                
-                {/* Barre de progression du stock */}
-                <View style={tw`mt-2`}>
-                  <View style={tw`bg-gray-200 rounded-full h-2`}>
-                    <View 
-                      style={[
-                        tw`h-2 rounded-full`,
-                        produit.stock === 0 ? tw`bg-red-500` :
-                        produit.stock <= produit.stockMin ? tw`bg-orange-500` : tw`bg-green-500`,
-                        { width: `${Math.min(100, (produit.stock / (produit.stockMin * 3)) * 100)}%` }
-                      ]} 
-                    />
-                  </View>
-                </View>
-              </View>
-
-              {/* Actions rapides */}
-              <View style={tw`flex-row`}>
-                <TouchableOpacity
-                  onPress={() => openAdjustStock(produit)}
-                  style={tw`flex-1 bg-blue-500 rounded-xl py-2 px-4 mr-2 flex-row items-center justify-center`}
-                >
-                  <Ionicons name="create" size={16} color="white" style={tw`mr-1`} />
-                  <Text style={tw`text-white font-semibold text-sm`}>Ajuster</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    setSelectedProduct(produit);
-                    setHistoryModalVisible(true);
-                  }}
-                  style={tw`flex-1 bg-gray-500 rounded-xl py-2 px-4 ml-2 flex-row items-center justify-center`}
-                >
-                  <Ionicons name="time" size={16} color="white" style={tw`mr-1`} />
-                  <Text style={tw`text-white font-semibold text-sm`}>Historique</Text>
-                </TouchableOpacity>
-              </View>
+              <Ionicons name="add" size={20} color="white" style={tw`mr-2`} />
+              <Text style={tw`text-white font-semibold`}>Ajouter un nouveau produit</Text>
             </TouchableOpacity>
-          ))}
+          </View>
 
-          {produitsFiltres.length === 0 && (
-            <View style={tw`bg-white rounded-2xl p-8 items-center`}>
-              <MaterialIcons name="inventory" size={48} color="#9CA3AF" />
-              <Text style={tw`text-gray-500 text-lg font-semibold mt-4`}>Aucun produit</Text>
-              <Text style={tw`text-gray-400 text-center mt-2`}>
-                Aucun produit trouvé pour le filtre "{selectedFilter}"
-              </Text>
-            </View>
-          )}
-        </ScrollView>
-      </Animated.View>
+          {/* Filtres */}
+          <View style={tw`px-4 mt-4`}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <View style={tw`flex-row`}>
+                {filtres.map((filtre) => (
+                  <TouchableOpacity
+                    key={filtre}
+                    onPress={() => setSelectedFilter(filtre)}
+                    style={[
+                      tw`py-2 px-4 mr-3 rounded-full border-2`,
+                      selectedFilter === filtre 
+                        ? tw`bg-green-500 border-green-500` 
+                        : tw`bg-white border-gray-300`
+                    ]}
+                  >
+                    <Text style={[
+                      tw`text-sm font-semibold`,
+                      { color: selectedFilter === filtre ? 'white' : '#374151' }
+                    ]}>
+                      {filtre}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </ScrollView>
+          </View>
+
+          {/* Liste des produits */}
+          <View style={tw`px-4 mt-4`}>
+            {produitsFiltres.map((produit) => (
+              <TouchableOpacity
+                key={produit.id}
+                onPress={() => openProductDetails(produit)}
+                style={tw`bg-white rounded-2xl p-4 mb-4 shadow-lg`}
+              >
+                {/* En-tête produit */}
+                <View style={tw`flex-row justify-between items-start mb-3`}>
+                  <View style={tw`flex-1 mr-3`}>
+                    <View style={tw`flex-row items-center mb-1`}>
+                      <Text style={tw`text-2xl mr-2`}>{getCategorieIcon(produit.categorie)}</Text>
+                      <Text style={tw`text-lg font-bold text-gray-800 flex-1`}>{produit.nom}</Text>
+                    </View>
+                    <Text style={tw`text-gray-600 text-sm`}>{produit.categorie} • {produit.prix.toLocaleString()} CFA/{produit.unite}</Text>
+                  </View>
+                  <View style={[tw`py-1 px-3 rounded-full border`, tw`${getStatutColor(produit.statut)}`]}>
+                    <View style={tw`flex-row items-center`}>
+                      <Ionicons 
+                        name={getStatutIcon(produit.statut)} 
+                        size={14} 
+                        color={produit.statut === 'Disponible' ? '#059669' : 
+                               produit.statut === 'Stock faible' ? '#D97706' : '#DC2626'} 
+                        style={tw`mr-1`}
+                      />
+                      <Text style={tw`text-xs font-semibold`}>{produit.statut}</Text>
+                    </View>
+                  </View>
+                </View>
+
+                {/* Informations stock */}
+                <View style={tw`bg-gray-50 rounded-xl p-3 mb-3`}>
+                  <View style={tw`flex-row justify-between items-center mb-2`}>
+                    <Text style={tw`text-gray-700 font-medium`}>Stock actuel</Text>
+                    <Text style={tw`text-2xl font-bold text-gray-800`}>
+                      {produit.stock} {produit.unite}
+                    </Text>
+                  </View>
+                  <View style={tw`flex-row justify-between items-center mb-2`}>
+                    <Text style={tw`text-gray-600 text-sm`}>Stock minimum: {produit.stockMin} {produit.unite}</Text>
+                    <Text style={tw`text-gray-600 text-sm`}>Vendu: {produit.vendu} {produit.unite}</Text>
+                  </View>
+                  
+                  {/* Barre de progression du stock */}
+                  <View style={tw`mt-2`}>
+                    <View style={tw`bg-gray-200 rounded-full h-2`}>
+                      <View 
+                        style={[
+                          tw`h-2 rounded-full`,
+                          produit.stock === 0 ? tw`bg-red-500` :
+                          produit.stock <= produit.stockMin ? tw`bg-yellow-500` : tw`bg-green-500`,
+                          { width: `${Math.min(100, (produit.stock / (produit.stockMin * 3)) * 100)}%` }
+                        ]} 
+                      />
+                    </View>
+                  </View>
+                </View>
+
+                {/* Actions rapides */}
+                <View style={tw`flex-row`}>
+                  <TouchableOpacity
+                    onPress={() => openAdjustStock(produit)}
+                    style={tw`flex-1 bg-blue-500 rounded-xl py-2 px-4 mr-2 flex-row items-center justify-center`}
+                  >
+                    <Ionicons name="create" size={16} color="white" style={tw`mr-1`} />
+                    <Text style={tw`text-white font-semibold text-sm`}>Ajuster</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => openHistory(produit)}
+                    style={tw`flex-1 bg-gray-500 rounded-xl py-2 px-4 ml-2 flex-row items-center justify-center`}
+                  >
+                    <Ionicons name="time" size={16} color="white" style={tw`mr-1`} />
+                    <Text style={tw`text-white font-semibold text-sm`}>Historique</Text>
+                  </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
+            ))}
+
+            {produitsFiltres.length === 0 && (
+              <View style={tw`bg-white rounded-2xl p-8 items-center`}>
+                <MaterialIcons name="inventory" size={48} color="#9CA3AF" />
+                <Text style={tw`text-gray-500 text-lg font-semibold mt-4`}>Aucun produit</Text>
+                <Text style={tw`text-gray-400 text-center mt-2`}>
+                  Aucun produit trouvé pour le filtre "{selectedFilter}"
+                </Text>
+              </View>
+            )}
+          </View>
+        </Animated.View>
+      </ScrollView>
 
       {/* Modal détails produit */}
       <Modal
@@ -518,7 +589,7 @@ export default function VendeurInventoryScreen() {
         onRequestClose={() => setModalVisible(false)}
       >
         <View style={tw`flex-1 bg-black bg-opacity-50 justify-end`}>
-          <View style={tw`bg-white rounded-t-3xl max-h-4/5`}>
+          <View style={[tw`bg-white rounded-t-3xl`, { maxHeight: '80%' }]}>
             {selectedProduct && (
               <>
                 <View style={tw`flex-row justify-between items-center p-6 border-b border-gray-200`}>
@@ -632,52 +703,57 @@ export default function VendeurInventoryScreen() {
       {/* Modal historique des mouvements */}
       <Modal
         visible={historyModalVisible}
-        transparent
+        transparent={true}
         animationType="slide"
         onRequestClose={() => setHistoryModalVisible(false)}
       >
-        <View style={tw`flex-1 bg-black bg-opacity-50 justify-end`}>
-          <View style={tw`bg-white rounded-t-3xl max-h-4/5`}>
-            {selectedProduct && (
-              <>
-                <View style={tw`flex-row justify-between items-center p-6 border-b border-gray-200`}>
-                  <View>
-                    <Text style={tw`text-xl font-bold text-gray-800`}>Historique des mouvements</Text>
-                    <Text style={tw`text-gray-600`}>{selectedProduct.nom}</Text>
-                  </View>
-                  <TouchableOpacity onPress={() => setHistoryModalVisible(false)}>
-                    <Ionicons name="close" size={28} color="#374151" />
-                  </TouchableOpacity>
+        <View style={tw`flex-1 bg-black bg-opacity-50 justify-center items-center`}>
+          <View style={[tw`bg-white rounded-3xl mx-4`, { width: '90%', maxHeight: '80%' }]}>
+            <View style={tw`p-6`}>
+              <View style={tw`flex-row justify-between items-start mb-4`}>
+                <View style={tw`flex-1 pr-4`}>
+                  <Text style={tw`text-xl font-bold text-gray-800`}>Historique des mouvements</Text>
+                  {selectedProduct && (
+                    <Text style={tw`text-gray-600 mt-1`}>{selectedProduct.nom}</Text>
+                  )}
                 </View>
+                <TouchableOpacity 
+                  onPress={() => setHistoryModalVisible(false)}
+                  style={tw`p-2 bg-gray-100 rounded-full`}
+                >
+                  <Ionicons name="close" size={20} color="#374151" />
+                </TouchableOpacity>
+              </View>
 
-                <ScrollView style={tw`flex-1 px-6`}>
-                  {getMovementsByProduct(selectedProduct.id).map((mouvement) => (
-                    <View key={mouvement.id} style={tw`bg-gray-50 rounded-xl p-4 mb-3 mt-3`}>
-                      <View style={tw`flex-row justify-between items-center mb-2`}>
-                        <View style={tw`flex-row items-center`}>
-                          <Ionicons 
-                            name={mouvement.type === 'Entrée' ? 'arrow-down' : 
-                                  mouvement.type === 'Sortie' ? 'arrow-up' :
-                                  mouvement.type === 'Vente' ? 'bag' : 'sync'} 
-                            size={16} 
-                            color={mouvement.quantite > 0 ? '#059669' : '#DC2626'} 
-                            style={tw`mr-2`}
-                          />
-                          <Text style={tw`text-gray-800 font-semibold`}>{mouvement.type}</Text>
+              {selectedProduct ? (
+                <ScrollView style={{ maxHeight: 400 }} showsVerticalScrollIndicator={false}>
+                  {getMovementsByProduct(selectedProduct.id).length > 0 ? (
+                    getMovementsByProduct(selectedProduct.id).map((mouvement, index) => (
+                      <View key={`${mouvement.id}-${index}`} style={tw`bg-gray-50 rounded-xl p-4 mb-3`}>
+                        <View style={tw`flex-row justify-between items-center mb-2`}>
+                          <View style={tw`flex-row items-center`}>
+                            <Ionicons 
+                              name={mouvement.type === 'Entrée' ? 'arrow-down' : 
+                                    mouvement.type === 'Sortie' ? 'arrow-up' :
+                                    mouvement.type === 'Vente' ? 'bag' : 'sync'} 
+                              size={16} 
+                              color={mouvement.quantite > 0 ? '#059669' : '#DC2626'} 
+                              style={tw`mr-2`}
+                            />
+                            <Text style={tw`text-gray-800 font-semibold`}>{mouvement.type}</Text>
+                          </View>
+                          <Text style={[
+                            tw`font-bold`,
+                            { color: mouvement.quantite > 0 ? '#059669' : '#DC2626' }
+                          ]}>
+                            {mouvement.quantite > 0 ? '+' : ''}{mouvement.quantite} {selectedProduct.unite}
+                          </Text>
                         </View>
-                        <Text style={[
-                          tw`font-bold`,
-                          { color: mouvement.quantite > 0 ? '#059669' : '#DC2626' }
-                        ]}>
-                          {mouvement.quantite > 0 ? '+' : ''}{mouvement.quantite} {selectedProduct.unite}
-                        </Text>
+                        <Text style={tw`text-gray-600 text-sm mb-1`}>{mouvement.motif}</Text>
+                        <Text style={tw`text-gray-500 text-xs`}>{mouvement.date} • {mouvement.heure}</Text>
                       </View>
-                      <Text style={tw`text-gray-600 text-sm mb-1`}>{mouvement.motif}</Text>
-                      <Text style={tw`text-gray-500 text-xs`}>{mouvement.date} • {mouvement.heure}</Text>
-                    </View>
-                  ))}
-                  
-                  {getMovementsByProduct(selectedProduct.id).length === 0 && (
+                    ))
+                  ) : (
                     <View style={tw`py-8 items-center`}>
                       <Ionicons name="time-outline" size={48} color="#9CA3AF" />
                       <Text style={tw`text-gray-500 text-lg font-semibold mt-4`}>Aucun mouvement</Text>
@@ -687,8 +763,10 @@ export default function VendeurInventoryScreen() {
                     </View>
                   )}
                 </ScrollView>
-              </>
-            )}
+              ) : (
+                <Text style={tw`text-red-500`}>Erreur: Aucun produit sélectionné</Text>
+              )}
+            </View>
           </View>
         </View>
       </Modal>

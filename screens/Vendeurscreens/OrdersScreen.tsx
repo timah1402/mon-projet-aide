@@ -118,6 +118,42 @@ export default function OrdersScreen() {
       dateCommande: '14 Jan 2025',
       heureCommande: '10:20',
       adresseLivraison: 'Parcelles Assainies, Dakar'
+    },
+    {
+      id: 'CMD005',
+      acheteurNom: 'Aminata Faye',
+      acheteurPhone: '+221 78 333 2222',
+      produits: [
+        {
+          nom: 'Mangues bio',
+          quantite: 6,
+          prixUnitaire: 1500,
+          total: 9000
+        }
+      ],
+      montantTotal: 9000,
+      statut: 'Préparée',
+      dateCommande: '14 Jan 2025',
+      heureCommande: '11:45',
+      adresseLivraison: 'Sacré-Coeur, Dakar'
+    },
+    {
+      id: 'CMD006',
+      acheteurNom: 'Mamadou Sy',
+      acheteurPhone: '+221 77 888 9999',
+      produits: [
+        {
+          nom: 'Tomates cerises',
+          quantite: 3,
+          prixUnitaire: 2000,
+          total: 6000
+        }
+      ],
+      montantTotal: 6000,
+      statut: 'Annulée',
+      dateCommande: '13 Jan 2025',
+      heureCommande: '15:20',
+      adresseLivraison: 'Yoff, Dakar'
     }
   ]);
 
@@ -140,7 +176,7 @@ export default function OrdersScreen() {
       case 'Préparée':
         return 'bg-purple-100 text-purple-700 border-purple-200';
       case 'En livraison':
-        return 'bg-orange-100 text-orange-700 border-orange-200';
+        return 'bg-yellow-100 text-yellow-700 border-yellow-200';
       case 'Livrée':
         return 'bg-green-100 text-green-700 border-green-200';
       case 'Annulée':
@@ -288,189 +324,196 @@ export default function OrdersScreen() {
         </View>
       </LinearGradient>
 
-      <Animated.View style={[tw`flex-1`, { opacity: fadeAnim }]}>
-        {/* Statistiques rapides */}
-        <View style={tw`bg-white mx-4 mt-4 rounded-2xl p-4 shadow-lg`}>
-          <Text style={tw`text-lg font-bold text-gray-800 mb-3`}>Aujourd'hui</Text>
-          <View style={tw`flex-row justify-around`}>
-            <View style={tw`items-center`}>
-              <Text style={tw`text-2xl font-bold text-blue-600`}>{getTotalCommandesToday()}</Text>
-              <Text style={tw`text-gray-600 text-sm`}>Commandes</Text>
+      {/* Contenu principal avec scroll global */}
+      <ScrollView 
+        style={tw`flex-1`}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={tw`pb-6`}
+      >
+        <Animated.View style={[{ opacity: fadeAnim }]}>
+          {/* Statistiques rapides */}
+          <View style={tw`bg-white mx-4 mt-4 rounded-2xl p-4 shadow-lg`}>
+            <Text style={tw`text-lg font-bold text-gray-800 mb-3`}>Aujourd'hui</Text>
+            <View style={tw`flex-row justify-around`}>
+              <View style={tw`items-center`}>
+                <Text style={tw`text-2xl font-bold text-blue-600`}>{getTotalCommandesToday()}</Text>
+                <Text style={tw`text-gray-600 text-sm`}>Commandes</Text>
+              </View>
+              <View style={tw`w-px bg-gray-200`} />
+              <View style={tw`items-center`}>
+                <Text style={tw`text-2xl font-bold text-green-600`}>{getRevenuToday().toLocaleString()}</Text>
+                <Text style={tw`text-gray-600 text-sm`}>CFA livrés</Text>
+              </View>
+              <View style={tw`w-px bg-gray-200`} />
+              <View style={tw`items-center`}>
+                <Text style={tw`text-2xl font-bold text-yellow-600`}>
+                  {commandes.filter(cmd => cmd.statut === 'En attente').length}
+                </Text>
+                <Text style={tw`text-gray-600 text-sm`}>À valider</Text>
+              </View>
             </View>
-            <View style={tw`w-px bg-gray-200`} />
-            <View style={tw`items-center`}>
-              <Text style={tw`text-2xl font-bold text-green-600`}>{getRevenuToday().toLocaleString()}</Text>
-              <Text style={tw`text-gray-600 text-sm`}>CFA livrés</Text>
-            </View>
-            <View style={tw`w-px bg-gray-200`} />
-            <View style={tw`items-center`}>
-              <Text style={tw`text-2xl font-bold text-orange-600`}>
-                {commandes.filter(cmd => cmd.statut === 'En attente').length}
-              </Text>
-              <Text style={tw`text-gray-600 text-sm`}>À valider</Text>
-            </View>
+            
+            {/* Alerte pour commandes en attente */}
+            {commandes.filter(cmd => cmd.statut === 'En attente').length > 0 && (
+              <View style={tw`mt-4 bg-yellow-100 rounded-xl p-3 flex-row items-center`}>
+                <Ionicons name="warning" size={20} color="#D97706" style={tw`mr-3`} />
+                <Text style={tw`text-yellow-700 text-sm font-medium flex-1`}>
+                  Vous avez {commandes.filter(cmd => cmd.statut === 'En attente').length} commande(s) en attente de validation
+                </Text>
+              </View>
+            )}
           </View>
-          
-          {/* Alerte pour commandes en attente */}
-          {commandes.filter(cmd => cmd.statut === 'En attente').length > 0 && (
-            <View style={tw`mt-4 bg-orange-50 rounded-xl p-3 flex-row items-center`}>
-              <Ionicons name="warning" size={20} color="#EA580C" style={tw`mr-3`} />
-              <Text style={tw`text-orange-700 text-sm font-medium flex-1`}>
-                Vous avez {commandes.filter(cmd => cmd.statut === 'En attente').length} commande(s) en attente de validation
-              </Text>
-            </View>
-          )}
-        </View>
 
-        {/* Filtres */}
-        <View style={tw`px-4 mt-4`}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <View style={tw`flex-row`}>
-              {filtres.map((filtre) => (
-                <TouchableOpacity
-                  key={filtre}
-                  onPress={() => setSelectedFilter(filtre)}
-                  style={[
-                    tw`py-2 px-4 mr-3 rounded-full border-2`,
-                    selectedFilter === filtre 
-                      ? tw`bg-green-500 border-green-500` 
-                      : tw`bg-white border-gray-300`
-                  ]}
-                >
-                  <Text style={[
-                    tw`text-sm font-semibold`,
-                    { color: selectedFilter === filtre ? 'white' : '#374151' }
-                  ]}>
-                    {filtre}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </ScrollView>
-        </View>
-
-        {/* Liste des commandes */}
-        <ScrollView style={tw`flex-1 px-4 mt-4`} showsVerticalScrollIndicator={false}>
-          {commandesFiltrees.map((commande) => (
-            <TouchableOpacity
-              key={commande.id}
-              onPress={() => openOrderDetails(commande)}
-              style={tw`bg-white rounded-2xl p-4 mb-4 shadow-lg`}
-            >
-              {/* En-tête de la commande */}
-              <View style={tw`flex-row justify-between items-center mb-3`}>
-                <View>
-                  <Text style={tw`text-lg font-bold text-gray-800`}>#{commande.id}</Text>
-                  <Text style={tw`text-gray-600 text-sm`}>{commande.dateCommande} • {commande.heureCommande}</Text>
-                </View>
-                <View style={[tw`py-1 px-3 rounded-full border`, tw`${getStatutColor(commande.statut)}`]}>
-                  <View style={tw`flex-row items-center`}>
-                    <Ionicons 
-                      name={getStatutIcon(commande.statut)} 
-                      size={14} 
-                      color={commande.statut === 'En attente' ? '#B45309' : 
-                             commande.statut === 'Confirmée' ? '#1D4ED8' :
-                             commande.statut === 'Préparée' ? '#7C3AED' :
-                             commande.statut === 'En livraison' ? '#EA580C' :
-                             commande.statut === 'Livrée' ? '#059669' : '#DC2626'} 
-                      style={tw`mr-1`}
-                    />
-                    <Text style={tw`text-xs font-semibold`}>{commande.statut}</Text>
-                  </View>
-                </View>
-              </View>
-
-              {/* Informations client */}
-              <View style={tw`bg-gray-50 rounded-xl p-3 mb-3`}>
-                <View style={tw`flex-row items-center mb-1`}>
-                  <Ionicons name="person" size={16} color="#6B7280" style={tw`mr-2`} />
-                  <Text style={tw`text-gray-800 font-semibold`}>{commande.acheteurNom}</Text>
-                </View>
-                <View style={tw`flex-row items-center mb-1`}>
-                  <Ionicons name="call" size={16} color="#6B7280" style={tw`mr-2`} />
-                  <Text style={tw`text-gray-600 text-sm`}>{commande.acheteurPhone}</Text>
-                </View>
-                <View style={tw`flex-row items-center`}>
-                  <Ionicons name="location" size={16} color="#6B7280" style={tw`mr-2`} />
-                  <Text style={tw`text-gray-600 text-sm`}>{commande.adresseLivraison}</Text>
-                </View>
-              </View>
-
-              {/* Produits commandés */}
-              <View style={tw`mb-3`}>
-                {commande.produits.map((produit, index) => (
-                  <View key={index} style={tw`flex-row justify-between items-center py-1`}>
-                    <Text style={tw`text-gray-700 flex-1`}>
-                      {produit.quantite}x {produit.nom}
+          {/* Filtres */}
+          <View style={tw`px-4 mt-4`}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <View style={tw`flex-row`}>
+                {filtres.map((filtre) => (
+                  <TouchableOpacity
+                    key={filtre}
+                    onPress={() => setSelectedFilter(filtre)}
+                    style={[
+                      tw`py-2 px-4 mr-3 rounded-full border-2`,
+                      selectedFilter === filtre 
+                        ? tw`bg-green-500 border-green-500` 
+                        : tw`bg-white border-gray-300`
+                    ]}
+                  >
+                    <Text style={[
+                      tw`text-sm font-semibold`,
+                      { color: selectedFilter === filtre ? 'white' : '#374151' }
+                    ]}>
+                      {filtre}
                     </Text>
-                    <Text style={tw`text-gray-800 font-semibold`}>
-                      {produit.total.toLocaleString()} CFA
-                    </Text>
-                  </View>
+                  </TouchableOpacity>
                 ))}
               </View>
+            </ScrollView>
+          </View>
 
-              {/* Total et note */}
-              <View style={tw`border-t border-gray-200 pt-3`}>
-                <View style={tw`flex-row justify-between items-center mb-2`}>
-                  <Text style={tw`text-lg font-bold text-gray-800`}>Total</Text>
-                  <Text style={tw`text-xl font-bold text-green-600`}>
-                    {commande.montantTotal.toLocaleString()} CFA
-                  </Text>
-                </View>
-                {commande.noteClient && (
-                  <View style={tw`bg-blue-50 rounded-lg p-2 flex-row items-start mb-3`}>
-                    <Ionicons name="chatbubble" size={14} color="#3B82F6" style={tw`mr-2 mt-1`} />
-                    <Text style={tw`text-blue-700 text-sm flex-1`}>{commande.noteClient}</Text>
+          {/* Liste des commandes */}
+          <View style={tw`px-4 mt-4`}>
+            {commandesFiltrees.map((commande) => (
+              <TouchableOpacity
+                key={commande.id}
+                onPress={() => openOrderDetails(commande)}
+                style={tw`bg-white rounded-2xl p-4 mb-4 shadow-lg`}
+              >
+                {/* En-tête de la commande */}
+                <View style={tw`flex-row justify-between items-center mb-3`}>
+                  <View>
+                    <Text style={tw`text-lg font-bold text-gray-800`}>#{commande.id}</Text>
+                    <Text style={tw`text-gray-600 text-sm`}>{commande.dateCommande} • {commande.heureCommande}</Text>
                   </View>
-                )}
-                
-                {/* Actions rapides pour commandes en attente */}
-                {commande.statut === 'En attente' && (
-                  <View style={tw`flex-row mt-3`}>
-                    <TouchableOpacity
-                      onPress={() => rejectOrder(commande.id)}
-                      style={tw`flex-1 bg-red-500 rounded-xl py-2 px-4 mr-2 flex-row items-center justify-center`}
-                    >
-                      <Ionicons name="close" size={16} color="white" style={tw`mr-1`} />
-                      <Text style={tw`text-white font-semibold text-sm`}>Refuser</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => validateOrder(commande.id)}
-                      style={tw`flex-1 bg-green-500 rounded-xl py-2 px-4 ml-2 flex-row items-center justify-center`}
-                    >
-                      <Ionicons name="checkmark" size={16} color="white" style={tw`mr-1`} />
-                      <Text style={tw`text-white font-semibold text-sm`}>Confirmer</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-                
-                {/* Indicateur de progression pour autres statuts */}
-                {commande.statut !== 'En attente' && commande.statut !== 'Livrée' && commande.statut !== 'Annulée' && (
-                  <View style={tw`mt-3`}>
-                    <View style={tw`flex-row items-center justify-center py-2 px-4 bg-gray-50 rounded-xl`}>
-                      <Ionicons name="time" size={16} color="#6B7280" style={tw`mr-2`} />
-                      <Text style={tw`text-gray-600 text-sm font-medium`}>
-                        Prochaine étape: {getNextStatut(commande.statut) || 'Terminée'}
-                      </Text>
+                  <View style={[tw`py-1 px-3 rounded-full border`, tw`${getStatutColor(commande.statut)}`]}>
+                    <View style={tw`flex-row items-center`}>
+                      <Ionicons 
+                        name={getStatutIcon(commande.statut)} 
+                        size={14} 
+                        color={commande.statut === 'En attente' ? '#D97706' : 
+                               commande.statut === 'Confirmée' ? '#1D4ED8' :
+                               commande.statut === 'Préparée' ? '#7C3AED' :
+                               commande.statut === 'En livraison' ? '#D97706' :
+                               commande.statut === 'Livrée' ? '#059669' : '#DC2626'} 
+                        style={tw`mr-1`}
+                      />
+                      <Text style={tw`text-xs font-semibold`}>{commande.statut}</Text>
                     </View>
                   </View>
-                )}
-              </View>
-            </TouchableOpacity>
-          ))}
+                </View>
 
-          {commandesFiltrees.length === 0 && (
-            <View style={tw`bg-white rounded-2xl p-8 items-center`}>
-              <Ionicons name="bag-outline" size={48} color="#9CA3AF" />
-              <Text style={tw`text-gray-500 text-lg font-semibold mt-4`}>Aucune commande</Text>
-              <Text style={tw`text-gray-400 text-center mt-2`}>
-                Aucune commande trouvée pour le filtre "{selectedFilter}"
-              </Text>
-            </View>
-          )}
-        </ScrollView>
-      </Animated.View>
+                {/* Informations client */}
+                <View style={tw`bg-gray-50 rounded-xl p-3 mb-3`}>
+                  <View style={tw`flex-row items-center mb-1`}>
+                    <Ionicons name="person" size={16} color="#6B7280" style={tw`mr-2`} />
+                    <Text style={tw`text-gray-800 font-semibold`}>{commande.acheteurNom}</Text>
+                  </View>
+                  <View style={tw`flex-row items-center mb-1`}>
+                    <Ionicons name="call" size={16} color="#6B7280" style={tw`mr-2`} />
+                    <Text style={tw`text-gray-600 text-sm`}>{commande.acheteurPhone}</Text>
+                  </View>
+                  <View style={tw`flex-row items-center`}>
+                    <Ionicons name="location" size={16} color="#6B7280" style={tw`mr-2`} />
+                    <Text style={tw`text-gray-600 text-sm`}>{commande.adresseLivraison}</Text>
+                  </View>
+                </View>
+
+                {/* Produits commandés */}
+                <View style={tw`mb-3`}>
+                  {commande.produits.map((produit, index) => (
+                    <View key={index} style={tw`flex-row justify-between items-center py-1`}>
+                      <Text style={tw`text-gray-700 flex-1`}>
+                        {produit.quantite}x {produit.nom}
+                      </Text>
+                      <Text style={tw`text-gray-800 font-semibold`}>
+                        {produit.total.toLocaleString()} CFA
+                      </Text>
+                    </View>
+                  ))}
+                </View>
+
+                {/* Total et note */}
+                <View style={tw`border-t border-gray-200 pt-3`}>
+                  <View style={tw`flex-row justify-between items-center mb-2`}>
+                    <Text style={tw`text-lg font-bold text-gray-800`}>Total</Text>
+                    <Text style={tw`text-xl font-bold text-green-600`}>
+                      {commande.montantTotal.toLocaleString()} CFA
+                    </Text>
+                  </View>
+                  {commande.noteClient && (
+                    <View style={tw`bg-blue-50 rounded-lg p-2 flex-row items-start mb-3`}>
+                      <Ionicons name="chatbubble" size={14} color="#3B82F6" style={tw`mr-2 mt-1`} />
+                      <Text style={tw`text-blue-700 text-sm flex-1`}>{commande.noteClient}</Text>
+                    </View>
+                  )}
+                  
+                  {/* Actions rapides pour commandes en attente */}
+                  {commande.statut === 'En attente' && (
+                    <View style={tw`flex-row mt-3`}>
+                      <TouchableOpacity
+                        onPress={() => rejectOrder(commande.id)}
+                        style={tw`flex-1 bg-red-500 rounded-xl py-2 px-4 mr-2 flex-row items-center justify-center`}
+                      >
+                        <Ionicons name="close" size={16} color="white" style={tw`mr-1`} />
+                        <Text style={tw`text-white font-semibold text-sm`}>Refuser</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => validateOrder(commande.id)}
+                        style={tw`flex-1 bg-green-500 rounded-xl py-2 px-4 ml-2 flex-row items-center justify-center`}
+                      >
+                        <Ionicons name="checkmark" size={16} color="white" style={tw`mr-1`} />
+                        <Text style={tw`text-white font-semibold text-sm`}>Confirmer</Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                  
+                  {/* Indicateur de progression pour autres statuts */}
+                  {commande.statut !== 'En attente' && commande.statut !== 'Livrée' && commande.statut !== 'Annulée' && (
+                    <View style={tw`mt-3`}>
+                      <View style={tw`flex-row items-center justify-center py-2 px-4 bg-gray-50 rounded-xl`}>
+                        <Ionicons name="time" size={16} color="#6B7280" style={tw`mr-2`} />
+                        <Text style={tw`text-gray-600 text-sm font-medium`}>
+                          Prochaine étape: {getNextStatut(commande.statut) || 'Terminée'}
+                        </Text>
+                      </View>
+                    </View>
+                  )}
+                </View>
+              </TouchableOpacity>
+            ))}
+
+            {commandesFiltrees.length === 0 && (
+              <View style={tw`bg-white rounded-2xl p-8 items-center`}>
+                <Ionicons name="bag-outline" size={48} color="#9CA3AF" />
+                <Text style={tw`text-gray-500 text-lg font-semibold mt-4`}>Aucune commande</Text>
+                <Text style={tw`text-gray-400 text-center mt-2`}>
+                  Aucune commande trouvée pour le filtre "{selectedFilter}"
+                </Text>
+              </View>
+            )}
+          </View>
+        </Animated.View>
+      </ScrollView>
 
       {/* Modal détails de commande */}
       <Modal
@@ -480,21 +523,24 @@ export default function OrdersScreen() {
         onRequestClose={() => setModalVisible(false)}
       >
         <View style={tw`flex-1 bg-black bg-opacity-50 justify-end`}>
-          <View style={tw`bg-white rounded-t-3xl max-h-5/6`}>
+          <View style={[tw`bg-white rounded-t-3xl`, { maxHeight: '85%' }]}>
             {selectedOrder && (
               <>
                 {/* Header modal */}
-                <View style={tw`flex-row justify-between items-center p-6 border-b border-gray-200`}>
-                  <View>
+                <View style={tw`flex-row justify-between items-start p-6 border-b border-gray-200`}>
+                  <View style={tw`flex-1 pr-4`}>
                     <Text style={tw`text-xl font-bold text-gray-800`}>Commande #{selectedOrder.id}</Text>
-                    <Text style={tw`text-gray-600`}>{selectedOrder.dateCommande} • {selectedOrder.heureCommande}</Text>
+                    <Text style={tw`text-gray-600 mt-1`}>{selectedOrder.dateCommande} • {selectedOrder.heureCommande}</Text>
                   </View>
-                  <TouchableOpacity onPress={() => setModalVisible(false)}>
-                    <Ionicons name="close" size={28} color="#374151" />
+                  <TouchableOpacity 
+                    onPress={() => setModalVisible(false)}
+                    style={tw`p-2 bg-gray-100 rounded-full`}
+                  >
+                    <Ionicons name="close" size={20} color="#374151" />
                   </TouchableOpacity>
                 </View>
 
-                <ScrollView style={tw`flex-1 px-6`}>
+                <ScrollView style={tw`flex-1 px-6`} showsVerticalScrollIndicator={false}>
                   {/* Statut actuel */}
                   <View style={tw`my-4`}>
                     <Text style={tw`text-lg font-semibold text-gray-800 mb-3`}>Statut</Text>
@@ -503,10 +549,10 @@ export default function OrdersScreen() {
                         <Ionicons 
                           name={getStatutIcon(selectedOrder.statut)} 
                           size={20} 
-                          color={selectedOrder.statut === 'En attente' ? '#B45309' : 
+                          color={selectedOrder.statut === 'En attente' ? '#D97706' : 
                                  selectedOrder.statut === 'Confirmée' ? '#1D4ED8' :
                                  selectedOrder.statut === 'Préparée' ? '#7C3AED' :
-                                 selectedOrder.statut === 'En livraison' ? '#EA580C' :
+                                 selectedOrder.statut === 'En livraison' ? '#D97706' :
                                  selectedOrder.statut === 'Livrée' ? '#059669' : '#DC2626'} 
                           style={tw`mr-2`}
                         />
@@ -623,6 +669,17 @@ export default function OrdersScreen() {
                       </View>
                     </View>
                   </View>
+
+                  {/* Note client si présente */}
+                  {selectedOrder.noteClient && (
+                    <View style={tw`mb-4`}>
+                      <Text style={tw`text-lg font-semibold text-gray-800 mb-3`}>Note du client</Text>
+                      <View style={tw`bg-blue-50 rounded-xl p-4 flex-row items-start`}>
+                        <Ionicons name="chatbubble" size={20} color="#3B82F6" style={tw`mr-3 mt-1`} />
+                        <Text style={tw`text-blue-700 text-base flex-1`}>{selectedOrder.noteClient}</Text>
+                      </View>
+                    </View>
+                  )}
 
                   {/* Détail des produits */}
                   <View style={tw`mb-6`}>
