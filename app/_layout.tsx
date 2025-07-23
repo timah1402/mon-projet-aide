@@ -63,6 +63,7 @@ export default function RootLayout() {
         <Stack.Screen name="vendeur-dashboard"/>
         <Stack.Screen name="add-product"/>
         <Stack.Screen name=" orders"/>
+        
 
 
 

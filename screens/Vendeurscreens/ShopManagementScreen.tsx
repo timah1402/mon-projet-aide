@@ -176,17 +176,23 @@ const ShopManagementScreen: React.FC = () => {
     Alert.alert('Suppression réussie', `${selectedProducts.length} produit(s) supprimé(s) avec succès.`);
   };
 
+  const handleProductPress = (productId: string) => {
+    console.log('Navigating to product:', productId);
+    // Navigation vers product-details.tsx avec paramètres
+    try {
+      router.push({
+        pathname: '/product-details',
+        params: { id: productId }
+      });
+    } catch (error) {
+      console.error('Navigation error:', error);
+      Alert.alert('Erreur de navigation', error.toString());
+    }
+  };
+
   const handleEditProduct = (productId: string) => {
     // Navigation vers la page d'édition du produit
     router.push(`/edit-product/${productId}`);
-  };
-
-  const handleToggleProductStatus = (productId: string) => {
-    setProduits(prev => prev.map(produit => 
-      produit.id === productId 
-        ? { ...produit, statut: produit.statut === 'Disponible' ? 'En attente' : 'Disponible' }
-        : produit
-    ));
   };
 
   return (
@@ -233,11 +239,22 @@ const ShopManagementScreen: React.FC = () => {
       {/* Products List */}
       <ScrollView style={tw`flex-1`} showsVerticalScrollIndicator={false}>
         {produits.map((produit) => (
-          <View key={produit.id} style={tw`bg-white border-b border-gray-100`}>
+          <TouchableOpacity 
+            key={produit.id} 
+            style={tw`bg-white border-b border-gray-100`}
+            onPress={() => {
+              console.log('Product pressed:', produit.id);
+              handleProductPress(produit.id);
+            }}
+            activeOpacity={0.7}
+          >
             <View style={tw`flex-row items-center p-4`}>
               {/* Checkbox */}
               <TouchableOpacity 
-                onPress={() => handleSelectProduct(produit.id)}
+                onPress={(e) => {
+                  e.stopPropagation(); // Empêche la navigation vers les détails
+                  handleSelectProduct(produit.id);
+                }}
                 style={tw`mr-3`}
               >
                 <Ionicons 
@@ -279,21 +296,8 @@ const ShopManagementScreen: React.FC = () => {
                     </Text>
                   </View>
                   
-                  {/* Actions */}
-                  <View style={tw`flex-row items-center`}>
-                    <TouchableOpacity 
-                      onPress={() => handleToggleProductStatus(produit.id)}
-                      style={tw`p-2 mr-1`}
-                    >
-                      <Ionicons 
-                        name={produit.statut === 'Disponible' ? "pause-circle-outline" : "play-circle-outline"} 
-                        size={20} 
-                        color="#6B7280" 
-                      />
-                    </TouchableOpacity>
-                    
-                   
-                  </View>
+                  {/* Edit Action */}
+                 
                 </View>
 
                 {/* Revenue */}
@@ -301,8 +305,13 @@ const ShopManagementScreen: React.FC = () => {
                   Revenus: {produit.revenu} • Vendu: {produit.vendu}kg
                 </Text>
               </View>
+
+              {/* Arrow indicator */}
+              <View style={tw`ml-2`}>
+                <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
+              </View>
             </View>
-          </View>
+          </TouchableOpacity>
         ))}
 
         {/* Empty State */}

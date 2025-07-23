@@ -12,8 +12,6 @@ export default function VendeurFeaturesScreen() {
       case 'VendeurInventoryScreen':
         router.push('/vendeur-inventory');
         break;
-
-      
       case 'VendeurPaymentMethodsScreen':
         router.push('/vendeur-payment-methods');
         break;
@@ -23,7 +21,12 @@ export default function VendeurFeaturesScreen() {
       case 'VendeurReviewsScreen':
         router.push('/vendeur-reviews');
         break;
-      
+      case 'ListChatScreen':
+        router.push('/list-chat');
+        break;
+      case 'VendeurInvoicesScreen':
+        router.push('/vendeur-invoices');
+        break;
       default:
         console.warn(`Route non trouvée pour: ${screenName}`);
     }
@@ -35,20 +38,26 @@ export default function VendeurFeaturesScreen() {
       icon: <MaterialIcons name="inventory" size={20} color="black" />,
       screen: 'VendeurInventoryScreen',
     },
-    
-    
-    
+    {
+      label: 'Messages',
+      icon: <Ionicons name="chatbubble-outline" size={20} color="black" />,
+      screen: 'ListChatScreen',
+    },
     {
       label: 'Revenus & transactions',
       icon: <FontAwesome5 name="money-bill-wave" size={18} color="black" />,
       screen: 'VendeurTransactionsScreen',
     },
     {
+      label: 'Factures',
+      icon: <MaterialIcons name="receipt" size={20} color="black" />,
+      screen: 'VendeurInvoicesScreen',
+    },
+    {
       label: 'Avis clients',
       icon: <Ionicons name="star-outline" size={20} color="black" />,
       screen: 'VendeurReviewsScreen',
     },
-    
   ];
 
   return (
