@@ -91,7 +91,7 @@ const TenantDashboard: React.FC = () => {
     { label: 'Expéditeur', icon: 'cube-outline' },
     { label: 'Chauffeur', icon: 'car-outline' },
     { label: 'Vendeur', icon: 'storefront-outline' },
-    
+    { label: 'Client', icon: 'bag-outline' },
   ];
 
   const reservations: Reservation[] = [
@@ -140,8 +140,11 @@ const TenantDashboard: React.FC = () => {
       case 'Chauffeur':
         router.replace("/chauffeur-dashboard");
         break;
-       case 'Vendeur':
+      case 'Vendeur':
         router.replace("/vendeur-dashboard");
+        break;
+      case 'Client':
+        router.replace("/customer-dashboard");
         break;
     }
   };

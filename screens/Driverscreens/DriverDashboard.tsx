@@ -113,6 +113,7 @@ const DriverDashboard: React.FC = () => {
     { label: 'Expéditeur', icon: 'cube-outline' },
     { label: 'Chauffeur', icon: 'car-outline' },
     { label: 'Vendeur', icon: 'storefront-outline' },
+    { label: 'Client', icon: 'bag-outline' },
   ];
 
   const statistics: Statistic[] = [
@@ -155,6 +156,9 @@ const DriverDashboard: React.FC = () => {
 
        case 'Vendeur':
         router.replace("/vendeur-dashboard");
+        break;
+      case 'Client':
+        router.replace("/customer-dashboard");
         break;
     }
   };

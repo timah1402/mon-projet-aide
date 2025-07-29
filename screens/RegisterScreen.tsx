@@ -26,7 +26,7 @@ export default function RegisterScreen() {
   const [specialites, setSpecialites] = useState([]);
   const [localisationBoutique, setLocalisationBoutique] = useState('');
 
-  const roles = ['Hôte', 'Locataire', 'Expéditeur', 'Chauffeur', 'Vendeur'];
+  const roles = ['Hôte', 'Locataire', 'Expéditeur', 'Chauffeur', 'Vendeur','client'];
   const { login } = useContext(UserContext);
 
   const specialitesOptions = ['Poissons', 'Fruits de mer', 'Légumes', 'Fruits', 'Viandes', 'Produits laitiers'];
@@ -140,6 +140,9 @@ export default function RegisterScreen() {
         break;
       case 'Vendeur':
         router.replace('/vendeur-dashboard');
+        break;
+      case 'client':
+        router.replace('/customer-dashboard');
         break;
       default:
         router.replace('/login');
