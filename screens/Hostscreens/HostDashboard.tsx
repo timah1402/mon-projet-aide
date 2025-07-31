@@ -49,6 +49,12 @@ const HostDashboardScreen: React.FC = () => {
   // Notifications non lues
   const unreadNotifications: number = 2;
 
+  // Statistiques des réservations (total inclut acceptées, en attente et rejetées)
+  const reservationsAcceptees: number = 18;
+  const reservationsEnAttente: number = 4;
+  const reservationsRejetees: number = 2;
+  const totalReservations: number = reservationsAcceptees + reservationsEnAttente + reservationsRejetees;
+
   // Notifications personnalisées pour ce dashboard
   const customNotifications: Notification[] = [
     {
@@ -254,8 +260,9 @@ const HostDashboardScreen: React.FC = () => {
           </View>
           <View style={tw`w-1/2 p-2`}>
             <View style={tw`bg-gray-100 p-4 rounded-md items-center`}>
-              <Text style={tw`text-lg font-bold mt-1`}>85%</Text>
-              <Text style={tw`text-gray-600 text-sm`}>Taux d'occupation</Text>
+              <Ionicons name="checkmark-circle-outline" size={20} color="black" />
+              <Text style={tw`text-lg font-bold mt-1`}>{reservationsAcceptees}/{totalReservations}</Text>
+              <Text style={tw`text-gray-600 text-sm`}>Acceptées</Text>
             </View>
           </View>
         </View>

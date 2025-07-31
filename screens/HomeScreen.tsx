@@ -3,12 +3,9 @@ import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, SafeAreaView, StatusBar } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import tw from 'tailwind-react-native-classnames';
-// Removed navigation import
 import { UserContext } from '../context/UserContext';
-import { Ionicons } from '@expo/vector-icons';
 
 export default function HomeScreen() {
-  // Navigation removed
   const { user } = useContext(UserContext);
 
   const services = [
@@ -17,10 +14,10 @@ export default function HomeScreen() {
       title: 'Hôte',
       subtitle: 'Gérez vos espaces',
       description: 'Gérez vos espaces frigorifiques et suivez vos performances',
-      icon: 'business-outline',
-      bgColor: '#EFF6FF',
-      borderColor: '#3B82F6',
-      iconColor: '#3B82F6',
+      emoji: '🏢',
+      iconColor: '#10B981',
+      gradientColors: ['#F0FDF4', '#DCFCE7'],
+      shadowColor: '#10B981',
       screen: 'HostDashboardScreen'
     },
     {
@@ -28,10 +25,10 @@ export default function HomeScreen() {
       title: 'Locataire',
       subtitle: 'Trouvez votre espace',
       description: 'Trouvez l\'espace frigorifique parfait pour vos besoins',
-      icon: 'search-outline',
-      bgColor: '#F0FDF4',
-      borderColor: '#10B981',
+      emoji: '🔍',
       iconColor: '#10B981',
+      gradientColors: ['#F0F9FF', '#E0F2FE'],
+      shadowColor: '#0EA5E9',
       screen: 'TenantDashboard'
     },
     {
@@ -39,10 +36,10 @@ export default function HomeScreen() {
       title: 'Expéditeur',
       subtitle: 'Livraisons réfrigérées',
       description: 'Gérez vos livraisons réfrigérées en toute simplicité',
-      icon: 'cube-outline',
-      bgColor: '#F3E8FF',
-      borderColor: '#8B5CF6',
-      iconColor: '#8B5CF6',
+      emoji: '📦',
+      iconColor: '#10B981',
+      gradientColors: ['#FDF4FF', '#FAE8FF'],
+      shadowColor: '#A855F7',
       screen: 'ExpediteurDashboardScreen'
     },
     {
@@ -50,63 +47,123 @@ export default function HomeScreen() {
       title: 'Chauffeur',
       subtitle: 'Transport frigorifique',
       description: 'Gérez vos courses et optimisez vos trajets',
-      icon: 'car-outline',
-      bgColor: '#FEE2E2',
-      borderColor: '#EF4444',
-      iconColor: '#EF4444',
+      emoji: '🚛',
+      iconColor: '#10B981',
+      gradientColors: ['#FEF2F2', '#FEE2E2'],
+      shadowColor: '#EF4444',
       screen: 'ChauffeurDashboardScreen'
     },
+    {
+      id: 'vente_produits',
+      title: 'Vendre',
+      subtitle: 'Produits frais',
+      description: 'Postez vos produits frais sur la marketplace',
+      emoji: '🏪',
+      iconColor: '#10B981',
+      gradientColors: ['#FFFBEB', '#FEF3C7'],
+      shadowColor: '#F59E0B',
+      screen: 'SellProductsScreen'
+    },
+    {
+      id: 'achat_produits',
+      title: 'Acheter',
+      subtitle: 'Produits frais',
+      description: 'Découvrez et achetez des produits frais locaux',
+      emoji: '🛒',
+      iconColor: '#10B981',
+      gradientColors: ['#F0FDFA', '#CCFBF1'],
+      shadowColor: '#14B8A6',
+      screen: 'BuyProductsScreen'
+    }
   ];
 
   const handleServicePress = (service) => {
-    navigation.navigate(service.screen);
+    router.push(service.screen);
   };
 
   return (
     <SafeAreaView style={tw`flex-1 bg-gray-50`}>
       <StatusBar barStyle="dark-content" backgroundColor="#f9fafb" />
       
-      {/* Header avec gradient */}
-      <LinearGradient
-        colors={['#ffffff', '#f9fafb']}
-        style={tw`px-6 py-6 border-b border-gray-200`}
-      >
-        <View style={tw`flex-row items-center justify-between`}>
-          <View>
-            <Text style={tw`text-3xl font-bold text-gray-900`}>
-              <Text style={tw`text-red-600`}>LINKO</Text>
-            </Text>
-            <Text style={tw`text-gray-600 text-sm mt-1`}>
-              Plateforme de services frigorifiques
-            </Text>
+      {/* Header moderne */}
+      <View style={tw`px-6 py-6 bg-white`}>
+        <View style={{
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.05,
+          shadowRadius: 8,
+          elevation: 3
+        }}>
+          <View style={tw`flex-row items-center`}>
+            {/* Logo 3D avec emoji style Flaticon */}
+            <View style={{
+              shadowColor: '#10B981',
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.3,
+              shadowRadius: 8,
+              elevation: 8
+            }}>
+              <LinearGradient
+                colors={['#10B981', '#059669']}
+                style={tw`w-16 h-16 rounded-full items-center justify-center mr-4`}
+              >
+                <View style={tw`w-14 h-14 bg-white bg-opacity-20 rounded-full items-center justify-center`}>
+                  <Text style={tw`text-2xl`}>🧊</Text>
+                </View>
+              </LinearGradient>
+            </View>
+            
+            <View>
+              <Text style={tw`text-3xl font-bold text-gray-900`}>
+                Senfrais
+              </Text>
+              <View style={tw`flex-row items-center mt-1`}>
+                <Text style={tw`text-xl mr-2`}>📍</Text>
+                <Text style={tw`text-gray-600 text-sm font-medium`}>
+                  Dakar, Sénégal
+                </Text>
+              </View>
+            </View>
           </View>
-          
-          <TouchableOpacity style={tw`p-3 rounded-full bg-white shadow-sm`}>
-            <Ionicons name="notifications-outline" size={24} color="#6B7280" />
-          </TouchableOpacity>
         </View>
-      </LinearGradient>
+      </View>
 
       <ScrollView 
         style={tw`flex-1`}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={tw`pb-6`}
+        contentContainerStyle={tw`pb-8`}
       >
-        {/* Message de bienvenue */}
-        <View style={tw`px-6 py-4`}>
-          <View style={tw`bg-white rounded-2xl p-4 shadow-sm border border-gray-100`}>
-            <Text style={tw`text-lg font-semibold text-gray-900 mb-2`}>
-              👋 Bienvenue sur LINKO
-            </Text>
-            <Text style={tw`text-gray-600 text-sm leading-5`}>
-              Choisissez votre service pour commencer votre expérience dans l'écosystème frigorifique
-            </Text>
+        {/* Message d'accueil */}
+        <View style={tw`px-6 py-6`}>
+          <View style={{
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.1,
+            shadowRadius: 12,
+            elevation: 6
+          }}>
+            <LinearGradient
+              colors={['#ffffff', '#f8fafc']}
+              style={tw`rounded-3xl p-6 border border-gray-100`}
+            >
+              <View style={tw`flex-row items-center`}>
+                <Text style={tw`text-4xl mr-4`}>👋</Text>
+                <View style={tw`flex-1`}>
+                  <Text style={tw`text-xl font-bold text-gray-900 mb-2`}>
+                    Bienvenue sur Senfrais
+                  </Text>
+                  <Text style={tw`text-gray-600 text-sm leading-5`}>
+                    Votre plateforme de confiance pour la chaîne du froid
+                  </Text>
+                </View>
+              </View>
+            </LinearGradient>
           </View>
         </View>
 
-        {/* Services principaux - Style Yango avec icônes plus grandes */}
+        {/* Services avec emojis style Flaticon en 2 colonnes */}
         <View style={tw`px-6 py-2`}>
-          <Text style={tw`text-xl font-bold text-gray-900 mb-6`}>
+          <Text style={tw`text-2xl font-bold text-gray-900 mb-8`}>
             Nos Services
           </Text>
           
@@ -115,102 +172,59 @@ export default function HomeScreen() {
               <TouchableOpacity
                 key={service.id}
                 onPress={() => handleServicePress(service)}
-                style={[
-                  tw`rounded-3xl p-4 mb-4 shadow-lg border border-gray-200`,
-                  {
-                    backgroundColor: service.bgColor,
-                    width: '48%',
-                    height: 180
-                  }
-                ]}
+                style={[tw`mb-6`, { width: '48%' }]}
                 activeOpacity={0.8}
               >
-                {/* Icône principale - Beaucoup plus grande comme Yango */}
-                <View style={tw`mb-3 items-center justify-center flex-1`}>
-                  <View style={[
-                    tw`w-20 h-20 rounded-3xl items-center justify-center shadow-md`,
-                    { backgroundColor: 'rgba(255,255,255,0.9)' }
-                  ]}>
-                    <Ionicons 
-                      name={service.icon} 
-                      size={40} 
-                      color={service.iconColor} 
-                    />
-                  </View>
-                </View>
-                
-                {/* Contenu - Plus compact */}
-                <View style={tw`items-center`}>
-                  <Text style={tw`text-gray-900 font-bold text-lg mb-1 text-center`}>
-                    {service.title}
-                  </Text>
-                  
-                  <Text style={tw`text-gray-600 text-xs text-center leading-4`}>
-                    {service.subtitle}
-                  </Text>
+                {/* Carte avec effet 3D */}
+                <View style={{
+                  shadowColor: service.shadowColor,
+                  shadowOffset: { width: 0, height: 8 },
+                  shadowOpacity: 0.15,
+                  shadowRadius: 16,
+                  elevation: 12
+                }}>
+                  <LinearGradient
+                    colors={['#ffffff', '#fafafa']}
+                    style={[tw`rounded-3xl p-5 border border-gray-100`, { height: 220 }]}
+                  >
+                    {/* Emoji grande taille style Flaticon */}
+                    <View style={tw`items-center mb-4`}>
+                      <View style={{
+                        shadowColor: service.shadowColor,
+                        shadowOffset: { width: 0, height: 6 },
+                        shadowOpacity: 0.25,
+                        shadowRadius: 12,
+                        elevation: 10
+                      }}>
+                        <LinearGradient
+                          colors={service.gradientColors}
+                          style={tw`w-20 h-20 rounded-2xl items-center justify-center`}
+                        >
+                          <View style={tw`w-18 h-18 bg-white bg-opacity-60 rounded-xl items-center justify-center`}>
+                            <Text style={tw`text-4xl`}>
+                              {service.emoji}
+                            </Text>
+                          </View>
+                        </LinearGradient>
+                      </View>
+                    </View>
+                    
+                    {/* Contenu centré avec meilleur espacement */}
+                    <View style={tw`flex-1 items-center justify-center`}>
+                      <Text style={[tw`text-gray-900 font-bold text-center mb-2`, { fontSize: 16 }]}>
+                        {service.title}
+                      </Text>
+                      <Text style={[tw`text-green-600 font-semibold text-center mb-3`, { fontSize: 12 }]}>
+                        {service.subtitle}
+                      </Text>
+                      <Text style={[tw`text-gray-500 text-center px-1`, { fontSize: 10, lineHeight: 14 }]}>
+                        {service.description}
+                      </Text>
+                    </View>
+                  </LinearGradient>
                 </View>
               </TouchableOpacity>
             ))}
-          </View>
-        </View>
-
-        {/* Section informative */}
-        <View style={tw`px-6 py-4`}>
-          <View style={tw`bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-6`}>
-            <LinearGradient
-              colors={['#3B82F6', '#8B5CF6']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={tw`rounded-2xl p-6`}
-            >
-              <View style={tw`flex-row items-center`}>
-                <View style={tw`flex-1`}>
-                  <Text style={tw`text-white font-bold text-lg mb-2`}>
-                    Nouveau sur LINKO ?
-                  </Text>
-                  <Text style={tw`text-white text-sm opacity-90 mb-4`}>
-                    Découvrez comment optimiser vos besoins en réfrigération
-                  </Text>
-                  <TouchableOpacity style={tw`bg-white rounded-full px-4 py-2 self-start`}>
-                    <Text style={tw`text-blue-600 font-semibold text-sm`}>
-                      En savoir plus
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={tw`ml-4`}>
-                  <Ionicons name="information-circle" size={56} color="white" />
-                </View>
-              </View>
-            </LinearGradient>
-          </View>
-        </View>
-
-        {/* Statistiques rapides */}
-        <View style={tw`px-6 py-4`}>
-          <Text style={tw`text-lg font-bold text-gray-900 mb-4`}>
-            Statistiques en temps réel
-          </Text>
-          
-          <View style={tw`flex-row justify-between`}>
-            <View style={tw`bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex-1 mr-2`}>
-              <View style={tw`flex-row items-center mb-2`}>
-                <Ionicons name="people" size={24} color="#10B981" />
-                <Text style={tw`text-green-600 font-semibold text-sm ml-2`}>
-                  Utilisateurs actifs
-                </Text>
-              </View>
-              <Text style={tw`text-2xl font-bold text-gray-900`}>1,234</Text>
-            </View>
-            
-            <View style={tw`bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex-1 ml-2`}>
-              <View style={tw`flex-row items-center mb-2`}>
-                <Ionicons name="trending-up" size={24} color="#3B82F6" />
-                <Text style={tw`text-blue-600 font-semibold text-sm ml-2`}>
-                  Transactions
-                </Text>
-              </View>
-              <Text style={tw`text-2xl font-bold text-gray-900`}>567</Text>
-            </View>
           </View>
         </View>
       </ScrollView>

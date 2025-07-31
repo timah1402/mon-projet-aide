@@ -28,7 +28,7 @@ export default function LoginScreen() {
   if (phone === '1111' && password === 'user123') {
     const userData = { name: 'User', phone, role: 'User' }; // Correction du nom
     login(userData);
-    router.replace('/host-dashboard'); // Correction ici
+    router.replace('/home'); // Correction ici
     return;
   }
 

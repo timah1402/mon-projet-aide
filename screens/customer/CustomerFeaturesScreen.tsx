@@ -15,21 +15,11 @@ export default function CustomerFeaturesScreen() {
       case 'ListChatScreen':
         router.push('/list-chat');
         break;
-      case 'CustomerReviewsScreen':
-        router.push('/customer-reviews');
-        break;
-      case 'CustomerNotificationsScreen':
-        router.push('/customer-notifications');
-        break;
-      case 'CustomerAddressesScreen':
-        router.push('/customer-addresses');
-        break;
-      case 'HelpSupportScreen':
-        router.push('/help-support');
-        break;
-      case 'AppSettingsScreen':
-        router.push('/app-settings');
-        break;
+      
+      
+      
+      
+      
       default:
         console.warn(`Route non trouvée pour: ${screenName}`);
     }
@@ -38,11 +28,10 @@ export default function CustomerFeaturesScreen() {
   const features = [
     { label: "Mes transactions", icon: <FontAwesome5 name="receipt" size={20} color="black" />, screen: "CustomerTransactionsScreen" },
     { label: "Messages", icon: <Ionicons name="chatbubble-outline" size={20} color="black" />, screen: "ListChatScreen" },
-    { label: "Mes avis", icon: <Ionicons name="star-outline" size={20} color="black" />, screen: "CustomerReviewsScreen" },
-    { label: "Mes adresses", icon: <Ionicons name="location-outline" size={20} color="black" />, screen: "CustomerAddressesScreen" },
-    { label: "Notifications", icon: <Ionicons name="notifications-outline" size={20} color="black" />, screen: "CustomerNotificationsScreen" },
-    { label: "Aide et support", icon: <Ionicons name="help-circle-outline" size={20} color="black" />, screen: "HelpSupportScreen" },
-    { label: "Paramètres", icon: <Ionicons name="settings-outline" size={20} color="black" />, screen: "AppSettingsScreen" },
+    
+   
+   
+   
   ];
 
   return (
