@@ -13,6 +13,8 @@ export default function ReservationRequestsScreen() {
       name: 'Fatou Ndiaye',
       listing: 'Chambre froide Port',
       dates: '3 au 6 juillet',
+      startDate: new Date(2024, 6, 3), // 3 juillet
+      endDate: new Date(2024, 6, 6),   // 6 juillet
       status: 'pending',
     },
     {
@@ -20,6 +22,8 @@ export default function ReservationRequestsScreen() {
       name: 'Aliou Ba',
       listing: 'Espace Almadies',
       dates: '10 au 12 juillet',
+      startDate: new Date(2024, 6, 10), // 10 juillet
+      endDate: new Date(2024, 6, 12),   // 12 juillet
       status: 'accepted',
     },
     {
@@ -27,6 +31,8 @@ export default function ReservationRequestsScreen() {
       name: 'Moussa Diallo',
       listing: 'Entrepôt Pikine',
       dates: '15 au 18 juillet',
+      startDate: new Date(2024, 6, 15), // 15 juillet
+      endDate: new Date(2024, 6, 18),   // 18 juillet
       status: 'pending',
     },
     {
@@ -34,6 +40,8 @@ export default function ReservationRequestsScreen() {
       name: 'Awa Seck',
       listing: 'Chambre froide Port',
       dates: '5 au 8 juillet',
+      startDate: new Date(2024, 6, 5), // 5 juillet
+      endDate: new Date(2024, 6, 8),   // 8 juillet
       status: 'refused',
     },
   ]);
@@ -43,22 +51,48 @@ export default function ReservationRequestsScreen() {
   const historyRequests = requests.filter(req => req.status === 'accepted' || req.status === 'refused');
 
   const handleResponse = (id, action) => {
-    const updated = requests.map(req =>
-      req.id === id ? { ...req, status: action } : req
-    );
-    setRequests(updated);
+    const request = requests.find(req => req.id === id);
+    const actionText = action === 'accepted' ? 'accepter' : 'refuser';
+    const actionTextCapitalized = action === 'accepted' ? 'Accepter' : 'Refuser';
+    
     Alert.alert(
-      'Succès',
-      action === 'accepted' ? 'Réservation acceptée.' : 'Réservation refusée.'
+      'Confirmation',
+      `Êtes-vous sûr de vouloir ${actionText} la demande de ${request.name} pour "${request.listing}" du ${request.dates} ?`,
+      [
+        {
+          text: 'Annuler',
+          style: 'cancel',
+        },
+        {
+          text: actionTextCapitalized,
+          style: action === 'accepted' ? 'default' : 'destructive',
+          onPress: () => {
+            const updated = requests.map(req =>
+              req.id === id ? { ...req, status: action } : req
+            );
+            setRequests(updated);
+            Alert.alert(
+              'Succès',
+              action === 'accepted' ? 'Réservation acceptée.' : 'Réservation refusée.'
+            );
+          },
+        },
+      ]
     );
   };
 
   const goToChat = (userName, userId) => {
-    // navigation.navigate('ChatScreen', {
-    //   userId,
-    //   userName,
-    // });
     console.log(`Chat avec ${userName}`);
+  };
+
+  const goToCalendar = () => {
+    // Passer les données des réservations au calendrier
+    router.push({
+      pathname: '/reservation-calendar',
+      params: { 
+        reservationsData: JSON.stringify(requests)
+      }
+    });
   };
 
   const renderStatusBadge = (status) => {
@@ -183,11 +217,20 @@ export default function ReservationRequestsScreen() {
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       {/* Header */}
-      <View style={tw`flex-row items-center px-4 py-4 bg-white border-b border-gray-200`}>
-        <TouchableOpacity onPress={() => router.back()} style={tw`mr-3`}>
-          <Ionicons name="arrow-back" size={24} color="black" />
+      <View style={tw`flex-row items-center justify-between px-4 py-4 bg-white border-b border-gray-200`}>
+        <View style={tw`flex-row items-center`}>
+          <TouchableOpacity onPress={() => router.back()} style={tw`mr-3`}>
+            <Ionicons name="arrow-back" size={24} color="black" />
+          </TouchableOpacity>
+          <Text style={tw`text-lg font-bold`}>Demandes de réservation</Text>
+        </View>
+        
+        <TouchableOpacity 
+          onPress={goToCalendar}
+          style={tw`p-2 rounded-full bg-blue-50`}
+        >
+          <Ionicons name="calendar" size={24} color="#2563eb" />
         </TouchableOpacity>
-        <Text style={tw`text-lg font-bold`}>Demandes de réservation</Text>
       </View>
 
       {/* Tabs */}
