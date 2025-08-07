@@ -21,6 +21,7 @@ const listings = [
     reviews: 23,
     host: 'Moussa Diagne',
     hostRating: 4.8,
+    type: 'individuel', // Nouveau champ
     features: ['Accès 24/7', 'Surveillance', 'Étagères'],
     image: require('../../assets/chambrefroide.jpg'),
     coordinates: { latitude: 14.6937, longitude: -17.4441 }
@@ -32,13 +33,14 @@ const listings = [
     distance: '3.7 km',
     volume: '12 m³',
     temp: '0°C à 6°C',
-    price: '12 000 CFA/jour',
+    price: '12 000 CFA/jour/utilisateur',
     priceValue: 12000,
     rating: 4.7,
     reviews: 18,
     host: 'Fatou Sall',
     hostRating: 4.6,
-    features: ['Parking', 'Quai de déchargement'],
+    type: 'shared', // Location partagée
+    features: ['Parking', 'Quai de déchargement', 'Compartiments sécurisés'],
     image: require('../../assets/chambrefroide.jpg'),
     coordinates: { latitude: 14.7392, longitude: -17.4932 }
   },
@@ -55,10 +57,29 @@ const listings = [
     reviews: 31,
     host: 'Omar Ndiaye',
     hostRating: 4.9,
+    type: 'Individuelle', // Location unique
     features: ['Accès 24/7', 'Surveillance', 'Étagères', '+1 autres'],
     image: require('../../assets/chambrefroide.jpg'),
     coordinates: { latitude: 14.7645, longitude: -17.3993 }
   },
+  {
+    id: 4,
+    title: 'Grande chambre froide industrielle',
+    location: 'Zone Industrielle, Dakar',
+    distance: '4.2 km',
+    volume: '20 m³',
+    temp: '0°C à 4°C',
+    price: '8 500 CFA/jour/utilisateur',
+    priceValue: 8500,
+    rating: 4.6,
+    reviews: 42,
+    host: 'Mamadou Fall',
+    hostRating: 4.9,
+    type: 'shared', // Location partagée
+    features: ['Accès 24/7', 'Surveillance', 'Compartiments verrouillables', 'Parking'],
+    image: require('../../assets/chambrefroide.jpg'),
+    coordinates: { latitude: 14.7167, longitude: -17.4200 }
+  }
 ];
 
 const locations = [
@@ -98,6 +119,7 @@ export default function SearchScreen() {
     priceMax: '',
     tempMin: '',
     tempMax: '',
+    type: '', // Nouveau filtre pour le type de location
   });
 
   // Autocomplétion pour la localisation
@@ -122,6 +144,11 @@ export default function SearchScreen() {
       filtered = filtered.filter(listing =>
         listing.location.toLowerCase().includes(location.toLowerCase())
       );
+    }
+
+    // Filtre par type de location
+    if (filters.type) {
+      filtered = filtered.filter(listing => listing.type === filters.type);
     }
 
     // Filtre par prix
@@ -176,6 +203,7 @@ export default function SearchScreen() {
       priceMax: '',
       tempMin: '',
       tempMax: '',
+      type: '',
     });
     setLocation('');
     setStartDate('');
@@ -193,53 +221,83 @@ export default function SearchScreen() {
     });
   };
 
-  const renderListingCard = ({ item }) => (
-    <View style={tw`bg-white rounded-xl border border-gray-200 shadow-sm mb-4 overflow-hidden`}>
-      <Image source={item.image} style={tw`w-full h-40`} resizeMode="cover" />
-      <View style={tw`p-4`}>
-        <View style={tw`flex-row justify-between items-start mb-2`}>
-          <Text style={tw`text-lg font-bold flex-1`}>{item.title}</Text>
-          <View style={tw`flex-row items-center`}>
-            <Ionicons name="star" size={14} color="#FFD700" />
-            <Text style={tw`text-sm text-gray-600 ml-1`}>{item.rating}</Text>
-          </View>
-        </View>
-        
-        <Text style={tw`text-sm text-gray-600 mb-1`}>
-          <Ionicons name="location-outline" size={14} color="#666" />
-          {' '}{item.location} • {item.distance}
-        </Text>
-        
-        <Text style={tw`text-sm text-gray-600 mb-2`}>
-          <MaterialIcons name="kitchen" size={14} color="#666" />
-          {' '}{item.volume} • {item.temp}
-        </Text>
+  const getTypeBadge = (type) => {
+    if (type === 'Individuelle') {
+      return {
+        bgColor: 'bg-blue-100',
+        textColor: 'text-blue-700',
+        icon: 'person-outline',
+        label: 'Location Individuelle'
+      };
+    } else {
+      return {
+        bgColor: 'bg-orange-100',
+        textColor: 'text-orange-700',
+        icon: 'people-outline',
+        label: 'Location partagée'
+      };
+    }
+  };
 
-        <View style={tw`flex-row flex-wrap mb-3`}>
-          {item.features.map((feature, index) => (
-            <View key={index} style={tw`bg-blue-50 px-2 py-1 mr-2 mb-1 rounded-full`}>
-              <Text style={tw`text-xs text-blue-600`}>{feature}</Text>
+  const renderListingCard = ({ item }) => {
+    const typeBadge = getTypeBadge(item.type);
+    
+    return (
+      <View style={tw`bg-white rounded-xl border border-gray-200 shadow-sm mb-4 overflow-hidden`}>
+        <Image source={item.image} style={tw`w-full h-40`} resizeMode="cover" />
+        <View style={tw`p-4`}>
+          <View style={tw`flex-row justify-between items-start mb-2`}>
+            <Text style={tw`text-lg font-bold flex-1`}>{item.title}</Text>
+            <View style={tw`flex-row items-center`}>
+              <Ionicons name="star" size={14} color="#FFD700" />
+              <Text style={tw`text-sm text-gray-600 ml-1`}>{item.rating}</Text>
             </View>
-          ))}
-        </View>
-
-        <View style={tw`flex-row justify-between items-center`}>
-          <View>
-            <Text style={tw`text-lg font-bold text-blue-600`}>{item.price}</Text>
-            <Text style={tw`text-xs text-gray-500`}>
-              Hôte: {item.host} ⭐ {item.hostRating}
-            </Text>
           </View>
-          <TouchableOpacity 
-            onPress={() => router.push("/view-details")}
-            style={tw`bg-blue-600 px-4 py-2 rounded-lg`}
-          >
-            <Text style={tw`text-white text-sm font-medium`}>Voir détails</Text>
-          </TouchableOpacity>
+          
+          {/* Badge type de location */}
+          <View style={tw`flex-row mb-2`}>
+            <View style={tw`${typeBadge.bgColor} px-2 py-1 rounded-full flex-row items-center`}>
+              <Ionicons name={typeBadge.icon} size={12} color={typeBadge.textColor.includes('blue') ? '#1d4ed8' : '#ea580c'} style={tw`mr-1`} />
+              <Text style={tw`${typeBadge.textColor} text-xs font-medium`}>{typeBadge.label}</Text>
+            </View>
+          </View>
+          
+          <Text style={tw`text-sm text-gray-600 mb-1`}>
+            <Ionicons name="location-outline" size={14} color="#666" />
+            {' '}{item.location} • {item.distance}
+          </Text>
+          
+          <Text style={tw`text-sm text-gray-600 mb-2`}>
+            <MaterialIcons name="kitchen" size={14} color="#666" />
+            {' '}{item.volume} • {item.temp}
+          </Text>
+
+          <View style={tw`flex-row flex-wrap mb-3`}>
+            {item.features.map((feature, index) => (
+              <View key={index} style={tw`bg-blue-50 px-2 py-1 mr-2 mb-1 rounded-full`}>
+                <Text style={tw`text-xs text-blue-600`}>{feature}</Text>
+              </View>
+            ))}
+          </View>
+
+          <View style={tw`flex-row justify-between items-center`}>
+            <View>
+              <Text style={tw`text-lg font-bold text-blue-600`}>{item.price}</Text>
+              <Text style={tw`text-xs text-gray-500`}>
+                Hôte: {item.host} ⭐ {item.hostRating}
+              </Text>
+            </View>
+            <TouchableOpacity 
+              onPress={() => router.push("/view-details")}
+              style={tw`bg-blue-600 px-4 py-2 rounded-lg`}
+            >
+              <Text style={tw`text-white text-sm font-medium`}>Voir détails</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   const renderMapView = () => (
     <View style={tw`flex-1`}>
@@ -257,7 +315,13 @@ export default function SearchScreen() {
             coordinate={listing.coordinates}
             onPress={() => onMarkerPress(listing)}
           >
-            <View style={tw`bg-blue-600 px-3 py-2 rounded-full shadow-lg`}>
+            <View style={tw`${listing.type === 'Individuelle' ? 'bg-blue-600' : 'bg-orange-600'} px-3 py-2 rounded-full shadow-lg flex-row items-center`}>
+              <Ionicons 
+                name={listing.type === 'Individuelle' ? 'person' : 'people'} 
+                size={12} 
+                color="white" 
+                style={tw`mr-1`} 
+              />
               <Text style={tw`text-white text-xs font-bold`}>
                 {listing.priceValue.toLocaleString()} CFA
               </Text>
@@ -277,6 +341,20 @@ export default function SearchScreen() {
             />
             <View style={tw`flex-1`}>
               <Text style={tw`text-lg font-bold mb-1`}>{selectedListing.title}</Text>
+              
+              {/* Badge type dans la carte popup */}
+              <View style={tw`flex-row mb-1`}>
+                {(() => {
+                  const badge = getTypeBadge(selectedListing.type);
+                  return (
+                    <View style={tw`${badge.bgColor} px-2 py-0.5 rounded-full flex-row items-center`}>
+                      <Ionicons name={badge.icon} size={10} color={badge.textColor.includes('blue') ? '#1d4ed8' : '#ea580c'} style={tw`mr-1`} />
+                      <Text style={tw`${badge.textColor} text-xs`}>{badge.label}</Text>
+                    </View>
+                  );
+                })()}
+              </View>
+              
               <Text style={tw`text-sm text-gray-600 mb-1`}>{selectedListing.location}</Text>
               <Text style={tw`text-sm text-gray-600 mb-2`}>
                 {selectedListing.volume} • {selectedListing.temp}
@@ -370,11 +448,45 @@ export default function SearchScreen() {
 
       {/* Filtres complets */}
       {showFilters && (
-        <ScrollView style={tw`bg-white px-4 py-3 border-b border-gray-200 max-h-64`}>
+        <ScrollView style={tw`bg-white px-4 py-3 border-b border-gray-200 max-h-80`}>
           <View style={tw`flex-row justify-between items-center mb-4`}>
             <Text style={tw`text-lg font-semibold`}>Filtres</Text>
             <TouchableOpacity onPress={clearFilters}>
               <Text style={tw`text-blue-600 font-medium`}>Effacer tout</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Type de location */}
+          <Text style={tw`text-sm font-semibold mb-2 text-gray-700`}>Type de location</Text>
+          <View style={tw`flex-row justify-between mb-4`}>
+            <TouchableOpacity
+              onPress={() => setFilters({ ...filters, type: filters.type === 'Individuellee' ? '' : 'Individuelle' })}
+              style={tw`flex-row items-center justify-center px-4 py-3 rounded-lg border ${filters.type === 'unique' ? 'border-blue-600 bg-blue-50' : 'border-gray-300 bg-white'} flex-1 mr-2`}
+            >
+              <Ionicons 
+                name="person-outline" 
+                size={16} 
+                color={filters.type === 'Individuelle' ? '#2563eb' : '#6b7280'} 
+                style={tw`mr-2`} 
+              />
+              <Text style={tw`text-sm ${filters.type === 'Individuelle' ? 'text-blue-600 font-medium' : 'text-gray-600'}`}>
+               Individuelle
+              </Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity
+              onPress={() => setFilters({ ...filters, type: filters.type === 'shared' ? '' : 'shared' })}
+              style={tw`flex-row items-center justify-center px-4 py-3 rounded-lg border ${filters.type === 'shared' ? 'border-orange-600 bg-orange-50' : 'border-gray-300 bg-white'} flex-1 ml-2`}
+            >
+              <Ionicons 
+                name="people-outline" 
+                size={16} 
+                color={filters.type === 'shared' ? '#ea580c' : '#6b7280'} 
+                style={tw`mr-2`} 
+              />
+              <Text style={tw`text-sm ${filters.type === 'shared' ? 'text-orange-600 font-medium' : 'text-gray-600'}`}>
+                Partagée
+              </Text>
             </TouchableOpacity>
           </View>
 

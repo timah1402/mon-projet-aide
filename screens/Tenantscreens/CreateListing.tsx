@@ -3,14 +3,13 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import tw from 'tailwind-react-native-classnames';
 import { Ionicons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
-// Removed navigation import
-export default function CreateListingScreen() {
-  // Navigation removed // ajoute ceci
 
+export default function CreateListingScreen() {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
     address: '',
     title: '',
+    type: '', // Nouveau champ ajouté
     volume: '',
     tempMin: '',
     tempMax: '',
@@ -33,6 +32,22 @@ export default function CreateListingScreen() {
     { label: 'Quai de déchargement', icon: 'bus-outline' },
     { label: 'Étagères', icon: 'albums-outline' },
     { label: 'Parking', icon: 'car-outline' },
+  ];
+
+  // Options pour le type de location
+  const typeOptions = [
+    {
+      value: 'unique',
+      label: 'Location unique',
+      description: 'Idéal pour les petites chambres froides',
+      icon: 'person-outline'
+    },
+    {
+      value: 'shared',
+      label: 'Location partagée',
+      description: 'Idéal pour les grandes chambres froides',
+      icon: 'people-outline'
+    }
   ];
 
   const toggleSelection = (list, item) =>
@@ -63,11 +78,69 @@ export default function CreateListingScreen() {
         return (
           <View>
             <Text style={tw`text-xl font-bold mb-4`}>Décrivez votre chambre froide</Text>
-            <TextInput placeholder="Titre de l'annonce" value={form.title} onChangeText={value => setForm({ ...form, title: value })} style={tw`border px-4 py-3 rounded-md mb-4`} />
+            <TextInput 
+              placeholder="Titre de l'annonce" 
+              value={form.title} 
+              onChangeText={value => setForm({ ...form, title: value })} 
+              style={tw`border px-4 py-3 rounded-md mb-4`} 
+            />
+            
+            {/* Nouveau champ Type de location */}
+            <Text style={tw`text-lg font-semibold mb-3`}>Type de location</Text>
+            <View style={tw`mb-4`}>
+              {typeOptions.map((option, index) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => setForm({ ...form, type: option.value })}
+                  style={tw`border rounded-md p-4 mb-2 flex-row items-center ${
+                    form.type === option.value ? 'border-blue-600 bg-blue-50' : 'border-gray-300'
+                  }`}
+                >
+                  <Ionicons 
+                    name={option.icon} 
+                    size={24} 
+                    color={form.type === option.value ? '#2563eb' : '#6b7280'} 
+                    style={tw`mr-3`}
+                  />
+                  <View style={tw`flex-1`}>
+                    <Text style={tw`font-semibold text-base ${
+                      form.type === option.value ? 'text-blue-600' : 'text-gray-800'
+                    }`}>
+                      {option.label}
+                    </Text>
+                    <Text style={tw`text-sm text-gray-600 mt-1`}>
+                      {option.description}
+                    </Text>
+                  </View>
+                  {form.type === option.value && (
+                    <Ionicons name="checkmark-circle" size={20} color="#2563eb" />
+                  )}
+                </TouchableOpacity>
+              ))}
+            </View>
+
             <View style={tw`flex-row justify-between mb-4`}>
-              <TextInput placeholder="Volume (m³)" keyboardType="numeric" value={form.volume} onChangeText={value => setForm({ ...form, volume: value })} style={tw`border px-4 py-3 rounded-md w-[30%]`} />
-              <TextInput placeholder="Temp. Min (°C)" keyboardType="numeric" value={form.tempMin} onChangeText={value => setForm({ ...form, tempMin: value })} style={tw`border px-4 py-3 rounded-md w-[30%]`} />
-              <TextInput placeholder="Temp. Max (°C)" keyboardType="numeric" value={form.tempMax} onChangeText={value => setForm({ ...form, tempMax: value })} style={tw`border px-4 py-3 rounded-md w-[30%]`} />
+              <TextInput 
+                placeholder="Volume (m³)" 
+                keyboardType="numeric" 
+                value={form.volume} 
+                onChangeText={value => setForm({ ...form, volume: value })} 
+                style={tw`border px-4 py-3 rounded-md w-[30%]`} 
+              />
+              <TextInput 
+                placeholder="Temp. Min (°C)" 
+                keyboardType="numeric" 
+                value={form.tempMin} 
+                onChangeText={value => setForm({ ...form, tempMin: value })} 
+                style={tw`border px-4 py-3 rounded-md w-[30%]`} 
+              />
+              <TextInput 
+                placeholder="Temp. Max (°C)" 
+                keyboardType="numeric" 
+                value={form.tempMax} 
+                onChangeText={value => setForm({ ...form, tempMax: value })} 
+                style={tw`border px-4 py-3 rounded-md w-[30%]`} 
+              />
             </View>
             <Text style={tw`mb-2`}>Types de marchandises autorisés</Text>
             <View style={tw`flex-row flex-wrap mb-4`}>
@@ -81,7 +154,14 @@ export default function CreateListingScreen() {
                 </TouchableOpacity>
               ))}
             </View>
-            <TextInput placeholder="Description détaillée" value={form.description} onChangeText={value => setForm({ ...form, description: value })} multiline numberOfLines={4} style={tw`border px-4 py-3 rounded-md`} />
+            <TextInput 
+              placeholder="Description détaillée" 
+              value={form.description} 
+              onChangeText={value => setForm({ ...form, description: value })} 
+              multiline 
+              numberOfLines={4} 
+              style={tw`border px-4 py-3 rounded-md`} 
+            />
           </View>
         );
       case 3:
@@ -100,7 +180,14 @@ export default function CreateListingScreen() {
                 </TouchableOpacity>
               ))}
             </View>
-            <TextInput placeholder="Règles d'utilisation (facultatif)" value={form.rules} onChangeText={value => setForm({ ...form, rules: value })} multiline numberOfLines={3} style={tw`border px-4 py-3 rounded-md`} />
+            <TextInput 
+              placeholder="Règles d'utilisation (facultatif)" 
+              value={form.rules} 
+              onChangeText={value => setForm({ ...form, rules: value })} 
+              multiline 
+              numberOfLines={3} 
+              style={tw`border px-4 py-3 rounded-md`} 
+            />
           </View>
         );
       case 4:
@@ -125,8 +212,15 @@ export default function CreateListingScreen() {
         return (
           <View>
             <Text style={tw`text-xl font-bold mb-4`}>Fixez votre prix</Text>
+            {form.type === 'shared' && (
+              <View style={tw`bg-yellow-100 p-3 rounded-md mb-4`}>
+                <Text style={tw`text-sm text-yellow-800`}>
+                  💡 Pour une location partagée, indiquez le prix par jour et par utilisateur
+                </Text>
+              </View>
+            )}
             <TextInput
-              placeholder="Prix par jour en CFA"
+              placeholder={form.type === 'shared' ? "Prix par jour/utilisateur en CFA" : "Prix par jour en CFA"}
               value={form.price}
               keyboardType="numeric"
               onChangeText={value => setForm({ ...form, price: value })}
@@ -138,6 +232,17 @@ export default function CreateListingScreen() {
         return (
           <View>
             <Text style={tw`text-xl font-bold mb-4`}>Validez votre annonce</Text>
+            <View style={tw`bg-gray-50 p-4 rounded-md mb-4`}>
+              <Text style={tw`font-semibold mb-2`}>Résumé de votre annonce :</Text>
+              <Text style={tw`text-sm mb-1`}>📍 {form.address}</Text>
+              <Text style={tw`text-sm mb-1`}>🏷️ {form.title}</Text>
+              <Text style={tw`text-sm mb-1`}>
+                🏢 {form.type === 'unique' ? 'Location unique' : 'Location partagée'}
+              </Text>
+              <Text style={tw`text-sm mb-1`}>📦 {form.volume} m³</Text>
+              <Text style={tw`text-sm mb-1`}>🌡️ {form.tempMin}°C à {form.tempMax}°C</Text>
+              <Text style={tw`text-sm mb-1`}>💰 {form.price} CFA/jour</Text>
+            </View>
             <Text style={tw`text-gray-700`}>Vérifiez que toutes les informations sont correctes avant de publier.</Text>
           </View>
         );
