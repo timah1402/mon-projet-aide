@@ -150,20 +150,44 @@ export default function MapNavigation() {
   };
 
   const handleArrived = (): void => {
-    setShowCompletionModal(false);
-    
-    Alert.alert(
-      'Mission terminée ! 🎉',
-      `Félicitations ! Vous avez terminé votre ${type === 'pickup' ? 'collecte' : 'livraison'} avec succès.`,
-      [{ 
-        text: 'Retour au dashboard', 
-        onPress: () => {
-          // Retourner au dashboard avec indication de mission terminée
-          router.back();
-        }
-      }]
-    );
-  };
+  setShowCompletionModal(false);
+  
+  Alert.alert(
+    'Mission terminée ! 🎉',
+    `Félicitations ! Vous avez terminé votre ${type === 'pickup' ? 'collecte' : 'livraison'} avec succès.`,
+    [{ 
+      text: 'Retour au dashboard', 
+      onPress: () => {
+        // Retourner au dashboard avec les paramètres de mission terminée
+        router.back();
+        // Alternative: utiliser router.push avec les paramètres
+        router.push({
+          pathname: "/chauffeur-dashboard",
+          params: {
+            missionCompleted: true,
+            missionId: missionId,
+            type: type // 'pickup' ou 'delivery'
+          }
+        });
+      }
+    }]
+  );
+};
+
+const handleArrivedAlternative = (): void => {
+  setShowCompletionModal(false);
+  
+  // Directement retourner au dashboard avec les paramètres
+  router.replace({
+    pathname: "/chauffeur-dashboard",
+    params: {
+      missionCompleted: 'true',
+      missionId: missionId as string,
+      type: type as string,
+      fromNavigation: 'true'
+    }
+  });
+};
 
   const getTitle = (): string => {
     return type === 'pickup' ? 'Vers point de collecte' : 'Vers destination';
@@ -188,12 +212,27 @@ export default function MapNavigation() {
     <SafeAreaView style={tw`flex-1 bg-white`}>
       {/* Header */}
       <View style={tw`flex-row items-center px-4 py-4 bg-white border-b border-gray-200`}>
-        <TouchableOpacity onPress={() => {
-          stopNavigation();
-          router.back();
-        }} style={tw`mr-3`}>
-          <Ionicons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
+       <TouchableOpacity 
+  onPress={() => {
+    stopNavigation();
+    // Si mission complétée, envoyer les paramètres
+    if (missionCompleted) {
+      router.push({
+        pathname: "/chauffeur-dashboard",
+        params: {
+          missionCompleted: 'true',
+          missionId: missionId as string,
+          type: type as string
+        }
+      });
+    } else {
+      router.back();
+    }
+  }} 
+  style={tw`mr-3`}
+>
+  <Ionicons name="arrow-back" size={24} color="black" />
+</TouchableOpacity>
         <View style={tw`flex-1`}>
           <Text style={tw`text-lg font-bold`}>{getTitle()}</Text>
           <Text style={tw`text-sm text-gray-600`} numberOfLines={1}>
