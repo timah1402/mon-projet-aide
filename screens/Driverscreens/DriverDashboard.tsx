@@ -550,10 +550,11 @@ const getCurrentMissionStep = () => {
 
   
 
-  // Rendu de la carte de mission
-  // Dans la fonction renderMissionCard, remplacez cette partie :
+  
 
-// REMPLACEZ votre fonction renderMissionCard par celle-ci :
+
+
+
 
 const renderMissionCard = (mission: Mission, isNext: boolean = false) => {
   const getTypeIcon = (type: string) => {
@@ -565,11 +566,19 @@ const renderMissionCard = (mission: Mission, isNext: boolean = false) => {
     }
   };
 
-  // AJOUTEZ ce debug pour voir l'état actuel :
-  
+  // 🔍 AJOUTEZ CE DEBUG AU DÉBUT DE LA FONCTION
+  console.log('🔍 RENDER mission', mission.id, {
+    missionStatus: mission.status,
+    currentMissionExists: !!currentMission,
+    currentMissionId: currentMission?.id,
+    showButtons: !currentMission && mission.status === 'pending',
+    isNextParam: isNext
+  });
+
 
   return (
     <View style={tw`bg-gray-100 p-4 rounded-md mb-4`}>
+      {/* Informations de base de la mission */}
       <View style={tw`flex-row justify-between items-start mb-2`}>
         <Text style={tw`text-sm text-gray-700 mb-1`}>
           {getTypeIcon(mission.type)} {mission.description}
@@ -598,8 +607,8 @@ const renderMissionCard = (mission: Mission, isNext: boolean = false) => {
         )}
       </View>
 
-      {/* BOUTONS D'ACCEPTATION/REFUS - SEULEMENT pour missions pending ET isNext */}
-      {isNext && mission.status === 'pending' && (
+      {/* STATUT 1: AUCUNE MISSION EN COURS - Afficher boutons Accepter/Rejeter */}
+      {!currentMission && mission.status === 'pending' && (
         <View style={tw`flex-row mt-4 space-x-2`}>
           <TouchableOpacity
             style={tw`flex-1 bg-red-500 py-2 px-3 rounded-md`}
@@ -616,116 +625,142 @@ const renderMissionCard = (mission: Mission, isNext: boolean = false) => {
         </View>
       )}
 
-      {/* ÉTAPES DE MISSION - SEULEMENT pour missions accepted/in_progress ET !isNext */}
-      {!isNext && (mission.status === 'accepted' || mission.status === 'in_progress') && (
-        <View style={tw`mt-4`}>
-          <Text style={tw`text-xs text-gray-500 mb-3`}>Étapes de la mission :</Text>
-          
-          {/* Étape 1: Mission acceptée - Toujours visible */}
-          <View style={tw`flex-row items-center mb-3 p-3 bg-green-50 rounded-lg`}>
-            <Ionicons name="checkmark-circle" size={20} color="#16a34a" style={tw`mr-3`} />
-            <Text style={tw`text-sm text-green-600 font-medium flex-1`}>Mission acceptée</Text>
+      {/* STATUT 2: MISSION EN COURS - Afficher les étapes */}
+{currentMission && currentMission.id === mission.id && (mission.status === 'accepted' || mission.status === 'in_progress') && (
+  <View style={tw`mt-4`}>
+    <Text style={tw`text-xs text-gray-500 mb-3`}>Étapes de la mission :</Text>
+    
+    {/* Étape 1: Mission acceptée */}
+    <View style={tw`flex-row items-center mb-3 p-3 bg-green-50 rounded-lg`}>
+      <Ionicons name="checkmark-circle" size={20} color="#16a34a" style={tw`mr-3`} />
+      <Text style={tw`text-sm text-green-600 font-medium flex-1`}>Mission acceptée</Text>
+    </View>
+
+    {/* Étape 2: En route vers collecte */}
+    {getCurrentMissionStep() === 'accepted' && (
+      <TouchableOpacity
+        style={tw`flex-row items-center mb-3 p-3 bg-blue-50 rounded-lg border-2 border-blue-200`}
+        onPress={() => handleMissionStep('go_to_pickup')}
+      >
+        <Ionicons name="navigate-circle-outline" size={20} color="#0284c7" style={tw`mr-3`} />
+        <Text style={tw`text-sm text-blue-600 font-medium flex-1`}>
+          En route vers le point de collecte
+        </Text>
+        <Ionicons name="chevron-forward" size={16} color="#0284c7" />
+      </TouchableOpacity>
+    )}
+
+    {getCurrentMissionStep() === 'going_to_pickup' && (
+      <View style={tw`flex-row items-center mb-3 p-3 bg-blue-100 rounded-lg`}>
+        <Ionicons name="car" size={20} color="#0284c7" style={tw`mr-3`} />
+        <View style={tw`flex-1`}>
+          <Text style={tw`text-sm text-blue-600 font-medium`}>En route vers collecte...</Text>
+          <TouchableOpacity
+            style={tw`mt-2 bg-blue-500 py-2 px-4 rounded-md self-start`}
+            onPress={() => handleMissionStep('arrived_pickup')}
+          >
+            <Text style={tw`text-white text-xs font-medium`}>Je suis arrivé</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    )}
+
+    {(getCurrentMissionStep() === 'arrived_pickup' || getCurrentMissionStep() === 'going_to_destination' || getCurrentMissionStep() === 'arrived_destination') && (
+      <View style={tw`flex-row items-center mb-3 p-3 bg-green-50 rounded-lg`}>
+        <Ionicons name="checkmark-circle" size={20} color="#16a34a" style={tw`mr-3`} />
+        <Text style={tw`text-sm text-green-600 font-medium flex-1`}>Arrivé au point de collecte</Text>
+      </View>
+    )}
+
+    {/* Étape 3: En route vers destination */}
+    {getCurrentMissionStep() === 'arrived_pickup' && (
+      <TouchableOpacity
+        style={tw`flex-row items-center mb-3 p-3 bg-orange-50 rounded-lg border-2 border-orange-200`}
+        onPress={() => handleMissionStep('go_to_destination')}
+      >
+        <Ionicons name="navigate-circle-outline" size={20} color="#ea580c" style={tw`mr-3`} />
+        <Text style={tw`text-sm text-orange-600 font-medium flex-1`}>
+          En route vers la destination
+        </Text>
+        <Ionicons name="chevron-forward" size={16} color="#ea580c" />
+      </TouchableOpacity>
+    )}
+
+    {getCurrentMissionStep() === 'going_to_destination' && (
+      <View style={tw`flex-row items-center mb-3 p-3 bg-orange-100 rounded-lg`}>
+        <Ionicons name="car" size={20} color="#ea580c" style={tw`mr-3`} />
+        <View style={tw`flex-1`}>
+          <Text style={tw`text-sm text-orange-600 font-medium`}>En route vers destination...</Text>
+          <TouchableOpacity
+            style={tw`mt-2 bg-orange-500 py-2 px-4 rounded-md self-start`}
+            onPress={() => handleMissionStep('arrived_destination')}
+          >
+            <Text style={tw`text-white text-xs font-medium`}>Je suis arrivé</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    )}
+
+    {getCurrentMissionStep() === 'arrived_destination' && (
+      <View style={tw`flex-row items-center mb-3 p-3 bg-green-50 rounded-lg`}>
+        <Ionicons name="checkmark-circle" size={20} color="#16a34a" style={tw`mr-3`} />
+        <Text style={tw`text-sm text-green-600 font-medium flex-1`}>Arrivé à destination</Text>
+      </View>
+    )}
+
+    {/* Bouton de finalisation */}
+    {getCurrentMissionStep() === 'arrived_destination' && (
+      <TouchableOpacity
+        style={tw`mt-4 bg-green-500 py-3 px-4 rounded-lg flex-row items-center justify-center`}
+        onPress={() => handleMissionStep('complete_mission')}
+      >
+        <Ionicons name="checkmark-done" size={20} color="white" style={tw`mr-2`} />
+        <Text style={tw`text-white text-sm font-medium`}>Terminer la mission</Text>
+      </TouchableOpacity>
+    )}
+
+    {/* Bouton générique pour continuer */}
+    {(getCurrentMissionStep() === 'accepted' || getCurrentMissionStep() === 'arrived_pickup') && (
+      <TouchableOpacity
+        style={tw`mt-4 bg-yellow-500 py-2 px-3 rounded-md self-start`}
+        onPress={() => router.push("/tracking")}
+      >
+        <Text style={tw`text-white text-sm font-medium`}>Voir sur la carte</Text>
+      </TouchableOpacity>
+    )}
+  </View>
+)}
+
+      {/* STATUT 3: MISSION EN ATTENTE (mais une autre mission est en cours) - Afficher message d'attente */}
+      {currentMission && currentMission.id !== mission.id && mission.status === 'pending' && (
+        <View style={tw`mt-4 p-3 bg-yellow-50 rounded-lg border border-yellow-200`}>
+          <View style={tw`flex-row items-center`}>
+            <Ionicons name="time-outline" size={16} color="#d97706" style={tw`mr-2`} />
+            <Text style={tw`text-sm text-yellow-700`}>
+              Mission en attente - Terminez votre mission actuelle pour accepter
+            </Text>
           </View>
+        </View>
+      )}
 
-          {/* Étape 2: En route vers collecte */}
-          {getCurrentMissionStep() === 'accepted' && (
-            <TouchableOpacity
-              style={tw`flex-row items-center mb-3 p-3 bg-blue-50 rounded-lg border-2 border-blue-200`}
-              onPress={() => handleMissionStep('go_to_pickup')}
-            >
-              <Ionicons name="navigate-circle-outline" size={20} color="#0284c7" style={tw`mr-3`} />
-              <Text style={tw`text-sm text-blue-600 font-medium flex-1`}>
-                En route vers le point de collecte
-              </Text>
-              <Ionicons name="chevron-forward" size={16} color="#0284c7" />
-            </TouchableOpacity>
-          )}
 
-          {getCurrentMissionStep() === 'going_to_pickup' && (
-            <View style={tw`flex-row items-center mb-3 p-3 bg-blue-100 rounded-lg`}>
-              <Ionicons name="car" size={20} color="#0284c7" style={tw`mr-3`} />
-              <View style={tw`flex-1`}>
-                <Text style={tw`text-sm text-blue-600 font-medium`}>En route vers collecte...</Text>
-                <TouchableOpacity
-                  style={tw`mt-2 bg-blue-500 py-2 px-4 rounded-md self-start`}
-                  onPress={() => handleMissionStep('arrived_pickup')}
-                >
-                  <Text style={tw`text-white text-xs font-medium`}>Je suis arrivé</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          )}
-
-          {(getCurrentMissionStep() === 'arrived_pickup' || getCurrentMissionStep() === 'going_to_destination' || getCurrentMissionStep() === 'arrived_destination') && (
-            <View style={tw`flex-row items-center mb-3 p-3 bg-green-50 rounded-lg`}>
-              <Ionicons name="checkmark-circle" size={20} color="#16a34a" style={tw`mr-3`} />
-              <Text style={tw`text-sm text-green-600 font-medium flex-1`}>Arrivé au point de collecte</Text>
-            </View>
-          )}
-
-          {/* Étape 3: En route vers destination */}
-          {getCurrentMissionStep() === 'arrived_pickup' && (
-            <TouchableOpacity
-              style={tw`flex-row items-center mb-3 p-3 bg-orange-50 rounded-lg border-2 border-orange-200`}
-              onPress={() => handleMissionStep('go_to_destination')}
-            >
-              <Ionicons name="navigate-circle-outline" size={20} color="#ea580c" style={tw`mr-3`} />
-              <Text style={tw`text-sm text-orange-600 font-medium flex-1`}>
-                En route vers la destination
-              </Text>
-              <Ionicons name="chevron-forward" size={16} color="#ea580c" />
-            </TouchableOpacity>
-          )}
-
-          {getCurrentMissionStep() === 'going_to_destination' && (
-            <View style={tw`flex-row items-center mb-3 p-3 bg-orange-100 rounded-lg`}>
-              <Ionicons name="car" size={20} color="#ea580c" style={tw`mr-3`} />
-              <View style={tw`flex-1`}>
-                <Text style={tw`text-sm text-orange-600 font-medium`}>En route vers destination...</Text>
-                <TouchableOpacity
-                  style={tw`mt-2 bg-orange-500 py-2 px-4 rounded-md self-start`}
-                  onPress={() => handleMissionStep('arrived_destination')}
-                >
-                  <Text style={tw`text-white text-xs font-medium`}>Je suis arrivé</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          )}
-
-          {getCurrentMissionStep() === 'arrived_destination' && (
-            <View style={tw`flex-row items-center mb-3 p-3 bg-green-50 rounded-lg`}>
-              <Ionicons name="checkmark-circle" size={20} color="#16a34a" style={tw`mr-3`} />
-              <Text style={tw`text-sm text-green-600 font-medium flex-1`}>Arrivé à destination</Text>
-            </View>
-          )}
-
-          {/* Bouton de finalisation */}
-          {getCurrentMissionStep() === 'arrived_destination' && (
-            <TouchableOpacity
-              style={tw`mt-4 bg-green-500 py-3 px-4 rounded-lg flex-row items-center justify-center`}
-              onPress={() => handleMissionStep('complete_mission')}
-            >
-              <Ionicons name="checkmark-done" size={20} color="white" style={tw`mr-2`} />
-              <Text style={tw`text-white text-sm font-medium`}>Terminer la mission</Text>
-            </TouchableOpacity>
-          )}
-
-          {/* Bouton générique pour continuer */}
-          {(getCurrentMissionStep() === 'accepted' || getCurrentMissionStep() === 'arrived_pickup') && (
-            <TouchableOpacity
-              style={tw`mt-4 bg-yellow-500 py-2 px-3 rounded-md self-start`}
-              onPress={() => router.push("/tracking")}
-            >
-              <Text style={tw`text-white text-sm font-medium`}>Voir sur la carte</Text>
-            </TouchableOpacity>
-          )}
+      {/* STATUT 4: MISSION TERMINÉE - Afficher badge de confirmation */}
+      {mission.status === 'completed' && (
+        <View style={tw`mt-4 p-3 bg-green-50 rounded-lg border border-green-200`}>
+          <View style={tw`flex-row items-center justify-center`}>
+            <Ionicons name="checkmark-circle" size={20} color="#16a34a" style={tw`mr-2`} />
+            <Text style={tw`text-sm text-green-700 font-medium`}>Mission terminée avec succès</Text>
+          </View>
         </View>
       )}
     </View>
   );
 };
+  
+            
 
   return (
+    
     <SafeAreaView style={tw`flex-1 bg-white`}>
       <ScrollView style={tw`px-4 pt-4`}>
         {/* En-tête */}
@@ -831,6 +866,8 @@ const renderMissionCard = (mission: Mission, isNext: boolean = false) => {
             </View>
           </View>
         )}
+
+       
 
         {/* Activité récente avec missions terminées */}
         <Text style={tw`text-lg font-semibold mb-2`}>Activité récente</Text>

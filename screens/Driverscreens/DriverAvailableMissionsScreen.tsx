@@ -1,89 +1,189 @@
 import { router } from 'expo-router';
-import React from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
-// Removed navigation import
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, SafeAreaView, FlatList, ScrollView, Alert } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
 
-export default function DriverAvailableMissionsScreen() {
-  // Navigation removed
+interface Mission {
+  id: string;
+  type: 'surgelés' | 'frais' | 'sec';
+  description: string;
+  collectPoint: string;
+  destination: string;
+  client: string;
+  temperature?: string;
+  price: number;
+  distance: string;
+  estimatedTime: string;
+  status: 'pending' | 'accepted' | 'in_progress' | 'completed';
+  urgency: 'normal' | 'urgent';
+  completedAt?: string;
+}
 
-  const availableMissions = [
+export default function DriverHistoryScreen() {
+
+
+
+  // Historique des missions complétées
+  const [completedMissions, setCompletedMissions] = useState<Mission[]>([
     {
-      id: '1',
-      title: 'Livraison Surgelés',
-      pickup: 'Marché Kermel',
-      dropoff: 'Restaurant Le Baobab',
-      client: 'Aïssatou Diallo',
-      icon: 'snowflake',
+      id: 'h1',
+      type: 'surgelés',
+      description: 'Produits surgelés',
+      collectPoint: 'Marché Sandaga, Dakar',
+      destination: 'Restaurant Le Baobab, Almadies',
+      client: 'Aminata Ba',
+      temperature: '-3°C',
+      price: 6000,
+      distance: '15 km',
+      estimatedTime: '50 min',
+      status: 'completed',
+      urgency: 'normal',
+      completedAt: '2024-01-15 14:30'
     },
     {
-      id: '2',
-      title: 'Produits Laitiers',
-      pickup: 'Entrepôt Yoff',
-      dropoff: 'Supermarché Auchan',
-      client: 'Mamadou Ndiaye',
-      icon: 'milk',
+      id: 'h2',
+      type: 'frais',
+      description: 'Produits laitiers',
+      collectPoint: 'Laiterie du Berger, Thiès',
+      destination: 'Supermarché Auchan, Plateau',
+      client: 'Omar Sy',
+      temperature: '3°C',
+      price: 8500,
+      distance: '22 km',
+      estimatedTime: '75 min',
+      status: 'completed',
+      urgency: 'urgent',
+      completedAt: '2024-01-14 16:45'
     },
-  ];
+    {
+      id: 'h3',
+      type: 'sec',
+      description: 'Produits secs',
+      collectPoint: 'Entrepôt Colobane, Dakar',
+      destination: 'Boutique Mansour, Médina',
+      client: 'Khadija Diop',
+      price: 4200,
+      distance: '9 km',
+      estimatedTime: '35 min',
+      status: 'completed',
+      urgency: 'normal',
+      completedAt: '2024-01-14 11:20'
+    },
+    {
+      id: 'h4',
+      type: 'frais',
+      description: 'Produits laitiers',
+      collectPoint: 'Centrale Laitière, Dakar',
+      destination: 'Hôpital Principal, Dakar',
+      client: 'Dr. Ibrahima Seck',
+      temperature: '2°C',
+      price: 5500,
+      distance: '11 km',
+      estimatedTime: '40 min',
+      status: 'completed',
+      urgency: 'urgent',
+      completedAt: '2024-01-13 09:15'
+    }
+  ]);
 
-  const handleAcceptMission = (mission) => {
-    alert(`Mission "${mission.title}" acceptée`);
-    router.push("/tracking");
+  const getTypeIcon = (type: string) => {
+    switch(type) {
+      case 'surgelés': return 'snowflake';
+      case 'frais': return 'water';
+      case 'sec': return 'archive-outline';
+      default: return 'cube-outline';
+    }
   };
+
+  const getTypeColor = (type: string) => {
+    switch(type) {
+      case 'surgelés': return '#3B82F6';
+      case 'frais': return '#10B981';
+      case 'sec': return '#F59E0B';
+      default: return '#6B7280';
+    }
+  };
+
+
+
+  const renderCompletedMission = ({ item }: { item: Mission }) => (
+    <View style={tw`bg-gray-50 p-4 rounded-xl mb-3 border border-gray-200`}>
+      <View style={tw`flex-row items-center justify-between mb-2`}>
+        <View style={tw`flex-row items-center`}>
+          <MaterialCommunityIcons
+            name={getTypeIcon(item.type)}
+            size={24}
+            color={getTypeColor(item.type)}
+            style={tw`mr-3`}
+          />
+          <View>
+            <Text style={tw`text-base font-semibold text-gray-800`}>{item.description}</Text>
+            <Text style={tw`text-xs text-gray-500`}>Client: {item.client}</Text>
+          </View>
+        </View>
+        <View style={tw`items-end`}>
+          <View style={tw`flex-row items-center`}>
+            <Ionicons name="checkmark-circle" size={16} color="#10B981" style={tw`mr-1`} />
+            <Text style={tw`text-sm font-bold text-green-600`}>+{item.price} FCFA</Text>
+          </View>
+          <Text style={tw`text-xs text-gray-500`}>{item.completedAt}</Text>
+        </View>
+      </View>
+
+      <View style={tw`flex-row justify-between`}>
+        <Text style={tw`text-xs text-gray-600 flex-1`}>📍 {item.collectPoint}</Text>
+        <Ionicons name="arrow-forward" size={12} color="#9CA3AF" style={tw`mx-2 mt-1`} />
+        <Text style={tw`text-xs text-gray-600 flex-1 text-right`}>🚩 {item.destination}</Text>
+      </View>
+    </View>
+  );
+
+  const totalEarnings = completedMissions.reduce((sum, mission) => sum + mission.price, 0);
+  const totalMissions = completedMissions.length;
 
   return (
     <SafeAreaView style={tw`flex-1 bg-white`}>
       {/* Header */}
-      <View style={tw`flex-row items-center px-4 py-3`}>
+      <View style={tw`flex-row items-center px-4 py-3 border-b border-gray-200`}>
         <TouchableOpacity onPress={() => router.back()} style={tw`mr-4`}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={tw`text-lg font-bold`}>Missions disponibles</Text>
+        <Text style={tw`text-lg font-bold`}>Historique des Missions</Text>
       </View>
 
-      {/* Liste des missions */}
-      <FlatList
-        data={availableMissions}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={tw`p-4`}
-        renderItem={({ item }) => (
-          <View style={tw`bg-white p-5 rounded-xl mb-4 shadow`}>
-            <View style={tw`flex-row items-center mb-3`}>
-              <MaterialCommunityIcons
-                name={item.icon}
-                size={28}
-                color="#facc15"
-                style={tw`mr-2`}
-              />
-              <Text style={tw`text-xl font-bold text-gray-800`}>{item.title}</Text>
+      {/* Statistiques */}
+      <View style={tw`mx-4 mt-4 mb-6`}>
+        <View style={tw`bg-green-50 p-4 rounded-xl border border-green-200`}>
+          <View style={tw`flex-row justify-between items-center`}>
+            <View>
+              <Text style={tw`text-green-800 text-lg font-bold`}>{totalMissions} missions</Text>
+              <Text style={tw`text-green-600 text-sm`}>complétées avec succès</Text>
             </View>
-
-            <View style={tw`mb-2`}>
-              <Text style={tw`text-xs uppercase text-gray-500 mb-1`}>Collecte</Text>
-              <Text style={tw`text-base text-gray-700`}>{item.pickup}</Text>
+            <View style={tw`items-end`}>
+              <Text style={tw`text-green-800 text-xl font-bold`}>{totalEarnings.toLocaleString()} FCFA</Text>
+              <Text style={tw`text-green-600 text-sm`}>gains totaux</Text>
             </View>
-
-            <View style={tw`mb-2`}>
-              <Text style={tw`text-xs uppercase text-gray-500 mb-1`}>Destination</Text>
-              <Text style={tw`text-base text-gray-700`}>{item.dropoff}</Text>
-            </View>
-
-            <View style={tw`mb-4`}>
-              <Text style={tw`text-xs uppercase text-gray-500 mb-1`}>Client</Text>
-              <Text style={tw`text-base text-gray-700`}>{item.client}</Text>
-            </View>
-
-            <TouchableOpacity
-              style={tw`flex-row items-center justify-center bg-yellow-500 py-3 rounded-full`}
-              onPress={() => handleAcceptMission(item)}
-            >
-              <Ionicons name="checkmark-circle-outline" size={20} color="white" style={tw`mr-2`} />
-              <Text style={tw`text-white font-bold text-base`}>Accepter la mission</Text>
-            </TouchableOpacity>
           </View>
-        )}
-      />
+        </View>
+      </View>
+
+      {/* Liste des missions complétées */}
+      <ScrollView style={tw`flex-1 px-4 pb-6`}>
+        {completedMissions.map((mission) => (
+          <View key={mission.id}>
+            {renderCompletedMission({ item: mission })}
+          </View>
+        ))}
+      </ScrollView>
+
+      {/* Bouton flottant pour retourner au dashboard */}
+      <TouchableOpacity
+        style={tw`absolute bottom-6 right-6 bg-yellow-500 w-14 h-14 rounded-full items-center justify-center shadow-lg`}
+        onPress={() => router.replace("/chauffeur-dashboard")}
+      >
+        <Ionicons name="grid" size={24} color="white" />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
